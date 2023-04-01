@@ -26,10 +26,9 @@ public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private Button btn;
-    private EditText owner;
-    private EditText dog;
-    private EditText breed;
-    private EditText age;
+    private TextView username;
+
+    private TextView number_deliveries;
     private SharedPreferences myPrefs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,43 +40,23 @@ public class ProfileFragment extends Fragment {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        btn = binding.save;
-        owner = binding.editTextOwner;
-        dog = binding.editTextdogName;
-        breed = binding.editTextdogBreed;
-        age = binding.editTextDogAge;
+
+        username = binding.userName;
+        number_deliveries = binding.numberDelivered;
 
         Context context = requireActivity().getApplicationContext();
         myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         // TODO: add code to retrieve any previously saved data and display in fields
         //retrieve data
-        String owner_text = myPrefs.getString("loginName", "");
-        String dog_text = myPrefs.getString("dog_name", "");
-        String breed_text = myPrefs.getString("dog_breed", "");
-        String age_text = myPrefs.getString("dog_age", "");
+        String username_text = myPrefs.getString("loginName", "");
+        int num_deliveries_text = myPrefs.getInt("numberDeliveries", 0);
+
 
         //fill the data in
-        owner.setText(owner_text);
-        dog.setText(dog_text);
-        breed.setText(breed_text);
-        age.setText(age_text);
+        username.setText(username_text);
+        number_deliveries.setText(String.format("%d", num_deliveries_text));
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String owner_name = String.valueOf(owner.getText());
-                String dog_name = String.valueOf(dog.getText());
-                String dog_breed = String.valueOf(breed.getText());
-                String dog_age = String.valueOf(age.getText());
-                SharedPreferences.Editor peditor = myPrefs.edit();
-                peditor.putString("loginName",owner_name);
-                peditor.putString("dog_name", dog_name);
-                peditor.putString("dog_breed", dog_breed);
-                peditor.putString("dog_age", dog_age);
-                peditor.apply();
-            }
-        });
         return root;
     }
 

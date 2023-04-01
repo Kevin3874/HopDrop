@@ -26,5 +26,6 @@
     <string name="map_title_name">Map</string>
     <string name="login_email_hint">JHU Email</string>
     <string name="login_image_description">logo</string>
+    <string name="orders_delivered">Total orders delivered:</string>
 
 </resources>
