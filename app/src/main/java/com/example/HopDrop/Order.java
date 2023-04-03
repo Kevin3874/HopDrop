@@ -1,4 +1,4 @@
-package com.example.a5_sample;
+package com.example.HopDrop;
 
 public class Order {
     private String customer_name;

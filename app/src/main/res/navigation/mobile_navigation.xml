@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.a5_sample.ui.home.HomeFragment"
+        android:name="com.example.HopDrop.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_order"
-        android:name="com.example.a5_sample.ui.order.OrderFragment"
+        android:name="com.example.HopDrop.ui.order.OrderFragment"
         android:label="Available Order"
         tools:layout="@layout/fragment_order" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.a5_sample.ui.profile.ProfileFragment"
+        android:name="com.example.HopDrop.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

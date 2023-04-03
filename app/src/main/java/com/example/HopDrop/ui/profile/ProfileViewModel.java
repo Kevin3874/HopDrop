@@ -1,16 +1,17 @@
-package com.example.a5_sample.ui.order;
+package com.example.HopDrop.ui.profile;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class OrderViewModel extends ViewModel {
+public class ProfileViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public OrderViewModel() {
+    public ProfileViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is chat fragment");
+
+        mText.setValue("This is profile fragment");
     }
 
     public LiveData<String> getText() {

@@ -5,10 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
-
-
     <Button
         android:id="@+id/login_button"
         android:layout_width="87dp"
@@ -41,7 +37,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/login_button"
         app:layout_constraintEnd_toStartOf="@+id/login_button"

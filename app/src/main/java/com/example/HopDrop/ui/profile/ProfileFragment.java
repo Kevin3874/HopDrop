@@ -1,4 +1,4 @@
-package com.example.a5_sample.ui.profile;
+package com.example.HopDrop.ui.profile;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,18 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 // import androidx.lifecycle.ViewModelProvider;
 
-import com.example.a5_sample.R;
-import com.example.a5_sample.databinding.FragmentProfileBinding;
-
-import java.util.Objects;
+import com.example.HopDrop.databinding.FragmentProfileBinding;
 // import com.example.a5_sample.ui.profile.ProfileViewModel;
 
 public class ProfileFragment extends Fragment {

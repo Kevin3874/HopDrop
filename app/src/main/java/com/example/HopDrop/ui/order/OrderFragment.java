@@ -1,4 +1,4 @@
-package com.example.a5_sample.ui.order;
+package com.example.HopDrop.ui.order;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.a5_sample.Order;
-import com.example.a5_sample.OrderAdapter;
-import com.example.a5_sample.R;
+import com.example.HopDrop.Order;
+import com.example.HopDrop.OrderAdapter;
+import com.example.HopDrop.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,4 @@
-package com.example.a5_sample;
-
-import static java.security.AccessController.getContext;
+package com.example.HopDrop;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;

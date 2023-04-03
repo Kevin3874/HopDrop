@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:isScrollContainer="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.a5_sample.MainActivity">
+    tools:context="com.example.HopDrop.MainActivity">
 
     <ListView
         android:id="@+id/mylist"

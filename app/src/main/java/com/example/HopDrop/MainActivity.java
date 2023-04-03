@@ -1,27 +1,18 @@
-package com.example.a5_sample;
+package com.example.HopDrop;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
-import com.example.a5_sample.ui.home.HomeFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.a5_sample.databinding.ActivityMainBinding;
+import com.example.HopDrop.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static ParkAdapter pa;
     public Park current;
     public Random randy = new Random();
-
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_map, R.id.navigation_home, R.id.navigation_order, R.id.navigation_profile)
+                R.id.navigation_home, R.id.navigation_order, R.id.navigation_profile)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

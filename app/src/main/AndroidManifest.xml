@@ -14,7 +14,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:label="DogPark"
+            android:label="HopDrop"
             android:theme="@style/Theme.HopDrop"
             android:exported="true">
             <intent-filter>

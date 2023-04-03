@@ -1,4 +1,4 @@
-package com.example.a5_sample;
+package com.example.HopDrop;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
