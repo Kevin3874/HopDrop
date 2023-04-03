@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static ParkAdapter pa;
     public Park current;
     public Random randy = new Random();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
