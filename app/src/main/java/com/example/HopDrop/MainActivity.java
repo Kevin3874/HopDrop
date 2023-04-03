@@ -14,6 +14,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.HopDrop.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+//firebase imports
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -21,21 +29,25 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-    public static ArrayList<Park> parks;
-    public static ParkAdapter pa;
+    public static ArrayList<Order> orders;
+    public static OrderAdapter oa;
     public Park current;
     public Random randy = new Random();
-    //FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        parks = new ArrayList<Park>();
-        parks.add(new Park("Oriole Park" , randy.nextInt(10)));
-        parks.add(new Park("BlueJay Park", randy.nextInt(10)));
-        parks.add(new Park("Park Robin", randy.nextInt(10)));
-        pa = new ParkAdapter(this, R.layout.parklayout, parks);
+        //empty orders list
+        orders = new ArrayList<Order>();
+        oa = new OrderAdapter(orders);
         current = null;
+
+        //TO-DO: get db information for current/active orders
+        /*
+
+         */
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = myPrefs.edit();
                 //Currently only autopopulates/saves the email that was entered as the username
                 //Need to figure out how to get the actual name of the person from the email (probably using the database)
-                if (!TextUtils.isEmpty(username.getEditText().getText().toString())) {
+                if (!TextUtils.isEmpty(username.getEditText().getText().toString()) && !TextUtils.isEmpty(password.getEditText().getText().toString())) {
                     String username_string = username.getEditText().getText().toString();
                     editor.putString("loginName", username_string);
                     editor.apply();

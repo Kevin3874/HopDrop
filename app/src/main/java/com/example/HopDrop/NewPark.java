@@ -23,8 +23,10 @@ public class NewPark extends AppCompatActivity {
                 if (new_park.getText().toString().trim().length() == 0) {
                     Toast.makeText(NewPark.this,"Name cannot be empty", Toast.LENGTH_SHORT).show();
                 } else {
-                    Park newPark = new Park(new_park.getText().toString(), 0);
-                    MainActivity.parks.add(newPark);
+                    /*
+                    Order newPark = new Park(new_park.getText().toString(), 0);
+                    MainActivity.orders.add(newPark);
+                    */
                     finish();
                 }
             }

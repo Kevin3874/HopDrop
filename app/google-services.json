@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "1073793681241",
-    "firebase_url": "https://hopdrop-969a4-default-rtdb.firebaseio.com",
-    "project_id": "hopdrop-969a4",
-    "storage_bucket": "hopdrop-969a4.appspot.com"
+    "project_number": "380856134920",
+    "project_id": "hopdrop-6db14",
+    "storage_bucket": "hopdrop-6db14.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1073793681241:android:07f24dfd5fc5b4b99eee48",
+        "mobilesdk_app_id": "1:380856134920:android:4eb5ac061827e2d29810bd",
         "android_client_info": {
           "package_name": "com.example.HopDrop"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1073793681241-6ml1fanmnu0fqgb8uv40j9g6p5s1qf4p.apps.googleusercontent.com",
+          "client_id": "380856134920-ir02uqfkoj2bhfp41h2lfiq38o4non70.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAbVJto_08hC4EEvI4TVcN9ezDf6ARaEMQ"
+          "current_key": "AIzaSyCpL52yZjdTEm6R6VyCndyH-J0E0hKyqsE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1073793681241-6ml1fanmnu0fqgb8uv40j9g6p5s1qf4p.apps.googleusercontent.com",
+              "client_id": "380856134920-ir02uqfkoj2bhfp41h2lfiq38o4non70.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

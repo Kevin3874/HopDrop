@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // NOTE: HomeViewModel elements eliminated from original template
+        // TODO: make the homeview with user's current orders/deliveries
 
         // Inflate the layout for this fragment
         View myview = inflater.inflate(R.layout.fragment_home, container, false);
@@ -38,9 +38,6 @@ public class HomeFragment extends Fragment {
         cntx = getActivity().getApplicationContext();
         myact = (MainActivity) getActivity();
 
-        myList = (ListView) myview.findViewById(R.id.mylist);
-        myList.setAdapter(myact.pa);
-        myact.pa.notifyDataSetChanged();
 
         FloatingActionButton fab = (FloatingActionButton) myview.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
