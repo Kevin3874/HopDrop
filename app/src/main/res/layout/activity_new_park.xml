@@ -9,42 +9,58 @@
     tools:context=".NewPark">
 
     <EditText
-        android:id="@+id/new_park"
+        android:id="@+id/from"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="@string/enter_name"
- />
+        android:layout_height="35dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="#68ACE5"
+        android:hint="@string/from" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/to"
         android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="#68ACE5"
+        android:hint="@string/to" />
+
+    <EditText
+        android:id="@+id/fee"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="#68ACE5"
+        android:hint="@string/fee" />
+
+    <EditText
+        android:id="@+id/additional_details"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="#68ACE5"
+        android:hint="@string/additional_detail" />
+
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        >
-
-        <Button
-            android:id="@+id/quit_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|left"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:text="@string/quit"
-            android:textColor="@color/brown" />
-
-        <Button
-            android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:text="@string/save"
-            android:textColor="@color/brown" />
-
-
-    </LinearLayout>
+        android:layout_marginTop="125dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginEnd="75dp"
+        android:layout_weight="1"
+        android:text="@string/make_order"
+        android:textColor="@color/brown" />
 
 </LinearLayout>

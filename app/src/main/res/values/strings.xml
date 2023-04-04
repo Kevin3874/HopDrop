@@ -17,7 +17,11 @@
     <string name="login">LOGIN</string>
     <string name="logout">Logout</string>
     <string name="add">Add Park</string>
-    <string name="enter_name">Park Name</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="fee">Fee</string>
+    <string name="additional_detail">Additional Details</string>
+    <string name="make_order">Make Order</string>
     <string name="save">SAVE</string>
     <string name="quit">QUIT</string>
     <string name="name">Name</string>
