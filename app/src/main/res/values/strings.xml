@@ -28,8 +28,10 @@
     <string name="login_name">Owner</string>
     <string name="login_button_text">login</string>
     <string name="map_title_name">Map</string>
-    <string name="login_email_hint">JHU Email</string>
+    <string name="login_email_hint">JHU Email @JHU.edu</string>
     <string name="login_image_description">logo</string>
     <string name="orders_delivered">Total orders delivered:</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="additional_details">Additional Details</string>
 
 </resources>

@@ -12,7 +12,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 
 import com.example.HopDrop.MainActivity;
-import com.example.HopDrop.NewPark;
+import com.example.HopDrop.NewOrder;
 import com.example.HopDrop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent launch = new Intent(myact, NewPark.class);
+                Intent launch = new Intent(myact, NewOrder.class);
                 startActivity(launch);
             }
         });
