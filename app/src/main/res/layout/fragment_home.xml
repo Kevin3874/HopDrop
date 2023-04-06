@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:elevation="8dp"
+        android:padding="7dp"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:contentDescription="@string/common_signin_button_text" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/orderTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/orderTabLayout"
-        android:layout_alignParentBottom="true" >
-    </androidx.viewpager2.widget.ViewPager2>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/orderTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.google.android.material.tabs.TabLayout>
+        app:layout_constraintTop_toBottomOf="@id/orderTabLayout" />
     <!--
     <LinearLayout
         android:id="@+id/order_table"
@@ -75,15 +84,5 @@
         </LinearLayout>
     </LinearLayout>
     -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="335dp"
-        android:layout_marginTop="425dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/pager"
-        app:srcCompat="@android:drawable/ic_input_add" />
 
-</RelativeLayout>
+</LinearLayout>

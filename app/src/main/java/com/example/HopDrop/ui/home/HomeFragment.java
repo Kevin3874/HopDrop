@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        return myview;
+        return root;
     }
 
 class ViewPagerAdapter extends FragmentStateAdapter {
