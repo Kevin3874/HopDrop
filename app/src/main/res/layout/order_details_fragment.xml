@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order_details_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/customer_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Customer Name" />
+
+    <TextView
+        android:id="@+id/src"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Source" />
+
+    <TextView
+        android:id="@+id/dest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Destination" />
+
+    <TextView
+        android:id="@+id/fee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fee" />
+
+
+</LinearLayout>
