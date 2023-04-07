@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
+            android:name=".OrderProgress"
+            android:exported="false" />
+        <activity
             android:name=".NewOrder"
             android:exported="true"
-            android:theme="@style/Theme.HopDrop"/>
-
+            android:theme="@style/Theme.HopDrop" />
         <activity
             android:name=".LoginActivity"
+            android:exported="true"
             android:label="HopDrop"
-            android:theme="@style/Theme.HopDrop"
-            android:exported="true">
+            android:theme="@style/Theme.HopDrop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +30,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.HopDrop"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.HopDrop" />
 
         <meta-data
             android:name="preloaded_fonts"
