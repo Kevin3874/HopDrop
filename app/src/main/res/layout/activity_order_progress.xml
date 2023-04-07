@@ -7,7 +7,134 @@
     android:layout_height="match_parent"
     tools:context=".OrderProgress">
 
-    <!--Progress Bar created-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:orientation="horizontal"
+            android:paddingRight="15dp">
+            <TextView
+                android:id="@+id/courrier_info"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="@string/your_courier"
+                android:textSize="20dp"
+                android:padding="9dp"/>
+            <ImageView
+                android:id="@+id/courier_image"
+                android:layout_centerHorizontal="true"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:paddingLeft="10dp"
+                android:layout_below="@id/courrier_info"
+                android:src="@drawable/user_profile_avatar_svgrepo_com"
+                android:layout_alignParentLeft="true"/>
+            <TextView
+                android:id="@+id/courrier_name"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/courier_image"
+                android:layout_below="@id/courrier_info"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="@string/name"
+                android:textSize="18dp"
+                android:padding="9dp"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/details"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        app:cardCornerRadius="10dp"
+        android:layout_below="@id/card_view">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:orientation="horizontal"
+            android:paddingRight="15dp">
+            <TextView
+                android:id="@+id/detail_title"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="Details"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_title"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="date"
+                android:drawableStart="@drawable/calendar_icon"
+                android:textSize="18sp"
+                android:padding="2dp"/>
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/date"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="time"
+                android:textSize="18sp"
+                android:padding="2dp"
+                android:drawableStart="@drawable/clock_icon" />
+            <TextView
+                android:id="@+id/fee_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/time"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="Fee:"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/delivery_location_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fee_label"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="Delivery location"
+                android:textSize="18sp"
+                android:padding="2dp"/>
+            <TextView
+                android:id="@+id/additional_details_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/delivery_location_label"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="Additional Details"
+                android:textSize="18sp"
+                android:padding="2dp"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!--Progress Bar created
     <com.shuhart.stepview.StepView
         android:id="@+id/step_view"
         android:layout_width="match_parent"
@@ -28,6 +155,7 @@
         app:sv_doneStepMarkColor="@color/brown"
         app:sv_stepNumberTextSize="12sp"
         app:sv_animationType="Line" />
+        -->
 
     <!--Button to go on next step-->
     <Button
