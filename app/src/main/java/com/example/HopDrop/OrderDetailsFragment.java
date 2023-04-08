@@ -6,37 +6,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class OrderDetailsFragment extends Fragment {
-    private TextView mCustomerNameTextView;
-    private TextView mSrcTextView;
-    private TextView mDestTextView;
-    private TextView mFeeTextView;
+    private Order mOrder;
 
-    @Nullable
+    public OrderDetailsFragment(Order order) {
+        mOrder = order;
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.order_details_fragment, container, false);
-        mCustomerNameTextView = view.findViewById(R.id.customer_name);
-        mSrcTextView = view.findViewById(R.id.src);
-        mDestTextView = view.findViewById(R.id.dest);
-        mFeeTextView = view.findViewById(R.id.fee);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_order_details, container, false);
 
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            String customerName = arguments.getString("customer_name");
-            String src = arguments.getString("src");
-            String dest = arguments.getString("dest");
-            double fee = arguments.getDouble("fee");
-            mCustomerNameTextView.setText(customerName);
-            mSrcTextView.setText(src);
-            mDestTextView.setText(dest);
-            mFeeTextView.setText(String.valueOf(fee));
-        }
+        // Find any views in the layout and populate them with data
+        TextView customerNameTextView = view.findViewById(R.id.customer_name);
+        TextView srcTextView = view.findViewById(R.id.src);
+        TextView destTextView = view.findViewById(R.id.dest);
+        TextView feeTextView = view.findViewById(R.id.fee);
+
+        customerNameTextView.setText(mOrder.getCustomer_name());
+        srcTextView.setText(mOrder.getSrc());
+        destTextView.setText(mOrder.getDest());
+        feeTextView.setText(String.valueOf(mOrder.getFee()));
 
         return view;
     }
 }
-

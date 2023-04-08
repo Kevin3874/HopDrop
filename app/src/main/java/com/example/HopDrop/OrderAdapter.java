@@ -50,14 +50,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         public Button detailsButton;
 
-        public void displayOrderDetailsFragment(Fragment fragment) {
-            FragmentManager fragmentManager = ((AppCompatActivity) itemView.getContext()).getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.order_details_fragment, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
-
         public OrderViewHolder(View itemView) {
             super(itemView);
             customerNameTextView = itemView.findViewById(R.id.customer_name);
@@ -69,14 +61,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 @Override
                 public void onClick(View view) {
                     Order order = mOrders.get(getAdapterPosition());
-                    OrderDetailsFragment detailsFragment = new OrderDetailsFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("customer_name", order.getCustomer_name());
-                    bundle.putString("src", order.getSrc());
-                    bundle.putString("dest", order.getDest());
-                    bundle.putDouble("fee", order.getFee());
-                    detailsFragment.setArguments(bundle);
-                    displayOrderDetailsFragment(detailsFragment);
+                    FragmentManager fragmentManager = ((AppCompatActivity) view.getContext()).getSupportFragmentManager();
+                    Fragment fragment = new OrderDetailsFragment(order);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .addToBackStack(null)
+                            .commit();
                 }
             });
 
