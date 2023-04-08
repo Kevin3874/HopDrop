@@ -163,8 +163,7 @@
         app:sv_stepViewStyle="@style/StepView"
         app:sv_doneStepMarkColor="@color/white"
         app:sv_stepNumberTextSize="12sp"
-        app:sv_animationType="Line"
-        app:steps="@strings/progress_bar"/>
+        app:sv_animationType="Line" />
 
 
     <!--Button to go on next step-->
