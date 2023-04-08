@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="15dp"
+        android:layout_below="@id/step_view"
         android:elevation="8dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,11 +30,10 @@
             <TextView
                 android:id="@+id/courrier_info"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="@string/your_courier"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:padding="9dp"/>
             <ImageView
                 android:id="@+id/courier_image"
@@ -64,7 +65,8 @@
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="15dp"
         android:layout_gravity="center"
         android:elevation="8dp"
         app:cardCornerRadius="10dp"
@@ -78,7 +80,6 @@
             <TextView
                 android:id="@+id/detail_title"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="Details"
@@ -86,7 +87,6 @@
             <TextView
                 android:id="@+id/date"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/detail_title"
                 android:fontFamily="@font/roboto_condensed_regular"
@@ -111,7 +111,7 @@
                 android:layout_below="@id/time"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="Fee:"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
             <TextView
                 android:id="@+id/delivery_location_label"
                 android:layout_width="match_parent"
@@ -121,41 +121,51 @@
                 android:text="Delivery location"
                 android:textSize="18sp"
                 android:padding="2dp"/>
-            <TextView
-                android:id="@+id/additional_details_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/delivery_location_label"
-                android:fontFamily="@font/roboto_condensed_regular"
-                android:text="Additional Details"
-                android:textSize="18sp"
-                android:padding="2dp"/>
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
-    <!--Progress Bar created
+    <androidx.cardview.widget.CardView
+        android:id="@+id/additional_details_card"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/details"
+        android:layout_marginHorizontal="15dp">
+        <TextView
+            android:id="@+id/additional_details_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:text="Additional Details"
+            android:textSize="18sp"
+            android:padding="2dp"/>
+
+    </androidx.cardview.widget.CardView>
+    <!--Progress Bar created-->
     <com.shuhart.stepview.StepView
         android:id="@+id/step_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        app:sv_selectedCircleColor="@color/black"
-        app:sv_selectedTextColor="@color/white"
+        android:padding="26dp"
+        app:sv_selectedCircleColor="@color/dark_blue"
+        app:sv_selectedTextColor="@color/black"
         app:sv_stepLineWidth="1dp"
         app:sv_stepPadding="4dp"
-        app:sv_nextTextColor="@color/white"
+        app:sv_nextTextColor="@color/black"
         app:sv_nextStepLineColor="@color/black"
-        app:sv_doneCircleColor="@color/brown"
-        app:sv_doneStepLineColor="@color/black"
+        app:sv_doneCircleColor="@color/dark_blue"
+        app:sv_doneStepLineColor="@color/dark_blue"
         app:sv_doneCircleRadius="12dp"
         app:sv_selectedCircleRadius="12dp"
-        app:sv_selectedStepNumberColor="@color/brown"
+        app:sv_selectedStepNumberColor="@color/white"
         app:sv_stepViewStyle="@style/StepView"
-        app:sv_doneStepMarkColor="@color/brown"
+        app:sv_doneStepMarkColor="@color/white"
         app:sv_stepNumberTextSize="12sp"
-        app:sv_animationType="Line" />
-        -->
+        app:sv_animationType="Line"
+        app:steps="@strings/progress_bar"/>
+
 
     <!--Button to go on next step-->
     <Button

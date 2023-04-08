@@ -12,4 +12,6 @@
     <color name="lt_grass">#229954</color>
     <color name="dk_grass">#196F3D</color>
     <color name="pale_grass">#D4EFDF</color>
+    <color name="dark_blue">#043570</color>
+    <color name="light_blue">#5BA0F4</color>
 </resources>

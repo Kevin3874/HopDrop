@@ -37,4 +37,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="your_courier">Your Courier</string>
 
+    <string-array name="progress_bar">
+        <item>Order Accepted</item>
+        <item>Picked Up</item>
+        <item>Delivered</item>
+    </string-array>
+
 </resources>
