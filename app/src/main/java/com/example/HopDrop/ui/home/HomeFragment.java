@@ -69,13 +69,10 @@ public class HomeFragment extends Fragment {
 
 
 
-        FloatingActionButton fab = (FloatingActionButton) myview.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent launch = new Intent(myact, NewOrder.class);
-                startActivity(launch);
-            }
+        FloatingActionButton fab = myview.findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            Intent launch = new Intent(myact, NewOrder.class);
+            startActivity(launch);
         });
 
         return root;
