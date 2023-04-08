@@ -1,5 +1,6 @@
 package com.example.HopDrop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.srcTextView.setText(order.getSrc());
         holder.destTextView.setText(order.getDest());
         holder.feeTextView.setText(String.valueOf(order.getFee()));
+        holder.notesTextView.setText(String.valueOf(order.getNotes()));
     }
 
     @Override
@@ -48,6 +50,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         public TextView destTextView;
         public TextView feeTextView;
 
+        public TextView notesTextView;
+
         public Button detailsButton;
 
         public OrderViewHolder(View itemView) {
@@ -56,17 +60,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             srcTextView = itemView.findViewById(R.id.src);
             destTextView = itemView.findViewById(R.id.dest);
             feeTextView = itemView.findViewById(R.id.fee);
+            notesTextView = itemView.findViewById(R.id.notes);
             detailsButton = itemView.findViewById(R.id.details_button);
             detailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Order order = mOrders.get(getAdapterPosition());
-                    FragmentManager fragmentManager = ((AppCompatActivity) view.getContext()).getSupportFragmentManager();
-                    Fragment fragment = new OrderDetailsFragment(order);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, fragment)
-                            .addToBackStack(null)
-                            .commit();
+                    Intent intent = new Intent(view.getContext(), OrderDetailsActivity.class);
+                    intent.putExtra("order", order);
+                    view.getContext().startActivity(intent);
                 }
             });
 
