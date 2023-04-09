@@ -138,15 +138,15 @@
         android:paddingTop="130dp">
 
         <Button
-            android:id="@+id/pickup_button"
+            android:id="@+id/delivery_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Picked Up"
+            android:text="Delivered"
             android:gravity="center"/>
 
 
         <Button
-            android:id="@+id/cancel_btn"
+            android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel Delivery"

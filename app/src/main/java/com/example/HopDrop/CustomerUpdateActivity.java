@@ -47,7 +47,9 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         pickupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-
+                Intent intent = new Intent(CustomerUpdateActivity.this, CustomerUpdateDeliveredActivity.class);
+                intent.putExtra("order", mOrder);
+                startActivity(intent);
             }
         });
 

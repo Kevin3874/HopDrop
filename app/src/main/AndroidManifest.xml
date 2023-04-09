@@ -20,15 +20,20 @@
             android:label="Order Details"
             android:theme="@style/Theme.HopDrop" />
         <activity
+            android:name=".CustomerUpdateActivity"
+            android:exported="false"
+            android:label="Delivery Update"
+            android:theme="@style/Theme.HopDrop" />
+        <activity
+            android:name=".CustomerUpdateDeliveredActivity"
+            android:exported="false"
+            android:label="Delivery Update"
+            android:theme="@style/Theme.HopDrop" />
+        <activity
             android:name=".ConfirmOrderActivity"
             android:exported="false"
             android:label="Confirm Delivery"
             android:theme="@style/Theme.HopDrop" />
-        <activity
-            android:name=".CustomerUpdateActivity"
-            android:exported="false"
-            android:label="Delivery Update"
-            android:theme="@style/Theme.HopDrop"/>
         <activity
             android:name=".OrderProgress"
             android:exported="false"

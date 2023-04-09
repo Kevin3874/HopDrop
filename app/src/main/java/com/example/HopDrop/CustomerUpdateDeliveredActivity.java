@@ -9,15 +9,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ConfirmOrderActivity extends AppCompatActivity {
-
+public class CustomerUpdateDeliveredActivity extends AppCompatActivity {
     private Order mOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirm_order);
+        setContentView(R.layout.activity_order_delivered);
 
+        // Add the code for the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get the Order object passed from the previous activity
@@ -39,16 +39,26 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         TextView notesTextView = findViewById(R.id.notes);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
 
-        Button confirm_button = findViewById(R.id.confirm_btn);
-        confirm_button.setOnClickListener(new View.OnClickListener() {
+        Button deliveredButton = findViewById(R.id.delivery_button);
+        Button cancelButton = findViewById(R.id.cancel_button);
+        deliveredButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ConfirmOrderActivity.this, MainActivity.class);
+                // Define what should happen when the button is clicked
+                Intent intent = new Intent(CustomerUpdateDeliveredActivity.this, ConfirmOrderActivity.class);
+                intent.putExtra("order", mOrder);
+                startActivity(intent);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CustomerUpdateDeliveredActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-
     }
 
     @Override
@@ -62,4 +72,3 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         }
     }
 }
-
