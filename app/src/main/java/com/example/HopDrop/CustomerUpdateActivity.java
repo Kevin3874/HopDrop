@@ -1,20 +1,26 @@
 package com.example.HopDrop;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-public class ConfirmOrderActivity extends AppCompatActivity {
-
+public class CustomerUpdateActivity extends AppCompatActivity {
     private Order mOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirm_order);
+        setContentView(R.layout.activity_order_update);
 
+        // Add the code for the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get the Order object passed from the previous activity
@@ -35,6 +41,24 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         TextView notesTextView = findViewById(R.id.notes);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
+
+        Button pickupButton = findViewById(R.id.pickup_button);
+        Button cancelButton = findViewById(R.id.cancel_btn);
+        pickupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(CustomerUpdateActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
