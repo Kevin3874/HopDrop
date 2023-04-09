@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OrderProgress">
+    tools:context=".PastOrders">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
@@ -14,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="15dp"
-        android:layout_below="@id/step_view"
+        android:layout_marginTop="30dp"
         android:elevation="8dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -145,36 +144,5 @@
             android:padding="2dp"/>
 
     </androidx.cardview.widget.CardView>
-    <!--Progress Bar created-->
-    <com.shuhart.stepview.StepView
-        android:id="@+id/step_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="26dp"
-        app:sv_selectedCircleColor="@color/dark_blue"
-        app:sv_selectedTextColor="@color/black"
-        app:sv_stepLineWidth="1dp"
-        app:sv_stepPadding="4dp"
-        app:sv_nextTextColor="@color/black"
-        app:sv_nextStepLineColor="@color/black"
-        app:sv_doneCircleColor="@color/dark_blue"
-        app:sv_doneStepLineColor="@color/dark_blue"
-        app:sv_doneCircleRadius="12dp"
-        app:sv_selectedCircleRadius="12dp"
-        app:sv_selectedStepNumberColor="@color/white"
-        app:sv_stepViewStyle="@style/StepView"
-        app:sv_doneStepMarkColor="@color/white"
-        app:sv_stepNumberTextSize="12sp"
-        app:sv_animationType="Line" />
-
-
-    <!--Button to go on next step-->
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="NEXT" />
 
 </RelativeLayout>

@@ -35,6 +35,7 @@ public class ProfileFragment extends Fragment {
     private TextView number_deliveries;
     private SharedPreferences myPrefs;
 
+    public ProfileFragment() {}
     public View onCreateView (@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -99,7 +100,7 @@ public class ProfileFragment extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return new ViewPagerFragment("New Pager");
+            return new ViewPagerFragment("New Pager", "profile");
         }
 
         @Override

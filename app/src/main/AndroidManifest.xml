@@ -11,15 +11,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
+            android:name=".PastOrders"
+            android:exported="false"
+            android:theme="@style/Theme.HopDrop"/>
+        <activity
             android:name=".OrderDetailsActivity"
             android:exported="false"
             android:label="Order Details"
-            android:theme="@style/Theme.HopDrop"/>
+            android:theme="@style/Theme.HopDrop" />
         <activity
             android:name=".ConfirmOrderActivity"
             android:exported="false"
             android:label="Confirm Delivery"
-            android:theme="@style/Theme.HopDrop"/>
+            android:theme="@style/Theme.HopDrop" />
         <activity
             android:name=".CustomerUpdateActivity"
             android:exported="false"
@@ -27,7 +31,8 @@
             android:theme="@style/Theme.HopDrop"/>
         <activity
             android:name=".OrderProgress"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.HopDrop"/>
         <activity
             android:name=".NewOrder"
             android:exported="true"
