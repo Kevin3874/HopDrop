@@ -22,13 +22,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Locale;
 import java.util.Objects;
 
 
 public class LoginActivity extends AppCompatActivity {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
 
     @Override
@@ -46,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         SharedPreferences myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         //This would probably only be if we wanted to auto-populate the username box with previous login
-        String name = myPrefs.getString("loginName", "Owner");
+        //String name = myPrefs.getString("loginName", "Owner");
 
         //when user clicks to login
         login_button.setOnClickListener(new View.OnClickListener() {
@@ -54,44 +55,40 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 SharedPreferences.Editor editor = myPrefs.edit();
-                //Currently only autopopulates/saves the email that was entered as the username
-                //Need to figure out how to get the actual name of the person from the email (probably using the database)
-                if (!TextUtils.isEmpty(username.getEditText().getText().toString()) && !TextUtils.isEmpty(password.getEditText().getText().toString())) {
 
-                    String username_string = username.getEditText().getText().toString().toLowerCase(Locale.ROOT);
-                    String pass_string = password.getEditText().getText().toString();
+                String username_string = username.getEditText().getText().toString().toLowerCase();
+                String pass_string = password.getEditText().getText().toString();
 
-                    //Check if user exists!
-                    DocumentReference docIdRef = rootRef.collection("user_id").document(username_string);
-                    docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    if (Objects.equals(document.getString("pass"), pass_string)) {
-                                        editor.putString("loginName", username_string);
-                                        editor.apply();
-                                        startActivity(intent);
-                                        finish();
+                if (!TextUtils.isEmpty(username_string) && !TextUtils.isEmpty(pass_string)) {
+                    rootRef.collection("user_id").document(username_string)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            if (Objects.equals(document.getString("pass"), pass_string)) {
+                                                editor.putString("loginName", username_string);
+                                                editor.apply();
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "The Password is Incorrect", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Your Account Does Not Exist", Toast.LENGTH_SHORT).show();
+                                        }
                                     } else {
-                                        Toast.makeText(getApplicationContext(),"The Password is Incorrect",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
                                     }
-
-                                } else {
-                                    Toast.makeText(getApplicationContext(),"Your Account Does Not Exist",Toast.LENGTH_SHORT).show();
                                 }
-                            } else {
-                                Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                            });
                 } else {
-                    //Creates a toast if username isn't filled in
-                    //Still need to do this for the password
-                    Toast.makeText(getApplicationContext(),"Please fill in the required fields",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please fill in the required fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
     }
 }

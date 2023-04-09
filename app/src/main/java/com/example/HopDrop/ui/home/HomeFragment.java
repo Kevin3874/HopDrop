@@ -31,7 +31,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class HomeFragment extends Fragment {
     private ListView myList;
     private MainActivity myact;
-    private FragmentHomeBinding binding;
 
     private String [] tab_names = {"Your Deliveries", "Your orders"};
 
@@ -53,12 +52,12 @@ public class HomeFragment extends Fragment {
         cntx = getActivity().getApplicationContext();
         myact = (MainActivity) getActivity();
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        //binding = FragmentHomeBinding.inflate(inflater, container, false);
+        //View root = binding.getRoot();
 
-        ViewPager2 orderViewPager = root.findViewById(R.id.pager);
+        ViewPager2 orderViewPager = myview.findViewById(R.id.pager);
         orderViewPager.setAdapter(new ViewPagerAdapter(this));
-        TabLayout orderTabLayout  = root.findViewById(R.id.orderTabLayout);
+        TabLayout orderTabLayout  = myview.findViewById(R.id.orderTabLayout);
 
         new TabLayoutMediator(orderTabLayout, orderViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -67,15 +66,17 @@ public class HomeFragment extends Fragment {
             }
         }).attach();
 
-
-
-        FloatingActionButton fab = myview.findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            Intent launch = new Intent(myact, NewOrder.class);
-            startActivity(launch);
+        //Launch new order page
+        FloatingActionButton fab = (FloatingActionButton) myview.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent launch = new Intent(myact, NewOrder.class);
+                startActivity(launch);
+            }
         });
 
-        return root;
+        return myview;
     }
 
 class ViewPagerAdapter extends FragmentStateAdapter {
