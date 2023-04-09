@@ -25,11 +25,6 @@
             android:label="Confirm Delivery"
             android:theme="@style/Theme.HopDrop" />
         <activity
-            android:name=".CustomerUpdateActivity"
-            android:exported="false"
-            android:label="Delivery Update"
-            android:theme="@style/Theme.HopDrop"/>
-        <activity
             android:name=".OrderProgress"
             android:exported="false"
             android:theme="@style/Theme.HopDrop"/>

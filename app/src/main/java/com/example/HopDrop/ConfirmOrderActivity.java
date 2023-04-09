@@ -1,7 +1,6 @@
 package com.example.HopDrop;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +13,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_order);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get the Order object passed from the previous activity
         mOrder = (Order) getIntent().getSerializableExtra("order");
@@ -35,17 +32,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         TextView notesTextView = findViewById(R.id.notes);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }
 
