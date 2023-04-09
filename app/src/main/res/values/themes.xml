@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.HopDrop" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Theme.HopDrop" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#043570</item>
         <item name="colorPrimaryVariant">#0D55AB</item>

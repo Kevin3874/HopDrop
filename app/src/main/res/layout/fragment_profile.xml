@@ -21,12 +21,12 @@
 
     <TextView
         android:id="@+id/user_name"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/courier_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:layout_below="@+id/courier_image"
+        android:layout_centerHorizontal="true"
         android:fontFamily="@font/roboto_condensed_regular"
+        android:padding="15dp"
         android:text="User Name"
         android:textAlignment="center"
         android:textSize="20sp"
