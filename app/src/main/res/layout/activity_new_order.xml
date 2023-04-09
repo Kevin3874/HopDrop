@@ -61,7 +61,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/to"
         app:counterEnabled="true"
-        app:counterMaxLength="5"
+        app:counterMaxLength="4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +72,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/fee"
-            android:maxLength="5" />
+            android:inputType="numberDecimal"
+            android:digits="0123456789."
+            android:maxLength="4" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
