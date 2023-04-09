@@ -1,7 +1,10 @@
 package com.example.HopDrop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +38,18 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         TextView notesTextView = findViewById(R.id.notes);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
+
+        Button confirm_button = findViewById(R.id.confirm_btn);
+
+        confirm_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Define what should happen when the button is clicked
+                Intent intent = new Intent(ConfirmOrderActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override

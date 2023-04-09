@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 public class CustomerUpdateActivity extends AppCompatActivity {
     private Order mOrder;
