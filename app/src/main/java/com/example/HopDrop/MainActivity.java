@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         //empty orders list
         orders = new ArrayList<Order>();
-        oa = new OrderAdapter(orders);
+        oa = new OrderAdapter(orders, "main");
         current = null;
 
         //TO-DO: get db information for current/active orders

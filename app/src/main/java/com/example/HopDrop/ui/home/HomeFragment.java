@@ -95,7 +95,7 @@ class ViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return new ViewPagerFragment("New Pager");
+        return new ViewPagerFragment("New Pager", "home");
     }
 
     @Override

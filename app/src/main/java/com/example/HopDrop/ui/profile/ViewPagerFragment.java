@@ -23,10 +23,14 @@ public class ViewPagerFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private OrderAdapter mOrderAdapter;
     private String title;
-    public ViewPagerFragment(String title) {
+    private String tab;
+
+    public ViewPagerFragment(){}
+    public ViewPagerFragment(String title, String tab) {
         // Required empty public constructor
 
         this.title = title;
+        this.tab = tab;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class ViewPagerFragment extends Fragment {
         // Set up the RecyclerView and adapter
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mOrderAdapter = new OrderAdapter(orders);
+        mOrderAdapter = new OrderAdapter(orders, tab);
         mRecyclerView.setAdapter(mOrderAdapter);
 
         return view;

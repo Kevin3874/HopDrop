@@ -1,5 +1,6 @@
 package com.example.HopDrop;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,9 +18,11 @@ import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
     private List<Order> mOrders;
+    private String tab;
 
-    public OrderAdapter(List<Order> orders) {
+    public OrderAdapter(List<Order> orders, String tab) {
         mOrders = orders;
+        this.tab = tab;
     }
 
     @Override
@@ -66,7 +69,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 @Override
                 public void onClick(View view) {
                     Order order = mOrders.get(getAdapterPosition());
-                    Intent intent = new Intent(view.getContext(), OrderDetailsActivity.class);
+                    Intent intent = new Intent(view.getContext(), OrderProgress.class);;
+                    if (tab.compareTo("home") == 0) {
+                        intent = new Intent(view.getContext(), OrderProgress.class);
+                    } else if (tab.compareTo("orders") == 0) {
+                        intent = new Intent(view.getContext(), OrderDetailsActivity.class);
+                    } else if (tab.compareTo("profile") == 0) {
+                        intent = new Intent(view.getContext(), PastOrders.class);
+                    }
                     intent.putExtra("order", order);
                     view.getContext().startActivity(intent);
                 }

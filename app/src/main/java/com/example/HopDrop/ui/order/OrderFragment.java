@@ -31,7 +31,7 @@ public class OrderFragment extends Fragment {
         // Set up the RecyclerView and adapter
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mOrderAdapter = new OrderAdapter(orders);
+        mOrderAdapter = new OrderAdapter(orders, "orders");
         mRecyclerView.setAdapter(mOrderAdapter);
 
         return view;
