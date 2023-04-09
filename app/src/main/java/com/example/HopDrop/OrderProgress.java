@@ -21,6 +21,9 @@ public class OrderProgress extends AppCompatActivity {
         setContentView(R.layout.activity_order_progress);
         progress_bar = findViewById(R.id.step_view);
         progress_bar.setStepsNumber(3);
+        steps.add("Order Accepted");
+        steps.add("Picked Up");
+        steps.add("Delivered");
         progress_bar.setSteps(steps);
 
     }
