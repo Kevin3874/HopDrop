@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getActionBar().setTitle("Home");
+
         //empty orders list
         orders = new ArrayList<Order>();
         oa = new OrderAdapter(orders, "main");
