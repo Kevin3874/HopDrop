@@ -1,0 +1,91 @@
+Meeting Schedule: Wednesday after class, Saturday and Sunday 5PM (Communicate in groupchat)
+
+--------------------------------------------------
+
+Title: First Spring Meeting 
+Date: March 29th:
+  To Do:
+    Delegate tasks for Sprint 1:
+      1) Create base files and layouts, should be empty - Kevin
+      2) Create login page - Kevin
+      3) Figure out Firebase - Together
+      4) Begin working on Home Page - Ehong & Kevin
+      5) Begin working on Orders - Joey & Vivian
+      6) Begin working on Profile - Vivian
+   Agreed on Meeting schedule above
+   
+--------------------------------------------------
+
+Title: Working on base files and progress check, Firebase
+Date: April 1st:
+  Finished:
+    1) Added base files and updated colors/UI elements
+    2) Created basic login page
+    3) Created a shared email for everyone
+    
+  Meeting Progress:
+    1) Began working on firebase together
+    2) Connected firebase to Android Studio
+ 
+--------------------------------------------------
+  
+Title: Shared programming on Zoom
+Date: April 2nd:
+  Meeting Progress:
+    1) Began creating all the necessary java and XML layout files for the different pages
+    2) Added basic layout and buttons for the Home, Orders, and Profile fragments for Main Activity
+
+--------------------------------------------------
+
+Title: Wendesday In-class Meeting
+Date: April 5th
+  Working meeting:
+    1) Decided that for the home page and the profile page, it would be better to implement the orders and deliveries in tabs instead of table style
+      Reasons:
+        - Easier navigation
+        - Less crowded (Orders can go across the whole screen)
+    2) Asked Prof. Selinski about how to implement tabs
+    3) Tab Layout implemented using Viewpager2
+    
+  Current status:
+    - The orders are pre-populated from a list but tabs exist in each fragment
+  Need to do:
+    1) Current orders are pre-populated upon creation
+        - Sprint 2
+    2) FAB on home page no longer showing
+
+--------------------------------------------------
+
+Title: Remaining Tasks Review
+Date: April 8th
+  Tasks Remaining to Clean Up Sprint 1:
+    1) Deliverer picked up and delivered screen
+    2) Error on profile page (can’t go back to it again)
+    3) Fix FAB on home page - can’t see it at the moment
+    4) Password as dots default
+    5) Fix the missing design in the XML files
+    6) Figure out how to use Firestore to add usernames and passwords
+
+--------------------------------------------------
+
+Title: Finishing Sprint 1 and Recording
+Date: April 9th
+  Meeting in the afternoon to work on implementation
+  Things to address:
+    1) Missing FAB button on home page
+    2) Password as dots as default
+    3) Figuring out how to populate name using Firestore
+    4) Navigational element differentiation between tabs
+  Notes:
+    We should focus on finishing navigational elements as planned
+  Done:
+    1) Able to fix Firestore issue and get name and number of deliveries from database
+    2) Made password default to dots
+    3) Changed coding for details button to populate different screen based on what fragment the order is in
+        - Added parameter
+    4) Fixed FAB
+        - Shows on home screen
+        - Populates the New Order Sc
+    5) Recording Sprint 1 Demonstration
+    
+--------------------------------------------------
