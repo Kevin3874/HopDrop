@@ -38,7 +38,6 @@ public class HomeFragment extends Fragment {
     public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;
 
     Context cntx;
- //   Park current;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,7 +95,7 @@ class ViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return new ViewPagerFragment("New Pager", "home");
+        return new ViewPagerFragment("New Pager", "home" + Integer.toString(position));
     }
 
     @Override

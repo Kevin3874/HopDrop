@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
@@ -65,12 +67,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             feeTextView = itemView.findViewById(R.id.fee);
             notesTextView = itemView.findViewById(R.id.notes);
             detailsButton = itemView.findViewById(R.id.details_button);
+
+
             detailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Order order = mOrders.get(getAdapterPosition());
-                    Intent intent = new Intent(view.getContext(), OrderProgress.class);;
-                    if (tab.compareTo("home") == 0) {
+                    Intent intent = new Intent(view.getContext(), OrderProgress.class);
+                    if (tab.compareTo("home0") == 0) {
+                        //TODO Need to change the CustomerUpdateActivity
+                        intent = new Intent(view.getContext(), CustomerUpdateActivity.class);
+                    } else if (tab.compareTo("home1") == 0) {
                         intent = new Intent(view.getContext(), OrderProgress.class);
                     } else if (tab.compareTo("orders") == 0) {
                         intent = new Intent(view.getContext(), OrderDetailsActivity.class);

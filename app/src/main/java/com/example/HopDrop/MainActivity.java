@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<Order> orders;
     public static OrderAdapter oa;
-    public Park current;
+    public Order current;
     public Random randy = new Random();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
