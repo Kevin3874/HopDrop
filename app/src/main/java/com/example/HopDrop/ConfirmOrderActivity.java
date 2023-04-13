@@ -17,6 +17,8 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_order);
+        Button confirm_button = findViewById(R.id.confirm_btn);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -39,7 +41,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         TextView notesTextView = findViewById(R.id.notes);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
 
-        Button confirm_button = findViewById(R.id.confirm_btn);
+
 
         confirm_button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <com.shuhart.stepview.StepView
+        android:id="@+id/step_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="26dp"
+        app:sv_selectedCircleColor="@color/dark_blue"
+        app:sv_selectedTextColor="@color/black"
+        app:sv_stepLineWidth="1dp"
+        app:sv_stepPadding="4dp"
+        app:sv_nextTextColor="@color/black"
+        app:sv_nextStepLineColor="@color/black"
+        app:sv_doneCircleColor="@color/dark_blue"
+        app:sv_doneStepLineColor="@color/dark_blue"
+        app:sv_doneCircleRadius="12dp"
+        app:sv_selectedCircleRadius="12dp"
+        app:sv_selectedStepNumberColor="@color/white"
+        app:sv_stepViewStyle="@style/StepView"
+        app:sv_doneStepMarkColor="@color/white"
+        app:sv_stepNumberTextSize="12sp"
+        app:sv_animationType="Line" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

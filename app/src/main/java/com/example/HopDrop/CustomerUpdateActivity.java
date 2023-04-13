@@ -23,6 +23,12 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
         // Get the Order object passed from the previous activity
         mOrder = (Order) getIntent().getSerializableExtra("order");
+        Button action_button = findViewById(R.id.pickup_button);
+        if (mOrder.getState() == 0) {
+            action_button.setText("Picked Up");
+        } else if (mOrder.getState() == 1) {
+            action_button.setText("Delivered");
+        }
 
         // Update the UI with the Order details
         TextView customerNameTextView = findViewById(R.id.customer_name);
@@ -40,14 +46,21 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         TextView notesTextView = findViewById(R.id.notes);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
 
-        Button pickupButton = findViewById(R.id.pickup_button);
+
         Button cancelButton = findViewById(R.id.cancel_btn);
-        pickupButton.setOnClickListener(new View.OnClickListener() {
+        action_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(CustomerUpdateActivity.this, CustomerUpdateDeliveredActivity.class);
-                intent.putExtra("order", mOrder);
-                startActivity(intent);
+                if (mOrder.getState() == 0) {
+                    mOrder.setState(1);
+                    action_button.setText("Delivered");
+                } else if (mOrder.getState() == 1) {
+                    mOrder.setState(2);
+                    Intent intent = new Intent(CustomerUpdateActivity.this, ConfirmOrderActivity.class);
+                    intent.putExtra("order", mOrder);
+                    startActivity(intent);
+                }
+
             }
         });
 
