@@ -1,20 +1,13 @@
 package com.example.HopDrop;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
 
@@ -38,7 +31,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         Order order = mOrders.get(position);
         holder.customerNameTextView.setText(order.getCustomer_name());
-        holder.srcTextView.setText(order.getSrc());
+        holder.srcTextView.setText(order.getFromLocation());
         holder.destTextView.setText(order.getDest());
         holder.feeTextView.setText(String.valueOf(order.getFee()));
         holder.notesTextView.setText(String.valueOf(order.getNotes()));

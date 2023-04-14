@@ -1,5 +1,9 @@
 package com.example.HopDrop;
 
+import static com.example.HopDrop.LoginActivity.username_string;
+import static com.example.HopDrop.MainActivity.orders;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
@@ -10,12 +14,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class NewOrder extends AppCompatActivity {
-
+    FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +33,7 @@ public class NewOrder extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button sbtn = (Button) findViewById(R.id.save_btn);
+
         sbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +55,22 @@ public class NewOrder extends AppCompatActivity {
                     if (fee.toString().chars().filter(ch -> ch == '.').count() > 1) {
                         Toast.makeText(getApplicationContext(), "Please fix the fee input", Toast.LENGTH_SHORT).show();
                     } else {
-                        // add to firebase
+                        rootRef.collection("orders").document("orders").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    Map<String, Order> entry = new HashMap<>();
+                                    String id = document.getId();
+                                    Order order = new Order(username_string, from, to, Float.parseFloat(fee), details, id);
+                                    assert entry != null;
+                                    entry.put(id, order);
+                                    rootRef.collection("orders").add(entry);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                         finish();
                     }
 

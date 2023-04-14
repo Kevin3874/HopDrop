@@ -31,6 +31,7 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+    public static String username_string;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 SharedPreferences.Editor editor = myPrefs.edit();
 
-                String username_string = username.getEditText().getText().toString().toLowerCase();
+                username_string = username.getEditText().getText().toString().toLowerCase();
                 String pass_string = password.getEditText().getText().toString();
 
                 if (!TextUtils.isEmpty(username_string) && !TextUtils.isEmpty(pass_string)) {

@@ -1,6 +1,5 @@
 package com.example.HopDrop;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -44,11 +43,11 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         }
 
         // Update the UI with the Order details
-        TextView customerNameTextView = findViewById(R.id.customer_name);
-        customerNameTextView.setText(mOrder.getCustomer_name());
+        //TextView customerNameTextView = findViewById(R.id.customer_name);
+        //customerNameTextView.setText(mOrder.getCustomer_name());
 
         TextView srcTextView = findViewById(R.id.pickup_location_label);
-        srcTextView.setText(mOrder.getSrc());
+        srcTextView.setText(mOrder.getFromLocation());
 
         TextView destTextView = findViewById(R.id.delivery_location_label);
         destTextView.setText(mOrder.getDest());

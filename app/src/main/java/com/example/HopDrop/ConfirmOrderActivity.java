@@ -26,11 +26,11 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         mOrder = (Order) getIntent().getSerializableExtra("order");
 
         // Update the UI with the Order details
-        TextView customerNameTextView = findViewById(R.id.customer_name);
-        customerNameTextView.setText(mOrder.getCustomer_name());
+        //TextView customerNameTextView = findViewById(R.id.customer_name);
+        //customerNameTextView.setText(mOrder.getCustomer_name());
 
         TextView srcTextView = findViewById(R.id.src);
-        srcTextView.setText(mOrder.getSrc());
+        srcTextView.setText(mOrder.getFromLocation());
 
         TextView destTextView = findViewById(R.id.dest);
         destTextView.setText(mOrder.getDest());
