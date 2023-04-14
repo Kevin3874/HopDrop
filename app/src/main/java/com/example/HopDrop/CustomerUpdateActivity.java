@@ -10,8 +10,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.shuhart.stepview.StepView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class CustomerUpdateActivity extends AppCompatActivity {
     private Order mOrder;
+    List<String> steps = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +30,16 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         // Get the Order object passed from the previous activity
         mOrder = (Order) getIntent().getSerializableExtra("order");
         Button action_button = findViewById(R.id.pickup_button);
+        StepView progress_bar = findViewById(R.id.step_view);
+        progress_bar.setStepsNumber(3);
+        steps.add("Order Accepted");
+        steps.add("Picked Up");
+        steps.add("Delivered");
+        progress_bar.setSteps(steps);
         if (mOrder.getState() == 0) {
             action_button.setText("Picked Up");
         } else if (mOrder.getState() == 1) {
+            progress_bar.go(1, true);
             action_button.setText("Delivered");
         }
 
@@ -34,16 +47,16 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         TextView customerNameTextView = findViewById(R.id.customer_name);
         customerNameTextView.setText(mOrder.getCustomer_name());
 
-        TextView srcTextView = findViewById(R.id.src);
+        TextView srcTextView = findViewById(R.id.pickup_location_label);
         srcTextView.setText(mOrder.getSrc());
 
-        TextView destTextView = findViewById(R.id.dest);
+        TextView destTextView = findViewById(R.id.delivery_location_label);
         destTextView.setText(mOrder.getDest());
 
-        TextView feeTextView = findViewById(R.id.fee);
+        TextView feeTextView = findViewById(R.id.fee_label);
         feeTextView.setText(String.valueOf(mOrder.getFee()));
 
-        TextView notesTextView = findViewById(R.id.notes);
+        TextView notesTextView = findViewById(R.id.additional_details_label);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
 
 
@@ -53,9 +66,11 @@ public class CustomerUpdateActivity extends AppCompatActivity {
             public void onClick(View view){
                 if (mOrder.getState() == 0) {
                     mOrder.setState(1);
+                    progress_bar.go(1, true);
                     action_button.setText("Delivered");
                 } else if (mOrder.getState() == 1) {
                     mOrder.setState(2);
+                    progress_bar.go(1, true);
                     Intent intent = new Intent(CustomerUpdateActivity.this, ConfirmOrderActivity.class);
                     intent.putExtra("order", mOrder);
                     startActivity(intent);

@@ -1,177 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <com.shuhart.stepview.StepView
-        android:id="@+id/step_view"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="26dp"
-        app:sv_selectedCircleColor="@color/dark_blue"
-        app:sv_selectedTextColor="@color/black"
-        app:sv_stepLineWidth="1dp"
-        app:sv_stepPadding="4dp"
-        app:sv_nextTextColor="@color/black"
-        app:sv_nextStepLineColor="@color/black"
-        app:sv_doneCircleColor="@color/dark_blue"
-        app:sv_doneStepLineColor="@color/dark_blue"
-        app:sv_doneCircleRadius="12dp"
-        app:sv_selectedCircleRadius="12dp"
-        app:sv_selectedStepNumberColor="@color/white"
-        app:sv_stepViewStyle="@style/StepView"
-        app:sv_doneStepMarkColor="@color/white"
-        app:sv_stepNumberTextSize="12sp"
-        app:sv_animationType="Line" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
+        android:layout_height="match_parent"
+        tools:context=".OrderProgress">
 
-
-        <TextView
-            android:id="@+id/customer_name_label"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Customer Name: "
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="15dp"
+            android:layout_below="@id/step_view"
+            android:elevation="8dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:orientation="horizontal"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/customer_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Your Customer"
+                    android:textSize="20sp"
+                    android:padding="9dp"/>
+                <ImageView
+                    android:id="@+id/customer_image"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:paddingLeft="10dp"
+                    android:layout_below="@id/customer_info"
+                    android:src="@drawable/user_profile_avatar_svgrepo_com"
+                    android:layout_alignParentLeft="true"/>
+                <TextView
+                    android:id="@+id/customer_name"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/customer_image"
+                    android:layout_below="@id/customer_info"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="@string/name"
+                    android:textSize="18dp"
+                    android:padding="9dp"/>
 
-        <TextView
-            android:id="@+id/customer_name"
-            android:layout_width="0dp"
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/details"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textSize="16sp"
-            android:paddingRight="10dp" />
-    </LinearLayout>
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="15dp"
+            android:layout_gravity="center"
+            android:elevation="8dp"
+            app:cardCornerRadius="10dp"
+            android:layout_below="@id/card_view">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:orientation="horizontal"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/detail_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Details"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_title"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="date"
+                    android:drawableStart="@drawable/calendar_icon"
+                    android:textSize="18sp"
+                    android:padding="2dp"/>
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="time"
+                    android:textSize="18sp"
+                    android:padding="2dp"
+                    android:drawableStart="@drawable/clock_icon" />
+                <TextView
+                    android:id="@+id/fee_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/time"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Fee:"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/pickup_location_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fee_label"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Pickup location:"
+                    android:textSize="18sp"
+                    android:padding="2dp"/>
+                <TextView
+                    android:id="@+id/delivery_location_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pickup_location_label"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Delivery location:"
+                    android:textSize="18sp"
+                    android:padding="2dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="100dp">
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/fee_label"
-            android:layout_width="wrap_content"
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/additional_details_card"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fee:"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
+            android:layout_below="@id/details"
+            android:elevation="8dp"
+            app:cardCornerRadius="10dp"
+            android:layout_marginHorizontal="15dp">
+            <TextView
+                android:id="@+id/additional_details_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="Additional Details"
+                android:textSize="18sp"
+                android:padding="2dp"/>
 
-        <TextView
-            android:id="@+id/fee"
-            android:layout_width="0dp"
+        </androidx.cardview.widget.CardView>
+        <!--Progress Bar created-->
+        <com.shuhart.stepview.StepView
+            android:id="@+id/step_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textSize="16sp"
-            android:paddingRight="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="16dp">
-
-        <TextView
-            android:id="@+id/src_label"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From: "
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
-
-        <TextView
-            android:id="@+id/src"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textSize="16sp"
-            android:paddingRight="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="16dp">
-
-        <TextView
-            android:id="@+id/dest_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delivered To: "
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
-
-        <TextView
-            android:id="@+id/dest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textSize="16sp"
-            android:paddingRight="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="16dp">
-
-        <TextView
-            android:id="@+id/notes_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Task Notes:"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
-
-        <TextView
-            android:id="@+id/notes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingLeft="15dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:paddingTop="130dp">
+            android:padding="26dp"
+            app:sv_selectedCircleColor="@color/dark_blue"
+            app:sv_selectedTextColor="@color/black"
+            app:sv_stepLineWidth="1dp"
+            app:sv_stepPadding="4dp"
+            app:sv_nextTextColor="@color/black"
+            app:sv_nextStepLineColor="@color/black"
+            app:sv_doneCircleColor="@color/dark_blue"
+            app:sv_doneStepLineColor="@color/dark_blue"
+            app:sv_doneCircleRadius="12dp"
+            app:sv_selectedCircleRadius="12dp"
+            app:sv_selectedStepNumberColor="@color/white"
+            app:sv_stepViewStyle="@style/StepView"
+            app:sv_doneStepMarkColor="@color/white"
+            app:sv_stepNumberTextSize="12sp"
+            app:sv_animationType="Line" />
 
         <Button
             android:id="@+id/pickup_button"
+            android:layout_below="@id/additional_details_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="60dp"
             android:text="Picked Up"
             android:gravity="center"/>
 
 
         <Button
             android:id="@+id/cancel_btn"
+            android:layout_below="@id/pickup_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="Cancel Delivery"
             android:gravity="center"/>
 
-    </LinearLayout>
-
-</LinearLayout>
+    </RelativeLayout>
+</ScrollView>
