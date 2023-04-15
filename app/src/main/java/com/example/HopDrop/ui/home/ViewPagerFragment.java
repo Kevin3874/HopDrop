@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ViewPagerFragment extends Fragment {
 
@@ -77,27 +78,53 @@ public class ViewPagerFragment extends Fragment {
 
         // Get the list of orders
 
-        List<Order> test = new ArrayList<>();
-
-        //test.add(new Order("TestHome", "New York", "Los Angeles", 500.00f, "I am Brody cafe", "ai7s7dyg"));
+        List<Order> test = EventChangeListener();
+        test.add(new Order("TestHome", "New York", "Los Angeles", "500.00", "I am Brody cafe", "ai7s7dyg"));
         // Set up the RecyclerView and adapter
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mOrderAdapter = new OrderAdapter(test, tab);
         mRecyclerView.setAdapter(mOrderAdapter);
 
-        EventChangeListener(test);
+
 
         return view;
     }
 
-    private void EventChangeListener(List<Order> orders) {
-        System.out.println("test");
-        System.out.println("test");
-        System.out.println("test");
+    private List<Order> EventChangeListener() {
+        List<Order> orders = new ArrayList<>();
+        rootRef.collection("orders")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Order order = document.toObject(Order.class);
+                                orders.add(order);
+                            }
+                        }
+                    }
+                });
+        return orders;
 
         //retrieve data
+
+        /*
+        rootRef.collection("orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot dc : task.getResult()) {
+                    orders.add(new Order("Not determined yet", (String) dc.get("fromLocation"), (String) dc.get("dest"), (String) dc.get("fee"), (String) dc.get("notes"), (String) dc.get("orderID")));
+                }
+            }
+        });
+        */
+
+        /*
         rootRef.collection("orders").addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
@@ -105,29 +132,30 @@ public class ViewPagerFragment extends Fragment {
                     Log.e("Firestore error", error.getMessage());
                     return;
                 }
-                /*
-                for (DocumentSnapshot doc : value.getDocuments()) {
-                    orders.add(doc.toObject(Order.class));
-                }
-                */
 
                 for (DocumentChange dc : value.getDocumentChanges()) {
+                    //HashMap<String, Order> map = (HashMap<String, Order>) dc.getDocument().getData();
 
                     if (dc.getType() == DocumentChange.Type.ADDED)  {
                         //orders.add(dc.getDocument().toObject(Order.class));
-                        Double fee_value = (Double) dc.getDocument().get("fee");
-                        if (fee_value != null) {
-                            orders.add(new Order("Not determined yet", (String) dc.getDocument().get("fromLocation"), (String) dc.getDocument().get("dest"), (Double) dc.getDocument().getDouble("fee"), (String) dc.getDocument().get("notes"), (String) dc.getDocument().get("orderID")));
-                        } else {
-                            // TODO
-                            System.out.println("Doesn't work");
-                        }
-                        //orders.add(new Order("Not determined yet", (String) dc.getDocument().get("fromLocation"), (String) dc.getDocument().get("destination"), (Double) dc.getDocument().getDouble("fee"), (String) dc.getDocument().get("notes"), (String) dc.getDocument().get("orderID")));
+                        //orders.add((Order) dc.getDocument().get("orders"));
+                        //orders.add(new Order((String) dc.getDocument().get("customer_name"), (String) dc.getDocument().get("fromLocation"), (String) dc.getDocument().get("dest"), (String) dc.getDocument().get("fee"), (String) dc.getDocument().get("notes"), (String) dc.getDocument().get("orderID")));
+                        //String customerName = map.get("customer_name");
+                        //String destination = (String) map.get("dest");
+                        //String fee = (String) map.get("fee");
+                        //String fromLocation = (String) map.get("fromLocation");
+                        //String notes = (String) map.get("notes");
+                        //String orderID = (String) map.get("orderID");
+                        //orders.add(new Order(customerName, destination, fee, fromLocation, notes, orderID));
+                        //System.out.println(map.toString());
                     }
                     mOrderAdapter.notifyDataSetChanged();
                 }
 
             }
         });
+
+             */
+
     }
 }

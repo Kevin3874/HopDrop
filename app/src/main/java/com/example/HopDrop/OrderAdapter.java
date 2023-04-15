@@ -39,8 +39,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         Order order = mOrders.get(position);
-        holder.customerNameTextView.setText(order.getCustomer_name());
-        holder.srcTextView.setText(order.getFromLocation());
+        holder.customerNameTextView.setText(order.getCustomerName());
+        holder.srcTextView.setText(order.getFrom());
         holder.destTextView.setText(order.getDest());
         holder.feeTextView.setText(String.valueOf(order.getFee()));
         holder.notesTextView.setText(String.valueOf(order.getNotes()));

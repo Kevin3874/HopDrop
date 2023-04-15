@@ -30,7 +30,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         //customerNameTextView.setText(mOrder.getCustomer_name());
 
         TextView srcTextView = findViewById(R.id.src);
-        srcTextView.setText(mOrder.getFromLocation());
+        srcTextView.setText(mOrder.getFrom());
 
         TextView destTextView = findViewById(R.id.dest);
         destTextView.setText(mOrder.getDest());

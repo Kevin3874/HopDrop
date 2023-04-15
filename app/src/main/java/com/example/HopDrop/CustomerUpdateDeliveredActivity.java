@@ -25,10 +25,10 @@ public class CustomerUpdateDeliveredActivity extends AppCompatActivity {
 
         // Update the UI with the Order details
         TextView customerNameTextView = findViewById(R.id.customer_name);
-        customerNameTextView.setText(mOrder.getCustomer_name());
+        customerNameTextView.setText(mOrder.getCustomerName());
 
         TextView srcTextView = findViewById(R.id.src);
-        srcTextView.setText(mOrder.getFromLocation());
+        srcTextView.setText(mOrder.getFrom());
 
         TextView destTextView = findViewById(R.id.dest);
         destTextView.setText(mOrder.getDest());

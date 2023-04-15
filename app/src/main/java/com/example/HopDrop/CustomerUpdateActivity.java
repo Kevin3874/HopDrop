@@ -47,7 +47,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         //customerNameTextView.setText(mOrder.getCustomer_name());
 
         TextView srcTextView = findViewById(R.id.pickup_location_label);
-        srcTextView.setText(mOrder.getFromLocation());
+        srcTextView.setText(mOrder.getFrom());
 
         TextView destTextView = findViewById(R.id.delivery_location_label);
         destTextView.setText(mOrder.getDest());
