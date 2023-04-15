@@ -13,6 +13,15 @@ public class Order implements Serializable {
 
     private int state;
 
+    public Order() {
+        this.orderID = "jal";
+        this.customer_name = "default";
+        this.fromLocation = "default";
+        this.dest = "default";
+        this.fee = 3;
+        this.notes = "default";
+        this.state = 0;
+    }
 
     public Order(String customer_name, String fromLocation, String dest, double fee, String notes, String orderID) {
         this.customer_name = customer_name;

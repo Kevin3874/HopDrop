@@ -45,7 +45,7 @@ public class ViewPagerFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private OrderAdapter mOrderAdapter;
-    private FirebaseFirestore rootRef;
+    FirebaseFirestore rootRef = FirebaseFirestore.getInstance();;
     //private List<Order> orders;
     private String title;
     private String tab;
@@ -64,7 +64,6 @@ public class ViewPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //rootRef = FirebaseFirestore.getInstance();
         //context = context.getApplicationContext();
         //SharedPreferences myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -97,13 +96,11 @@ public class ViewPagerFragment extends Fragment {
         System.out.println("test");
         System.out.println("test");
 
-        SharedPreferences myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-
         //retrieve data
-        String username_text = myPrefs.getString("loginName", "");
         rootRef.collection("orders").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
                 if (error != null) {
                     Log.e("Firestore error", error.getMessage());
                     return;
@@ -112,14 +109,20 @@ public class ViewPagerFragment extends Fragment {
                 for (DocumentSnapshot doc : value.getDocuments()) {
                     orders.add(doc.toObject(Order.class));
                 }
-
-                 */
+                */
 
                 for (DocumentChange dc : value.getDocumentChanges()) {
 
                     if (dc.getType() == DocumentChange.Type.ADDED)  {
-                        orders.add(dc.getDocument().toObject(Order.class));
-                        //orders.add(new Order("Not determined yet", (String) dc.getDocument().get("fromLocation"), (String) dc.getDocument().get("destination"), (float) dc.getDocument().get("fee"), (String) dc.getDocument().get("notes"), (String) dc.getDocument().get("orderID")));
+                        //orders.add(dc.getDocument().toObject(Order.class));
+                        Double fee_value = (Double) dc.getDocument().get("fee");
+                        if (fee_value != null) {
+                            orders.add(new Order("Not determined yet", (String) dc.getDocument().get("fromLocation"), (String) dc.getDocument().get("dest"), (Double) dc.getDocument().getDouble("fee"), (String) dc.getDocument().get("notes"), (String) dc.getDocument().get("orderID")));
+                        } else {
+                            // TODO
+                            System.out.println("Doesn't work");
+                        }
+                        //orders.add(new Order("Not determined yet", (String) dc.getDocument().get("fromLocation"), (String) dc.getDocument().get("destination"), (Double) dc.getDocument().getDouble("fee"), (String) dc.getDocument().get("notes"), (String) dc.getDocument().get("orderID")));
                     }
                     mOrderAdapter.notifyDataSetChanged();
                 }
