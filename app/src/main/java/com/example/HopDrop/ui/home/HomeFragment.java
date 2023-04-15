@@ -23,7 +23,7 @@ import com.example.HopDrop.NewOrder;
 import com.example.HopDrop.R;
 import com.example.HopDrop.databinding.FragmentHomeBinding;
 import com.example.HopDrop.databinding.FragmentProfileBinding;
-import com.example.HopDrop.ui.profile.ViewPagerFragment;
+import com.example.HopDrop.ui.home.ViewPagerFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -54,9 +54,9 @@ public class HomeFragment extends Fragment {
         //binding = FragmentHomeBinding.inflate(inflater, container, false);
         //View root = binding.getRoot();
 
-        ViewPager2 orderViewPager = myview.findViewById(R.id.pager);
+        ViewPager2 orderViewPager = myview.findViewById(R.id.pagerHome);
         orderViewPager.setAdapter(new ViewPagerAdapter(this));
-        TabLayout orderTabLayout  = myview.findViewById(R.id.orderTabLayout);
+        TabLayout orderTabLayout  = myview.findViewById(R.id.orderTabLayoutHome);
 
         new TabLayoutMediator(orderTabLayout, orderViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

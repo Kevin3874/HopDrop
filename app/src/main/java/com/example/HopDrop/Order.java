@@ -7,14 +7,14 @@ public class Order implements Serializable {
     private final String customer_name;
     private final String fromLocation;
     private final String dest;
-    private final float fee;
+    private final double fee;
 
     private final String notes;
 
     private int state;
 
 
-    public Order(String customer_name, String fromLocation, String dest, float fee, String notes, String orderID) {
+    public Order(String customer_name, String fromLocation, String dest, double fee, String notes, String orderID) {
         this.customer_name = customer_name;
         this.fromLocation = fromLocation;
         this.dest = dest;
@@ -28,7 +28,7 @@ public class Order implements Serializable {
     public String getCustomer_name() { return customer_name; }
     public String getFromLocation() { return fromLocation; }
     public String getDest() { return dest; }
-    public Float getFee() { return fee; }
+    public Double getFee() { return fee; }
     public String getNotes() { return notes; }
     public int getState() {return state;}
 

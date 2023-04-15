@@ -10,18 +10,18 @@
     tools:context=".ui.home.HomeFragment">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/orderTabLayout"
+        android:id="@+id/orderTabLayoutHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"/>
 
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
+        android:id="@+id/pagerHome"
         android:layout_width="match_parent"
         android:layout_height="777dp"
-        app:layout_constraintTop_toBottomOf="@id/orderTabLayout"
-        android:layout_below="@id/orderTabLayout">
+        app:layout_constraintTop_toBottomOf="@id/orderTabLayoutHome"
+        android:layout_below="@id/orderTabLayoutHome">
 
 
     </androidx.viewpager2.widget.ViewPager2>

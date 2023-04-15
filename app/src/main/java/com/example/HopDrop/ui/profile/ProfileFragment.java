@@ -55,9 +55,9 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ViewPager2 orderViewPager = root.findViewById(R.id.pager);
+        ViewPager2 orderViewPager = root.findViewById(R.id.pagerProfile);
         orderViewPager.setAdapter(new ViewPagerAdapter(this));
-        TabLayout orderTabLayout  = root.findViewById(R.id.orderTabLayout);
+        TabLayout orderTabLayout  = root.findViewById(R.id.orderTabLayoutProfile);
 
         new TabLayoutMediator(orderTabLayout, orderViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

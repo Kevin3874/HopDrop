@@ -137,15 +137,15 @@
     </LinearLayout>
     -->
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
+        android:id="@+id/pagerProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/orderTabLayout"
+        android:layout_below="@id/orderTabLayoutProfile"
         android:layout_alignParentBottom="true" >
     </androidx.viewpager2.widget.ViewPager2>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/orderTabLayout"
+        android:id="@+id/orderTabLayoutProfile"
         android:layout_below="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

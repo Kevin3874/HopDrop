@@ -42,7 +42,7 @@ public class OrderFragment extends Fragment {
         List<Order> orders = new ArrayList<>();
         //orders.add(new Order("John Smith", "New York", "Los Angeles", 500.00f, "please give me a call when arrived"));
         //orders.add(new Order("Jane Doe", "San Francisco", "Seattle", 300.00f, "I am at Brody cafe"));
-        //orders.add(new Order("Bob Johnson", "Boston", "Chicago", 250.00f, "ketchup and fork please"));
+        orders.add(new Order("Bob Johnson", "Boston", "Chicago", 250.00f, "ketchup and fork please", "asd"));
         return orders;
     }
 }
