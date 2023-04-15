@@ -63,7 +63,6 @@ public class NewOrder extends AppCompatActivity {
                                     Map<String, Order> entry = new HashMap<>();
                                     String id = document.getId();
                                     Order order = new Order(username_string, from, to, Float.parseFloat(fee), details, id);
-                                    assert entry != null;
                                     entry.put(id, order);
                                     rootRef.collection("orders").add(entry);
                                 } else {

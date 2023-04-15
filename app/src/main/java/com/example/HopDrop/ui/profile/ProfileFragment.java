@@ -73,7 +73,6 @@ public class ProfileFragment extends Fragment {
         Context context = requireActivity().getApplicationContext();
         myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        // TODO: add code to retrieve any previously saved data and display in fields
         //retrieve data
         String username_text = myPrefs.getString("loginName", "");
 

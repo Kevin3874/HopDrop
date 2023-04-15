@@ -1,5 +1,6 @@
 package com.example.HopDrop;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,19 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
     private List<Order> mOrders;
     private String tab;
+    Context context;
+
+    public OrderAdapter(List<Order> mOrders, String tab, Context context) {
+        this.mOrders = mOrders;
+        this.tab = tab;
+        this.context = context;
+    }
 
     public OrderAdapter(List<Order> orders, String tab) {
         mOrders = orders;
