@@ -99,9 +99,11 @@ public class ViewPagerFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            Log.d("Test", "test");
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Order order = document.toObject(Order.class);
                                 orders.add(order);
+                                Log.d("Order array", String.valueOf(orders));
                             }
                         }
                     }
