@@ -61,7 +61,7 @@ public class NewOrder extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
                                     String id = document.getId();
-                                    Order order = new Order(username_string, from, to, fee, details, id);
+                                    Order order = new Order(username_string, from, to, fee, details, id, "");
                                     rootRef.collection("orders").add(order);
                                 } else {
                                     Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();

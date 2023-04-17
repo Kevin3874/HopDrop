@@ -56,7 +56,7 @@ public class OrderFragment extends Fragment {
 
     private void EventChangeListener(final ViewPagerFragment.OnOrdersFetchedListener listener) {
         List<Order> orders = new ArrayList<>();
-        rootRef.collection("orders")
+        rootRef.collection("orders").whereNotEqualTo("state", 2)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

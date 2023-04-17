@@ -7,6 +7,8 @@ import java.io.Serializable;
 public class Order implements Serializable {
     private final String orderID;
     private final String customer_name;
+
+    private final String deliverer_name;
     private final String fromLocation;
     private final String dest;
     private final String fee;
@@ -23,9 +25,10 @@ public class Order implements Serializable {
         this.fee = "3";
         this.notes = "default";
         this.state = 0;
+        this.deliverer_name = "";
     }
 
-    public Order(String customer_name, String fromLocation, String dest, String fee, String notes, String orderID) {
+    public Order(String customer_name, String fromLocation, String dest, String fee, String notes, String orderID, String deliverer_name) {
         this.customer_name = customer_name;
         this.fromLocation = fromLocation;
         this.dest = dest;
@@ -33,6 +36,7 @@ public class Order implements Serializable {
         this.notes = notes;
         state = 0;
         this.orderID = orderID;
+        this.deliverer_name = deliverer_name;
 
     }
     @PropertyName("customer_name")
