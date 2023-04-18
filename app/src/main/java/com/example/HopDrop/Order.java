@@ -5,7 +5,6 @@ import com.google.firebase.firestore.PropertyName;
 import java.io.Serializable;
 
 public class Order implements Serializable {
-    private final String orderID;
     private final String customer_name;
 
     private final String deliverer_name;
@@ -18,7 +17,6 @@ public class Order implements Serializable {
     private int state;
 
     public Order() {
-        this.orderID = "jal";
         this.customer_name = "default";
         this.fromLocation = "default";
         this.dest = "default";
@@ -28,15 +26,14 @@ public class Order implements Serializable {
         this.deliverer_name = "";
     }
 
-    public Order(String customer_name, String fromLocation, String dest, String fee, String notes, String orderID, String deliverer_name) {
+    public Order(String customer_name, String fromLocation, String dest, String fee, String notes) {
         this.customer_name = customer_name;
         this.fromLocation = fromLocation;
         this.dest = dest;
         this.fee = fee;
         this.notes = notes;
         state = 0;
-        this.orderID = orderID;
-        this.deliverer_name = deliverer_name;
+        this.deliverer_name = "";
 
     }
     @PropertyName("customer_name")
@@ -64,10 +61,8 @@ public class Order implements Serializable {
         return notes;
     }
 
-    @PropertyName("orderID")
-    public String getId() {
-        return orderID;
-    }
+    @PropertyName("deliverer_name")
+    public String getDeliverer() { return deliverer_name; }
 
     public int getState() {return state;}
 

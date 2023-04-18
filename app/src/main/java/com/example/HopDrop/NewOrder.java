@@ -60,8 +60,7 @@ public class NewOrder extends AppCompatActivity {
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
-                                    String id = document.getId();
-                                    Order order = new Order(username_string, from, to, fee, details, id, "");
+                                    Order order = new Order(username_string, from, to, fee, details);
                                     rootRef.collection("orders").add(order);
                                 } else {
                                     Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
