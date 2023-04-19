@@ -59,7 +59,7 @@ public class NewOrder extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
+                                    //add to firebase
                                     Order order = new Order(username_string, from, to, fee, details);
                                     rootRef.collection("orders").add(order);
                                 } else {

@@ -11,10 +11,9 @@ public class Order implements Serializable {
     private final String fromLocation;
     private final String dest;
     private final String fee;
-
     private final String notes;
-
     private int state;
+    private String orderID;
 
     public Order() {
         this.customer_name = "default";
@@ -34,6 +33,7 @@ public class Order implements Serializable {
         this.notes = notes;
         state = 0;
         this.deliverer_name = "";
+        orderID = "";
 
     }
     @PropertyName("customer_name")
@@ -63,6 +63,11 @@ public class Order implements Serializable {
 
     @PropertyName("deliverer_name")
     public String getDeliverer() { return deliverer_name; }
+    @PropertyName("orderID")
+    public String getOrderID() { return orderID; }
+    public void setOrderID(String id) {
+        this.orderID = id;
+    }
 
     public int getState() {return state;}
 

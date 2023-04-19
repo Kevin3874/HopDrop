@@ -1,16 +1,29 @@
 package com.example.HopDrop;
 
+import static com.example.HopDrop.LoginActivity.username_string;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class OrderDetailsActivity extends AppCompatActivity {
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+public class OrderDetailsActivity extends AppCompatActivity {
+    FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     private Order mOrder;
 
     @Override
@@ -43,9 +56,32 @@ public class OrderDetailsActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Define what should happen when the button is clicked
+                DocumentReference orderRef = rootRef.collection("orders").document(mOrder.getOrderID());
+                // What happens when the user clicks accept
                 Intent intent = new Intent(OrderDetailsActivity.this, CustomerUpdateActivity.class);
                 intent.putExtra("order", mOrder);
+                //delete from active orders collections
+                orderRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Remove the order from the Firestore collection
+                                orderRef.delete();
+                                // Add it to the user's collection
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Order not found", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error getting order", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                //add to user
+                DocumentReference userRef = rootRef.collection("user_id").document(username_string);
+                userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
+
                 startActivity(intent);
             }
         });
