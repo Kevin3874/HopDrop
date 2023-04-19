@@ -124,7 +124,7 @@ public class ProfileFragment extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return new ViewPagerFragment("New Pager", "profile");
+            return new ViewPagerFragment("New Pager", "profile" + Integer.toString(position));
         }
 
         @Override
