@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Order implements Serializable {
     private final String customer_name;
 
-    private final String deliverer_name;
+    private String deliverer_name;
     private final String fromLocation;
     private final String dest;
     private final String fee;
@@ -69,6 +69,9 @@ public class Order implements Serializable {
         this.orderID = id;
     }
 
+    public void setDeliverer(String name) {
+        this.deliverer_name = name;
+    }
     public int getState() {return state;}
 
     public void setState(int new_state) {

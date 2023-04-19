@@ -125,27 +125,6 @@ public class ViewPagerFragment extends Fragment {
                     }
                 }
             });
-
-            /*
-            rootRef.collection("user_id").whereEqualTo("deliverer_name", username_string)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("Test", "test");
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    Order order = document.toObject(Order.class);
-                                    orders.add(order);
-                                    Log.d("Order array", String.valueOf(orders));
-                                }
-                                listener.onOrdersFetched(orders);
-                                mOrderAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    });
-
-             */
         } else if (tab.compareTo("home1") == 0) {
             userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -168,31 +147,10 @@ public class ViewPagerFragment extends Fragment {
                         }
                         listener.onEventChanged(orders);
                     } else {
-                        Toast.makeText(context, "Error getting user's current deliveries", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Error getting user's current orders", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-
-            /*
-            rootRef.collection("orders").whereEqualTo("customer_name",  username_string)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("Test", "test");
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    Order order = document.toObject(Order.class);
-                                    orders.add(order);
-                                    Log.d("Order array", String.valueOf(orders));
-                                }
-                                listener.onOrdersFetched(orders);
-                                mOrderAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    });
-
-             */
         }
     }
 }

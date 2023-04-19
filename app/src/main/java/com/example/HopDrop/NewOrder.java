@@ -17,10 +17,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -55,13 +58,16 @@ public class NewOrder extends AppCompatActivity {
                     if (fee.toString().chars().filter(ch -> ch == '.').count() > 1) {
                         Toast.makeText(getApplicationContext(), "Please fix the fee input", Toast.LENGTH_SHORT).show();
                     } else {
+                        DocumentReference userRef = rootRef.collection("user_id").document(username_string);
                         rootRef.collection("orders").document("orders").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    //add to firebase
+                                    //add to firebase for all orders
                                     Order order = new Order(username_string, from, to, fee, details);
                                     rootRef.collection("orders").add(order);
+                                    //add to user's collection
+                                    userRef.update("currentOrders", FieldValue.arrayUnion(order));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
                                 }

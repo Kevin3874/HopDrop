@@ -80,6 +80,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 });
                 //add to user
                 DocumentReference userRef = rootRef.collection("user_id").document(username_string);
+                mOrder.setDeliverer(username_string);
                 userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
 
                 startActivity(intent);
