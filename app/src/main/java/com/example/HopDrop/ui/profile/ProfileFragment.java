@@ -30,6 +30,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 // import com.example.a5_sample.ui.profile.ProfileViewModel;
@@ -90,7 +91,7 @@ public class ProfileFragment extends Fragment {
                     // TODO: update with past deliveries
 
                     //get number of deliveries
-                    Map<String, Order> numDeliveries = (Map<String, Order>) document.get("pastDeliveries");
+                    ArrayList<Order> numDeliveries = (ArrayList<Order>) document.get("pastDeliveries");
                     number_deliveries.setText(String.format("%d", numDeliveries.size()));
                 } else {
                     Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
