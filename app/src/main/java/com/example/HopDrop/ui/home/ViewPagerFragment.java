@@ -98,6 +98,7 @@ public class ViewPagerFragment extends Fragment {
     }
 
     private void getCurrentOrders(String tab, final EventChangeListener listener) {
+        orders = new ArrayList<>();
         DocumentReference userRef = rootRef.collection("user_id").document(username_string);
         if (tab.compareTo("home0") == 0) {
             userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
