@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.shuhart.stepview.StepView;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.List;
 public class CustomerUpdateActivity extends AppCompatActivity {
     private Order mOrder;
     List<String> steps = new ArrayList<String>();
+
+    FirebaseFirestore fb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
