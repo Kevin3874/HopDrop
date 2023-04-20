@@ -22,6 +22,7 @@
     <string name="fee">Fee</string>
     <string name="additional_detail">Additional Details</string>
     <string name="make_order">Make Order</string>
+    <string name="upload_qr">Please upload you Mobile Order QR code</string>
     <string name="save">SAVE</string>
     <string name="quit">QUIT</string>
     <string name="name">Name</string>
