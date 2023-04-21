@@ -34,6 +34,7 @@ import java.util.Objects;
 
 public class NewOrder extends AppCompatActivity {
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+    private boolean mediaUploaded = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,8 @@ public class NewOrder extends AppCompatActivity {
 
             if (TextUtils.isEmpty(from) || TextUtils.isEmpty(to) || TextUtils.isEmpty(fee)) {
                 Toast.makeText(getApplicationContext(), "Please fill out the required fields", Toast.LENGTH_SHORT).show();
+            } else if (!mediaUploaded) {
+                Toast.makeText(getApplicationContext(), "Please upload your QR code", Toast.LENGTH_SHORT).show();
             } else {
                 if (fee.toString().chars().filter(ch -> ch == '.').count() > 1) {
                     Toast.makeText(getApplicationContext(), "Please fix the fee input", Toast.LENGTH_SHORT).show();
@@ -77,9 +80,9 @@ public class NewOrder extends AppCompatActivity {
                     });
                     finish();
                 }
-
             }
         });
+
 
         Button qbtn = (Button) findViewById(R.id.quit_btn);
         qbtn.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +113,7 @@ public class NewOrder extends AppCompatActivity {
             Bitmap bitmap;
             try {
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                mediaUploaded = true;
                 //targetImage.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
