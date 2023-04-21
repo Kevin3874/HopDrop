@@ -1,5 +1,7 @@
 package com.example.HopDrop;
 
+import static com.example.HopDrop.LoginActivity.username_string;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,18 +11,22 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.shuhart.stepview.StepView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CustomerUpdateActivity extends AppCompatActivity {
     private Order mOrder;
     List<String> steps = new ArrayList<String>();
 
-    FirebaseFirestore fb;
+    FirebaseFirestore fb = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,19 @@ public class CustomerUpdateActivity extends AppCompatActivity {
             public void onClick(View view){
                 if (mOrder.getState() == 0) {
                     mOrder.setState(1);
+                    //DocumentSnapshot doc = null;
+                    Task<DocumentSnapshot> tsk = fb.collection("user_id").document(username_string).get();
+                      tsk.addOnSuccessListener(result -> {
+                    }).addOnFailureListener(e -> {
+                          // now do something with the exception
+                      });
+                    DocumentSnapshot doc = tsk.getResult();
+                    for (Map<String, Object> order : (List<Map<String, Object>>) Objects.requireNonNull(doc.get("currentOrders"))) {
+                        if (String.valueOf(order.get("orderID")).compareTo(mOrder.getOrderID()) == 0) {
+                            order.put("orderID", 1);
+                            break;
+                        }
+                    }
                     progress_bar.go(1, true);
                     action_button.setText("Delivered");
                 } else if (mOrder.getState() == 1) {
