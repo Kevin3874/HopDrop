@@ -12,7 +12,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.shuhart.stepview.StepView;
 
@@ -38,6 +40,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
         // Get the Order object passed from the previous activity
         mOrder = (Order) getIntent().getSerializableExtra("order");
+        //pull from firebase to get the order
         Button action_button = findViewById(R.id.pickup_button);
         StepView progress_bar = findViewById(R.id.step_view);
         progress_bar.setStepsNumber(3);
@@ -75,7 +78,9 @@ public class CustomerUpdateActivity extends AppCompatActivity {
             public void onClick(View view){
                 if (mOrder.getState() == 0) {
                     mOrder.setState(1);
-                    //DocumentSnapshot doc = null;
+
+                    // update the order state in firebase
+                    /*
                     Task<DocumentSnapshot> tsk = fb.collection("user_id").document(username_string).get();
                       tsk.addOnSuccessListener(result -> {
                     }).addOnFailureListener(e -> {
@@ -88,6 +93,29 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                             break;
                         }
                     }
+
+                     */
+                    DocumentReference userRef = fb.collection("user_id").document(username_string);
+                    userRef.get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentDeliveries");
+
+                            if (currentDeliveriesData != null) {
+                                for (Map<String, Object> orderData : currentDeliveriesData) {
+                                    String id = (String) orderData.get("orderID");
+                                    if (!Objects.equals(id, mOrder.getOrderID())) {
+                                        continue;
+                                    }
+                                    // move to past orders
+                                    userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
+                                    userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
+                                    break;
+                                }
+                            }
+                        }
+                    });
+
                     progress_bar.go(1, true);
                     action_button.setText("Delivered");
                 } else if (mOrder.getState() == 1) {
