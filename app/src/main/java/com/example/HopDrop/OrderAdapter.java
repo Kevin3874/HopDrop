@@ -79,9 +79,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                     Intent intent = new Intent(view.getContext(), OrderProgress.class);
                     if (tab.compareTo("home0") == 0) {
                         //TODO Need to change the CustomerUpdateActivity
-                        intent = new Intent(view.getContext(), CustomerUpdateActivity.class);
-                    } else if (tab.compareTo("home1") == 0) {
                         intent = new Intent(view.getContext(), OrderProgress.class);
+                    } else if (tab.compareTo("home1") == 0) {
+                        intent = new Intent(view.getContext(), CustomerUpdateActivity.class);
                     } else if (tab.compareTo("orders") == 0) {
                         intent = new Intent(view.getContext(), OrderDetailsActivity.class);
                     } else if (tab.compareTo("profile") == 0) {

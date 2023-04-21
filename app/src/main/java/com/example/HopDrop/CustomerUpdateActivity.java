@@ -96,6 +96,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
                      */
                     DocumentReference userRef = fb.collection("user_id").document(username_string);
+                    DocumentReference ordererRef = fb.collection("user_id").document(mOrder.getCustomerName());
                     userRef.get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
@@ -110,6 +111,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                                     // move to past orders
                                     userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
                                     userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
+                                    //TODO: Add the new order with new state to the orderer currentOrders
                                     break;
                                 }
                             }
