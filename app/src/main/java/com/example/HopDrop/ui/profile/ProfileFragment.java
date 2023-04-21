@@ -45,7 +45,6 @@ public class ProfileFragment extends Fragment {
     private TextView number_deliveries;
     private SharedPreferences myPrefs;
 
-    public ProfileFragment() {}
     public View onCreateView (@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -78,6 +77,7 @@ public class ProfileFragment extends Fragment {
         String username_text = myPrefs.getString("loginName", "");
 
         //set data from database
+        //TODO: change to update number of deliveries automatically
         db.collection("user_id").document(username_text).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

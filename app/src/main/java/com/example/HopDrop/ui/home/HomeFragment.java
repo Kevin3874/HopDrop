@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
     private ListView myList;
     private MainActivity myact;
 
-    private String [] tab_names = {"Your Deliveries", "Your orders"};
+    private String [] tab_names = { "Your orders", "Your Deliveries"};
 
     public static final int MENU_ITEM_EDITVIEW = Menu.FIRST;
     public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;

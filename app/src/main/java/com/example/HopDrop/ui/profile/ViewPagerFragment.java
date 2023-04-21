@@ -32,6 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ViewPagerFragment extends Fragment {
 
@@ -90,109 +91,68 @@ public class ViewPagerFragment extends Fragment {
     private void updateData() {
         orders = new ArrayList<>();
         if (tab.compareTo("profile0") == 0) {
-            System.out.println(tab);
             rootRef.collection("user_id").addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                     orders.clear();
-                    for(QueryDocumentSnapshot document : value) {
-                        if (document.getId().compareTo(username_string) == 0) {
-                            System.out.println("Made it here");
-                            orders = (ArrayList<Order>) document.get("pastOrders");
-                            System.out.println(String.valueOf(orders));
-                        }
+                    if (error != null)  {
+                        return;
                     }
-                    Log.d("orders", String.valueOf(orders));
-                    mOrderAdapter.notifyDataSetChanged();
-                }
-            });
-            /*
-            docRef
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-
-                            orders = (ArrayList<Order>) document.get("pastDeliveries");
-                            Log.d("Test", "test");
-                            listener.onOrdersFetched(orders);
-                            mOrderAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });
-
-             */
-        } else if (tab.compareTo("profile1") == 0) {
-            rootRef.collection("user_id").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    orders.clear();
-                    for(QueryDocumentSnapshot document : value) {
+                    List<DocumentSnapshot> documentChanges = value.getDocuments();
+                    for(DocumentSnapshot document : documentChanges) {
                         if (document.getId().compareTo(username_string) == 0) {
-                            orders = (ArrayList<Order>) document.get("pastDeliveries");
+                            // Set Order object fields using orderData map
+                            for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("pastOrders")) {
+                                String customer = (String) orderData.get("customer_name");
+                                String from = (String) orderData.get("fromLocation");
+                                String dest = (String) orderData.get("dest");
+                                String fee = (String) orderData.get("fee");
+                                String notes = (String) orderData.get("notes");
+                                Order order = new Order(customer, from, dest, fee, notes);
+                                orders.add(order);
+                            }
                             System.out.println("potato" + String.valueOf(orders));
+                            Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("pastOrders"));
+                            mOrderAdapter = new OrderAdapter(orders, tab);
+                            mRecyclerView.setAdapter(mOrderAdapter);
+                            break;
                         }
                     }
                     mOrderAdapter.notifyDataSetChanged();
                 }
             });
-        }
-    }
-
-    public interface OnOrdersFetchedListener {
-        void onOrdersFetched(List<Order> orders);
-    }
-
-    private void EventChangeListener(final com.example.HopDrop.ui.home.ViewPagerFragment.OnOrdersFetchedListener listener, String tab) {
-        orders = new ArrayList<>();
-        if (tab.compareTo("profile0") == 0) {
-            rootRef.collection("user_id").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    orders.clear();
-                    for(QueryDocumentSnapshot document : value) {
-                        if (document.getId().compareTo(username_string) == 0) {
-                            orders = (ArrayList<Order>) document.get("currentDeliveries");
-                        }
-                    }
-                    mOrderAdapter.notifyDataSetChanged();
-                }
-            });
-            /*
-            docRef
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-
-                            orders = (ArrayList<Order>) document.get("pastDeliveries");
-                            Log.d("Test", "test");
-                            listener.onOrdersFetched(orders);
-                            mOrderAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });
-
-             */
         } else if (tab.compareTo("profile1") == 0) {
             rootRef.collection("user_id").addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                     orders.clear();
-                    for(QueryDocumentSnapshot document : value) {
+                    if (error != null)  {
+                        return;
+                    }
+                    List<DocumentSnapshot> documentChanges = value.getDocuments();
+                    for(DocumentSnapshot document : documentChanges) {
                         if (document.getId().compareTo(username_string) == 0) {
-                            orders = (ArrayList<Order>) document.get("currentOrders");
+                            // Set Order object fields using orderData map
+                            for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("pastDeliveries")) {
+                                String customer = (String) orderData.get("customer_name");
+                                String from = (String) orderData.get("fromLocation");
+                                String dest = (String) orderData.get("dest");
+                                String fee = (String) orderData.get("fee");
+                                String notes = (String) orderData.get("notes");
+                                Order order = new Order(customer, from, dest, fee, notes);
+                                orders.add(order);
+                            }
+                            System.out.println("potato" + String.valueOf(orders));
+                            Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("pastDeliveries"));
+                            mOrderAdapter = new OrderAdapter(orders, tab);
+                            mRecyclerView.setAdapter(mOrderAdapter);
+                            break;
                         }
                     }
                     mOrderAdapter.notifyDataSetChanged();
                 }
             });
         }
-
     }
 
     // Returns a list of dummy orders

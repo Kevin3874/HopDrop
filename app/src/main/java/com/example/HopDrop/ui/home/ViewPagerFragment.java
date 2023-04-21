@@ -25,9 +25,12 @@ import com.google.android.gms.tasks.Task;
 //import com.google.firebase.database.DatabaseReference;
 //import com.google.firebase.database.FirebaseDatabase;
 //import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -67,7 +70,13 @@ public class ViewPagerFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_view_pager, container, false);
         View view = inflater.inflate(R.layout.fragment_order, container, false);
 
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mOrderAdapter = new OrderAdapter(orders, tab);
+        mRecyclerView.setAdapter(mOrderAdapter);
 
+        updateData();
+        /*
         // Get the list of orders
         getCurrentOrders(tab, new EventChangeListener() {
             @Override
@@ -81,14 +90,84 @@ public class ViewPagerFragment extends Fragment {
                 }
             }
         });
+         */
 
         return view;
     }
+
+    private void updateData() {
+        orders = new ArrayList<>();
+        if (tab.compareTo("home0") == 0) {
+            rootRef.collection("user_id").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    orders.clear();
+                    if (error != null)  {
+                        return;
+                    }
+                    List<DocumentSnapshot> documentChanges = value.getDocuments();
+                    for(DocumentSnapshot document : documentChanges) {
+                        if (document.getId().compareTo(username_string) == 0) {
+                            // Set Order object fields using orderData map
+                            for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("currentOrders")) {
+                                String customer = (String) orderData.get("customer_name");
+                                String from = (String) orderData.get("fromLocation");
+                                String dest = (String) orderData.get("dest");
+                                String fee = (String) orderData.get("fee");
+                                String notes = (String) orderData.get("notes");
+                                Order order = new Order(customer, from, dest, fee, notes);
+                                orders.add(order);
+                            }
+                            System.out.println("potato" + String.valueOf(orders));
+                            Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("currentOrders"));
+                            mOrderAdapter = new OrderAdapter(orders, tab);
+                            mRecyclerView.setAdapter(mOrderAdapter);
+                            break;
+                        }
+                    }
+                    mOrderAdapter.notifyDataSetChanged();
+                }
+            });
+        } else if (tab.compareTo("home1") == 0) {
+            rootRef.collection("user_id").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    orders.clear();
+                    if (error != null)  {
+                        return;
+                    }
+                    List<DocumentSnapshot> documentChanges = value.getDocuments();
+                    for(DocumentSnapshot document : documentChanges) {
+                        if (document.getId().compareTo(username_string) == 0) {
+                            // Set Order object fields using orderData map
+                            for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("currentDeliveries")) {
+                                String customer = (String) orderData.get("customer_name");
+                                String from = (String) orderData.get("fromLocation");
+                                String dest = (String) orderData.get("dest");
+                                String fee = (String) orderData.get("fee");
+                                String notes = (String) orderData.get("notes");
+                                Order order = new Order(customer, from, dest, fee, notes);
+                                orders.add(order);
+                            }
+                            System.out.println("potato" + String.valueOf(orders));
+                            Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("currentDeliveries"));
+                            mOrderAdapter = new OrderAdapter(orders, tab);
+                            mRecyclerView.setAdapter(mOrderAdapter);
+                            break;
+                        }
+                    }
+                    mOrderAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
 
     public interface OnOrdersFetchedListener {
         void onOrdersFetched(List<Order> orders);
     }
 
+    /*
     public interface OnCurrentDeliveriesFetchedListener {
         void onCurrentDeliveriesFetched(List<Order> currentDeliveries);
     }
@@ -101,32 +180,6 @@ public class ViewPagerFragment extends Fragment {
         orders = new ArrayList<>();
         DocumentReference userRef = rootRef.collection("user_id").document(username_string);
         if (tab.compareTo("home0") == 0) {
-            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentDeliveries");
-
-                        if (currentDeliveriesData != null) {
-                            for (Map<String, Object> orderData : currentDeliveriesData) {
-                                String customer = (String) orderData.get("customer_name");
-                                String from = (String) orderData.get("fromLocation");
-                                String dest = (String) orderData.get("dest");
-                                String fee = (String) orderData.get("fee");
-                                String notes = (String) orderData.get("notes");
-                                Order order = new Order(customer, from, dest, fee, notes);
-                                // Set Order object fields using orderData map
-                                orders.add(order);
-                            }
-                        }
-                        listener.onEventChanged(orders);
-                    } else {
-                        Toast.makeText(context, "Error getting user's current deliveries", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        } else if (tab.compareTo("home1") == 0) {
             userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -152,6 +205,34 @@ public class ViewPagerFragment extends Fragment {
                     }
                 }
             });
+        } else if (tab.compareTo("home1") == 0) {
+            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentDeliveries");
+
+                        if (currentDeliveriesData != null) {
+                            for (Map<String, Object> orderData : currentDeliveriesData) {
+                                String customer = (String) orderData.get("customer_name");
+                                String from = (String) orderData.get("fromLocation");
+                                String dest = (String) orderData.get("dest");
+                                String fee = (String) orderData.get("fee");
+                                String notes = (String) orderData.get("notes");
+                                Order order = new Order(customer, from, dest, fee, notes);
+                                // Set Order object fields using orderData map
+                                orders.add(order);
+                            }
+                        }
+                        listener.onEventChanged(orders);
+                    } else {
+                        Toast.makeText(context, "Error getting user's current deliveries", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
+
+     */
 }
