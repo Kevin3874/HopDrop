@@ -28,6 +28,8 @@ public class OrderProgress extends AppCompatActivity {
         setContentView(R.layout.activity_order_progress);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Order order = (Order) getIntent().getSerializableExtra("order");
+
         progress_bar = findViewById(R.id.step_view);
         progress_bar.setStepsNumber(3);
         steps.add("Order Accepted"); // order.getState() == 0
