@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,7 +61,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         public TextView notesTextView;
 
-        public Button detailsButton;
+        public ImageButton detailsButton;
 
         public OrderViewHolder(View itemView) {
             super(itemView);

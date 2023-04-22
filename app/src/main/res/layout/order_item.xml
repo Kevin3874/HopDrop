@@ -103,13 +103,16 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <Button
+        <ImageButton
             android:id="@+id/details_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Details"
+            android:src="@drawable/info"
+            android:background="@null"
+            android:contentDescription=" "
             android:layout_gravity="end|top"
-            android:gravity="end"/>
+            android:gravity="end" />
+
 
     </LinearLayout>
 
