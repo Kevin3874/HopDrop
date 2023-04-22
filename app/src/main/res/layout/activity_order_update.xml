@@ -11,7 +11,7 @@
         tools:context=".OrderProgress">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_view"
+            android:id="@+id/image_card"
             android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             android:layout_gravity="center"
             android:elevation="8dp"
             app:cardCornerRadius="10dp"
-            android:layout_below="@id/card_view">
+            android:layout_below="@id/image_card">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -81,37 +81,37 @@
                 android:orientation="horizontal"
                 android:paddingRight="15dp">
                 <TextView
-                    android:id="@+id/detail_title"
+                    android:id="@+id/detail_title_delivery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:text="Details"
                     android:textSize="20sp"/>
                 <TextView
-                    android:id="@+id/date"
+                    android:id="@+id/date_delivery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/detail_title"
+                    android:layout_below="@id/detail_title_delivery"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:text="date"
                     android:drawableStart="@drawable/calendar_icon"
                     android:textSize="18sp"
                     android:padding="2dp"/>
                 <TextView
-                    android:id="@+id/time"
+                    android:id="@+id/time_delivery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/date"
+                    android:layout_below="@id/date_delivery"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:text="time"
                     android:textSize="18sp"
                     android:padding="2dp"
                     android:drawableStart="@drawable/clock_icon" />
                 <TextView
-                    android:id="@+id/fee_label"
+                    android:id="@+id/fee_label_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/time"
+                    android:layout_below="@id/time_delivery"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:text="Fee:"
                     android:textSize="18sp"/>
@@ -119,13 +119,13 @@
                     android:id="@+id/pickup_location_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/fee_label"
+                    android:layout_below="@id/fee_label_order"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:text="Pickup location:"
                     android:textSize="18sp"
                     android:padding="2dp"/>
                 <TextView
-                    android:id="@+id/delivery_location_label"
+                    android:id="@+id/delivery_location_label_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/pickup_location_label"
@@ -148,7 +148,7 @@
             app:cardCornerRadius="10dp"
             android:layout_marginHorizontal="15dp">
             <TextView
-                android:id="@+id/additional_details_label"
+                android:id="@+id/additional_details_label_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_condensed_regular"

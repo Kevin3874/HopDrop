@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CustomerUpdateActivity extends AppCompatActivity {
     private Order mOrder;
@@ -62,13 +60,13 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         TextView srcTextView = findViewById(R.id.pickup_location_label);
         srcTextView.setText(mOrder.getFrom());
 
-        TextView destTextView = findViewById(R.id.delivery_location_label);
+        TextView destTextView = findViewById(R.id.delivery_location_label_order);
         destTextView.setText(mOrder.getDest());
 
-        TextView feeTextView = findViewById(R.id.fee_label);
+        TextView feeTextView = findViewById(R.id.fee_label_order);
         feeTextView.setText(String.valueOf(mOrder.getFee()));
 
-        TextView notesTextView = findViewById(R.id.additional_details_label);
+        TextView notesTextView = findViewById(R.id.additional_details_label_delivery);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
 
 

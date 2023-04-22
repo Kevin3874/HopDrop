@@ -6,29 +6,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class PastOrders extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class PastDelivery extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_past_orders);
+        setContentView(R.layout.activity_past_delivery);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Order mOrder = (Order) getIntent().getSerializableExtra("order");
         FirebaseFirestore fb = FirebaseFirestore.getInstance();
 
-        TextView name = findViewById(R.id.customer_name_order);
-        TextView fee = findViewById(R.id.fee_label_order);
-        TextView dest = findViewById(R.id.delivery_location_label_order);
-        TextView add_details = findViewById(R.id.additional_details_order);
+        TextView name = findViewById(R.id.customer_name_delivery);
+        TextView fee = findViewById(R.id.fee_label_delivery);
+        TextView dest = findViewById(R.id.delivery_location_label_delivery);
+        TextView add_details = findViewById(R.id.additional_details_delivery);
 
 
-        fb.collection("user_id").document(mOrder.getDeliverer()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fb.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -38,12 +41,13 @@ public class PastOrders extends AppCompatActivity {
                     name.setText(full_name);
                     String fee_string = "Fee: " + mOrder.getFee();
                     fee.setText(fee_string);
-                    String dest_string = "Delivery location: " + mOrder.getDest();
+                    String dest_string = "Delivery destination: " + mOrder.getDest();
                     dest.setText(dest_string);
-                    add_details.setText(mOrder.getNotes());;
+                    add_details.setText(mOrder.getNotes());
                 }
             }
         });
+
     }
 
     @Override

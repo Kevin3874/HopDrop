@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
@@ -85,8 +83,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                         intent = new Intent(view.getContext(), CustomerUpdateActivity.class);
                     } else if (tab.compareTo("orders") == 0) {
                         intent = new Intent(view.getContext(), OrderDetailsActivity.class);
-                    } else if (tab.compareTo("profile") == 0) {
+                    } else if (tab.compareTo("profile0") == 0) {
                         intent = new Intent(view.getContext(), PastOrders.class);
+                    } else if (tab.compareTo("profile1") == 0) {
+                        intent = new Intent(view.getContext(), PastDelivery.class);
                     }
                     intent.putExtra("order", order);
                     view.getContext().startActivity(intent);

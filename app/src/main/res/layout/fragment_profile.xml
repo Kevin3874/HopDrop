@@ -8,7 +8,7 @@
     tools:context=".ui.profile.ProfileFragment">
 
     <ImageView
-        android:id="@+id/courier_image"
+        android:id="@+id/customer_profile_image"
         android:layout_centerHorizontal="true"
         android:layout_width="75dp"
         android:layout_height="75dp"
@@ -24,7 +24,7 @@
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/courier_image"
+        android:layout_below="@+id/customer_profile_image"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/roboto_condensed_regular"
         android:padding="15dp"
@@ -33,10 +33,10 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courier_image" />
+        app:layout_constraintTop_toBottomOf="@+id/customer_profile_image" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/image_card"
         android:layout_below="@+id/user_name"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
             android:orientation="horizontal"
             android:paddingRight="15dp">
             <TextView
-                android:id="@+id/courrier_info"
+                android:id="@+id/your_courrier"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/orderTabLayoutProfile"
-        android:layout_below="@+id/card_view"
+        android:layout_below="@+id/image_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

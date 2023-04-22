@@ -27,7 +27,7 @@
             android:orientation="horizontal"
             android:paddingRight="15dp">
             <TextView
-                android:id="@+id/your_courrier"
+                android:id="@+id/your_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_condensed_regular"
@@ -35,21 +35,21 @@
                 android:textSize="20sp"
                 android:padding="9dp"/>
             <ImageView
-                android:id="@+id/customer_profile_image"
+                android:id="@+id/customer_profile_image_delivery"
                 android:layout_centerHorizontal="true"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:paddingLeft="10dp"
-                android:layout_below="@id/your_courrier"
+                android:layout_below="@id/your_customer"
                 android:src="@drawable/user_profile_avatar_svgrepo_com"
                 android:layout_alignParentLeft="true"/>
             <TextView
-                android:id="@+id/customer_name_order"
+                android:id="@+id/customer_name_delivery"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/customer_profile_image"
-                android:layout_below="@id/your_courrier"
+                android:layout_toRightOf="@id/customer_profile_image_delivery"
+                android:layout_below="@id/your_customer"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="@string/name"
                 android:textSize="18dp"
@@ -104,7 +104,7 @@
                 android:padding="2dp"
                 android:drawableStart="@drawable/clock_icon" />
             <TextView
-                android:id="@+id/fee_label_order"
+                android:id="@+id/fee_label_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/time_delivery"
@@ -112,10 +112,10 @@
                 android:text="Fee:"
                 android:textSize="18sp"/>
             <TextView
-                android:id="@+id/delivery_location_label_order"
+                android:id="@+id/delivery_location_label_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fee_label_order"
+                android:layout_below="@id/fee_label_delivery"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="Delivery location"
                 android:textSize="18sp"
@@ -138,7 +138,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/additional_details_label_order"
+                android:id="@+id/additional_details_label_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_condensed_regular"
@@ -146,14 +146,15 @@
                 android:textSize="18sp"
                 android:padding="2dp"/>
             <TextView
-                android:id="@+id/additional_details_order"
+                android:id="@+id/additional_details_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/additional_details_label_order"
+                android:layout_below="@+id/additional_details_label_delivery"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:textSize="18sp"
                 android:padding="2dp"/>
         </RelativeLayout>
+
 
     </androidx.cardview.widget.CardView>
 

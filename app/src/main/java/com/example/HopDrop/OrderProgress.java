@@ -72,6 +72,7 @@ public class OrderProgress extends AppCompatActivity {
                 if (mOrder.getState() == 1) {
                     progress_bar.go(1, true);
                 } if (mOrder.getState() == 2) {
+                    progress_bar.go(1, false);
                     progress_bar.go(1, true);
                 }
             }
