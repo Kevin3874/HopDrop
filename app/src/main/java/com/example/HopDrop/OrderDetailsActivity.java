@@ -57,49 +57,45 @@ public class OrderDetailsActivity extends AppCompatActivity {
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
 
         Button acceptButton = findViewById(R.id.accept_button);
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DocumentReference orderRef = rootRef.collection("orders").document(mOrder.getOrderID());
-                // What happens when the user clicks accept
-                Intent intent = new Intent(OrderDetailsActivity.this, CustomerUpdateActivity.class);
-                intent.putExtra("order", mOrder);
-                //delete from active orders collections
-                orderRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                // Remove the order from the Firestore collection
-                                orderRef.delete();
-                                // Add it to the user's collection
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Order not found", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Error getting order", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                //add to user
-                DocumentReference userRef = rootRef.collection("user_id").document(username_string);
-                mOrder.setDeliverer(username_string);
-                userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
 
-                startActivity(intent);
-            }
+        acceptButton.setOnClickListener(view -> {
+            DocumentReference orderRef = rootRef.collection("orders").document(mOrder.getOrderID());
+            // What happens when the user clicks accept
+            Intent intent = new Intent(OrderDetailsActivity.this, CustomerUpdateActivity.class);
+            intent.putExtra("order", mOrder);
+            //delete from active orders collections
+            orderRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Remove the order from the Firestore collection
+                            orderRef.delete();
+                            // Add it to the user's collection
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Order not found", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Error getting order", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            //add to user
+            DocumentReference userRef = rootRef.collection("user_id").document(username_string);
+            mOrder.setDeliverer(username_string);
+            userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
+
+            startActivity(intent);
         });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
 

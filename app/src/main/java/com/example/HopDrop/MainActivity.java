@@ -30,25 +30,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-    public static ArrayList<Order> orders;
-    public static OrderAdapter oa;
-    public Order current;
-    public Random randy = new Random();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //empty orders list
-        //orders = new ArrayList<Order>();
-        //oa = new OrderAdapter(orders, "main");
-        //current = null;
-
-        //TO-DO: get db information for current/active orders
-        /*
-
-         */
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -64,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // TODO: uncomment these sections to activate the Options menu after creating it in layout/menu
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -79,13 +63,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.navigation_order) {
-            // TODO: add code to open the order page
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
             navController.navigate(R.id.navigation_order);
             return true;
         }
         else if (item.getTitle() == "Logout") {
-            // TODO: add code to close this activity
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();

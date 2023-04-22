@@ -17,11 +17,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     private String tab;
     Context context;
 
-    public OrderAdapter(List<Order> mOrders, String tab, Context context) {
-        this.mOrders = mOrders;
-        this.tab = tab;
-        this.context = context;
-    }
 
     public OrderAdapter(List<Order> orders, String tab) {
         mOrders = orders;
@@ -71,26 +66,22 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             detailsButton = itemView.findViewById(R.id.details_button);
 
 
-            detailsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Order order = mOrders.get(getAdapterPosition());
-                    Intent intent = new Intent(view.getContext(), OrderProgress.class);
-                    if (tab.compareTo("home0") == 0) {
-                        //TODO Need to change the CustomerUpdateActivity
-                        intent = new Intent(view.getContext(), OrderProgress.class);
-                    } else if (tab.compareTo("home1") == 0) {
-                        intent = new Intent(view.getContext(), CustomerUpdateActivity.class);
-                    } else if (tab.compareTo("orders") == 0) {
-                        intent = new Intent(view.getContext(), OrderDetailsActivity.class);
-                    } else if (tab.compareTo("profile0") == 0) {
-                        intent = new Intent(view.getContext(), PastOrders.class);
-                    } else if (tab.compareTo("profile1") == 0) {
-                        intent = new Intent(view.getContext(), PastDelivery.class);
-                    }
-                    intent.putExtra("order", order);
-                    view.getContext().startActivity(intent);
+            detailsButton.setOnClickListener(view -> {
+                Order order = mOrders.get(getAdapterPosition());
+                Intent intent = new Intent(view.getContext(), OrderProgress.class);
+                if (tab.compareTo("home0") == 0) {
+                    intent = new Intent(view.getContext(), OrderProgress.class);
+                } else if (tab.compareTo("home1") == 0) {
+                    intent = new Intent(view.getContext(), CustomerUpdateActivity.class);
+                } else if (tab.compareTo("orders") == 0) {
+                    intent = new Intent(view.getContext(), OrderDetailsActivity.class);
+                } else if (tab.compareTo("profile0") == 0) {
+                    intent = new Intent(view.getContext(), PastOrders.class);
+                } else if (tab.compareTo("profile1") == 0) {
+                    intent = new Intent(view.getContext(), PastDelivery.class);
                 }
+                intent.putExtra("order", order);
+                view.getContext().startActivity(intent);
             });
 
         }

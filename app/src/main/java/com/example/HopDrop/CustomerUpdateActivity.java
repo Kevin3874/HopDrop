@@ -94,23 +94,6 @@ public class CustomerUpdateActivity extends AppCompatActivity {
             public void onClick(View view){
                 if (mOrder.getState() == 0) {
                     mOrder.setState(1);
-
-                    // update the order state in firebase
-                    /*
-                    Task<DocumentSnapshot> tsk = fb.collection("user_id").document(username_string).get();
-                      tsk.addOnSuccessListener(result -> {
-                    }).addOnFailureListener(e -> {
-                          // now do something with the exception
-                      });
-                    DocumentSnapshot doc = tsk.getResult();
-                    for (Map<String, Object> order : (List<Map<String, Object>>) Objects.requireNonNull(doc.get("currentOrders"))) {
-                        if (String.valueOf(order.get("orderID")).compareTo(mOrder.getOrderID()) == 0) {
-                            order.put("orderID", 1);
-                            break;
-                        }
-                    }
-
-                     */
                     DocumentReference userRef = fb.collection("user_id").document(username_string);
                     userRef.get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -126,7 +109,6 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                                     // move to past orders
                                     userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
                                     userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
-                                    //TODO: Add the new order with new state to the orderer currentOrders
                                     break;
                                 }
                             }
@@ -158,13 +140,11 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
 
