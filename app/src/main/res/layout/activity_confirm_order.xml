@@ -1,148 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
+        tools:context=".OrderProgress">
 
-        <TextView
-            android:id="@+id/customer_name_label"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/image_card"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Customer Name: "
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="15dp"
+            android:elevation="8dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:orientation="horizontal"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/your_courrier"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Your Customer"
+                    android:textSize="20sp"
+                    android:padding="9dp"/>
+                <ImageView
+                    android:id="@+id/customer_profile_image"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:paddingLeft="10dp"
+                    android:layout_below="@id/your_courrier"
+                    android:src="@drawable/user_profile_avatar_svgrepo_com"
+                    android:layout_alignParentLeft="true"/>
+                <TextView
+                    android:id="@+id/customer_name_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/customer_profile_image"
+                    android:layout_below="@id/your_courrier"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="@string/name"
+                    android:textSize="18dp"
+                    android:padding="9dp"/>
 
-        <TextView
-            android:id="@+id/customer_name"
-            android:layout_width="0dp"
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/details"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textSize="16sp"
-            android:paddingRight="10dp" />
-    </LinearLayout>
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="15dp"
+            android:layout_gravity="center"
+            android:elevation="8dp"
+            app:cardCornerRadius="10dp"
+            android:layout_below="@id/image_card">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:orientation="horizontal"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/detail_title_delivery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Details"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/date_delivery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_title_delivery"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="date"
+                    android:drawableStart="@drawable/calendar_icon"
+                    android:textSize="18sp"
+                    android:padding="2dp"/>
+                <TextView
+                    android:id="@+id/time_delivery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_delivery"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="time"
+                    android:textSize="18sp"
+                    android:padding="2dp"
+                    android:drawableStart="@drawable/clock_icon" />
+                <TextView
+                    android:id="@+id/fee_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/time_delivery"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Fee:"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/pickup_location_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fee_confirm"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Pickup location"
+                    android:textSize="18sp"
+                    android:padding="2dp"/>
+                <TextView
+                    android:id="@+id/destination_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pickup_location_confirm"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Delivery location"
+                    android:textSize="18sp"
+                    android:padding="2dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="100dp">
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/fee_label_order_progress"
-            android:layout_width="wrap_content"
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/additional_details_card"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fee:"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
-
-        <TextView
-            android:id="@+id/fee"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textSize="16sp"
-            android:paddingRight="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="16dp">
-
-        <TextView
-            android:id="@+id/src_label"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From: "
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
-
-        <TextView
-            android:id="@+id/src"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textSize="16sp"
-            android:paddingRight="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="16dp">
-
-        <TextView
-            android:id="@+id/dest_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delivered To: "
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
-
-        <TextView
-            android:id="@+id/dest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textSize="16sp"
-            android:paddingRight="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="16dp">
-
-        <TextView
-            android:id="@+id/notes_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Task Notes:"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:paddingLeft="10dp" />
-
-        <TextView
-            android:id="@+id/notes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingLeft="15dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingTop="70dp">
+            android:layout_below="@id/details"
+            android:elevation="8dp"
+            app:cardCornerRadius="10dp"
+            android:layout_marginHorizontal="15dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/additional_details_label_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:text="Additional Details"
+                    android:textSize="18sp"
+                    android:padding="2dp"/>
+                <TextView
+                    android:id="@+id/additional_details_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/additional_details_label_confirm"
+                    android:fontFamily="@font/roboto_condensed_regular"
+                    android:textSize="18sp"
+                    android:padding="2dp"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/additional_details_card"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
             android:text="Confirm Delivery"
             android:gravity="center"/>
 
-    </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
 
-</LinearLayout>

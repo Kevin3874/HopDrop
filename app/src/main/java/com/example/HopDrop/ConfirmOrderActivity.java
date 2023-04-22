@@ -1,13 +1,10 @@
 package com.example.HopDrop;
 
-import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -42,19 +39,33 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         mOrder = (Order) getIntent().getSerializableExtra("order");
 
         // Update the UI with the Order details
-        //TextView customerNameTextView = findViewById(R.id.customer_name);
+        TextView customerNameTextView = findViewById(R.id.customer_name_confirm);
+        rootRef.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    //get first and last name
+                    DocumentSnapshot doc = task.getResult();
+                    String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                    customerNameTextView.setText(full_name);
+                }
+            }
+        });
         //customerNameTextView.setText(mOrder.getCustomer_name());
 
-        TextView srcTextView = findViewById(R.id.src);
-        srcTextView.setText(mOrder.getFrom());
+        TextView srcTextView = findViewById(R.id.pickup_location_confirm);
+        String string = "Pickup location: " + mOrder.getFrom();
+        srcTextView.setText(string);
 
-        TextView destTextView = findViewById(R.id.dest);
-        destTextView.setText(mOrder.getDest());
+        TextView destTextView = findViewById(R.id.destination_confirm);
+        string = "Destination: " + mOrder.getDest();
+        destTextView.setText(string);
 
-        TextView feeTextView = findViewById(R.id.fee);
+        TextView feeTextView = findViewById(R.id.fee_confirm);
+        string = "Fee: " + mOrder.getFee();
         feeTextView.setText(String.valueOf(mOrder.getFee()));
 
-        TextView notesTextView = findViewById(R.id.notes);
+        TextView notesTextView = findViewById(R.id.additional_details_confirm);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
 
         confirm_button.setOnClickListener(view -> {

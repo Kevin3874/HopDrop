@@ -42,7 +42,7 @@ public class PastDelivery extends AppCompatActivity {
                     name.setText(full_name);
                     String string = "Fee: " + mOrder.getFee();
                     fee.setText(string);
-                    string = "Delivery destination: " + mOrder.getDest();
+                    string = "Destination: " + mOrder.getDest();
                     dest.setText(string);
                     string = "Pickup location: " + mOrder.getFrom();
                     pickup.setText(string);

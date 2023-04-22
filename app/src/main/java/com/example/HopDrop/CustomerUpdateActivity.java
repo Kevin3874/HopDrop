@@ -75,19 +75,19 @@ public class CustomerUpdateActivity extends AppCompatActivity {
             }
         });
 
-        TextView srcTextView = findViewById(R.id.pickup_location_label);
+        TextView srcTextView = findViewById(R.id.pickup_confirm);
         String string = "Pickup location: " + mOrder.getFrom();
         srcTextView.setText(string);
 
-        TextView destTextView = findViewById(R.id.delivery_location_progress);
+        TextView destTextView = findViewById(R.id.destination_accept);
         string = "Delivery location: " + mOrder.getDest();
         destTextView.setText(string);
 
-        TextView feeTextView = findViewById(R.id.fee_label_order_progress);
+        TextView feeTextView = findViewById(R.id.fee_accept);
         string = "Fee: " + mOrder.getFee();
         feeTextView.setText(string);
 
-        TextView notesTextView = findViewById(R.id.additional_details_update);
+        TextView notesTextView = findViewById(R.id.additional_details_confirm);
         notesTextView.setText(mOrder.getNotes());
 
 

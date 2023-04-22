@@ -22,10 +22,10 @@ public class PastOrders extends AppCompatActivity {
         Order mOrder = (Order) getIntent().getSerializableExtra("order");
         FirebaseFirestore fb = FirebaseFirestore.getInstance();
 
-        TextView name = findViewById(R.id.customer_name_progress);
-        TextView fee = findViewById(R.id.fee_label_order_progress);
-        TextView pickup = findViewById(R.id.pickup_location_progress);
-        TextView dest = findViewById(R.id.delivery_location_progress);
+        TextView name = findViewById(R.id.customer_name_accept);
+        TextView fee = findViewById(R.id.fee_accept);
+        TextView pickup = findViewById(R.id.pickup_location_accept);
+        TextView dest = findViewById(R.id.destination_accept);
         TextView add_details = findViewById(R.id.additional_details_order);
 
 
@@ -39,7 +39,7 @@ public class PastOrders extends AppCompatActivity {
                     name.setText(full_name);
                     String string = "Fee: " + mOrder.getFee();
                     fee.setText(string);
-                    string = "Delivery destination: " + mOrder.getDest();
+                    string = "Destination: " + mOrder.getDest();
                     dest.setText(string);
                     string = "Pickup location: " + mOrder.getFrom();
                     pickup.setText(string);

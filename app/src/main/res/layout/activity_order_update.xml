@@ -108,7 +108,7 @@
                     android:padding="2dp"
                     android:drawableStart="@drawable/clock_icon" />
                 <TextView
-                    android:id="@+id/fee_label_order_progress"
+                    android:id="@+id/fee_accept"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/time_delivery"
@@ -116,19 +116,19 @@
                     android:text="Fee:"
                     android:textSize="18sp"/>
                 <TextView
-                    android:id="@+id/pickup_location_label"
+                    android:id="@+id/pickup_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/fee_label_order_progress"
+                    android:layout_below="@id/fee_accept"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:text="Pickup location:"
                     android:textSize="18sp"
                     android:padding="2dp"/>
                 <TextView
-                    android:id="@+id/delivery_location_progress"
+                    android:id="@+id/destination_accept"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/pickup_location_label"
+                    android:layout_below="@id/pickup_confirm"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:text="Delivery location:"
                     android:textSize="18sp"
@@ -151,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:id="@+id/additional_details_label_delivery"
+                    android:id="@+id/additional_details_label_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_condensed_regular"
@@ -159,10 +159,10 @@
                     android:textSize="18sp"
                     android:padding="2dp"/>
                 <TextView
-                    android:id="@+id/additional_details_update"
+                    android:id="@+id/additional_details_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/additional_details_label_delivery"
+                    android:layout_below="@+id/additional_details_label_confirm"
                     android:fontFamily="@font/roboto_condensed_regular"
                     android:textSize="18sp"
                     android:padding="2dp"/>

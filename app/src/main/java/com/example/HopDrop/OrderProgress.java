@@ -43,7 +43,7 @@ public class OrderProgress extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mOrder = (Order) getIntent().getSerializableExtra("order");
-        TextView name = findViewById(R.id.customer_name_progress);
+        TextView name = findViewById(R.id.customer_name_accept);
         fb.collection("user_id").document(username_string).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -55,15 +55,15 @@ public class OrderProgress extends AppCompatActivity {
                 }
             }
         });
-        TextView srcTextView = findViewById(R.id.pickup_location_progress);
+        TextView srcTextView = findViewById(R.id.pickup_location_accept);
         String string = "Pickup location: " + mOrder.getFrom();
         srcTextView.setText(string);
 
-        TextView destTextView = findViewById(R.id.delivery_location_progress);
-        string = "Delivery location: " + mOrder.getDest();
+        TextView destTextView = findViewById(R.id.destination_accept);
+        string = "Destination: " + mOrder.getDest();
         destTextView.setText(string);
 
-        TextView feeTextView = findViewById(R.id.fee_label_order_progress);
+        TextView feeTextView = findViewById(R.id.fee_accept);
         string = "Fee: " + mOrder.getFee();
         feeTextView.setText(string);
 
