@@ -22,9 +22,10 @@ public class PastOrders extends AppCompatActivity {
         Order mOrder = (Order) getIntent().getSerializableExtra("order");
         FirebaseFirestore fb = FirebaseFirestore.getInstance();
 
-        TextView name = findViewById(R.id.customer_name_order);
-        TextView fee = findViewById(R.id.fee_label_order);
-        TextView dest = findViewById(R.id.delivery_location_label_order);
+        TextView name = findViewById(R.id.customer_name_progress);
+        TextView fee = findViewById(R.id.fee_label_order_progress);
+        TextView pickup = findViewById(R.id.pickup_location_progress);
+        TextView dest = findViewById(R.id.delivery_location_progress);
         TextView add_details = findViewById(R.id.additional_details_order);
 
 
@@ -36,11 +37,13 @@ public class PastOrders extends AppCompatActivity {
                     DocumentSnapshot doc = task.getResult();
                     String full_name = doc.get("firstName") + " " + doc.get("lastName");
                     name.setText(full_name);
-                    String fee_string = "Fee: " + mOrder.getFee();
-                    fee.setText(fee_string);
-                    String dest_string = "Delivery location: " + mOrder.getDest();
-                    dest.setText(dest_string);
-                    add_details.setText(mOrder.getNotes());;
+                    String string = "Fee: " + mOrder.getFee();
+                    fee.setText(string);
+                    string = "Delivery destination: " + mOrder.getDest();
+                    dest.setText(string);
+                    string = "Pickup location: " + mOrder.getFrom();
+                    pickup.setText(string);
+                    add_details.setText(mOrder.getNotes());
                 }
             }
         });

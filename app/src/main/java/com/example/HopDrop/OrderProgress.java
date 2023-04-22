@@ -2,6 +2,7 @@ package com.example.HopDrop;
 
 import static com.example.HopDrop.LoginActivity.username_string;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,21 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.TextView;
 
-import com.google.firebase.firestore.DocumentReference;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.shuhart.stepview.StepView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class OrderProgress extends AppCompatActivity {
     StepView progress_bar;
@@ -44,6 +43,32 @@ public class OrderProgress extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mOrder = (Order) getIntent().getSerializableExtra("order");
+        TextView name = findViewById(R.id.customer_name_progress);
+        fb.collection("user_id").document(username_string).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    //get first and last name
+                    DocumentSnapshot doc = task.getResult();
+                    String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                    name.setText(full_name);
+                }
+            }
+        });
+        TextView srcTextView = findViewById(R.id.pickup_location_progress);
+        String string = "Pickup location: " + mOrder.getFrom();
+        srcTextView.setText(string);
+
+        TextView destTextView = findViewById(R.id.delivery_location_progress);
+        string = "Delivery location: " + mOrder.getDest();
+        destTextView.setText(string);
+
+        TextView feeTextView = findViewById(R.id.fee_label_order_progress);
+        string = "Fee: " + mOrder.getFee();
+        feeTextView.setText(string);
+
+        TextView notesTextView = findViewById(R.id.additional_details_progress);
+        notesTextView.setText(mOrder.getNotes());
 
         progress_bar = findViewById(R.id.step_view);
         progress_bar.setStepsNumber(3);
@@ -51,6 +76,8 @@ public class OrderProgress extends AppCompatActivity {
         steps.add("Picked Up"); // order.getState() == 1
         steps.add("Delivered"); // order.getState() == 2
         progress_bar.setSteps(steps);
+
+
 
         updateProgress();
     }

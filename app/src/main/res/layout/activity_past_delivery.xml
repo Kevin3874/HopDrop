@@ -112,10 +112,19 @@
                 android:text="Fee:"
                 android:textSize="18sp"/>
             <TextView
-                android:id="@+id/delivery_location_label_delivery"
+                android:id="@+id/pickup_location_label_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/fee_label_delivery"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="Delivery location"
+                android:textSize="18sp"
+                android:padding="2dp"/>
+            <TextView
+                android:id="@+id/delivery_location_label_delivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pickup_location_label_delivery"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="Delivery location"
                 android:textSize="18sp"

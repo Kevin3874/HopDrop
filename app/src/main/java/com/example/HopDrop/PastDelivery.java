@@ -27,6 +27,7 @@ public class PastDelivery extends AppCompatActivity {
 
         TextView name = findViewById(R.id.customer_name_delivery);
         TextView fee = findViewById(R.id.fee_label_delivery);
+        TextView pickup = findViewById(R.id.pickup_location_label_delivery);
         TextView dest = findViewById(R.id.delivery_location_label_delivery);
         TextView add_details = findViewById(R.id.additional_details_delivery);
 
@@ -39,10 +40,12 @@ public class PastDelivery extends AppCompatActivity {
                     DocumentSnapshot doc = task.getResult();
                     String full_name = doc.get("firstName") + " " + doc.get("lastName");
                     name.setText(full_name);
-                    String fee_string = "Fee: " + mOrder.getFee();
-                    fee.setText(fee_string);
-                    String dest_string = "Delivery destination: " + mOrder.getDest();
-                    dest.setText(dest_string);
+                    String string = "Fee: " + mOrder.getFee();
+                    fee.setText(string);
+                    string = "Delivery destination: " + mOrder.getDest();
+                    dest.setText(string);
+                    string = "Pickup location: " + mOrder.getFrom();
+                    pickup.setText(string);
                     add_details.setText(mOrder.getNotes());
                 }
             }

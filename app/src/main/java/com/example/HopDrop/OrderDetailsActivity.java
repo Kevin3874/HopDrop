@@ -38,16 +38,20 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         // Update the UI with the Order details
         TextView customerNameTextView = findViewById(R.id.customer_name);
+        String string = "";
         customerNameTextView.setText(mOrder.getCustomerName());
 
         TextView srcTextView = findViewById(R.id.src);
-        srcTextView.setText(mOrder.getFrom());
+        string = "Pickup location: " + mOrder.getFrom();
+        srcTextView.setText(string);
 
         TextView destTextView = findViewById(R.id.dest);
-        destTextView.setText(mOrder.getDest());
+        string = "Delivery location: " + mOrder.getDest();
+        destTextView.setText(string);
 
         TextView feeTextView = findViewById(R.id.fee);
-        feeTextView.setText(String.valueOf(mOrder.getFee()));
+        string = "Fee: " + mOrder.getFee();
+        feeTextView.setText(string);
 
         TextView notesTextView = findViewById(R.id.notes);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));

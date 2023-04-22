@@ -44,7 +44,7 @@
                 android:src="@drawable/user_profile_avatar_svgrepo_com"
                 android:layout_alignParentLeft="true"/>
             <TextView
-                android:id="@+id/customer_name_order"
+                android:id="@+id/customer_name_progress"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                 android:padding="2dp"
                 android:drawableStart="@drawable/clock_icon" />
             <TextView
-                android:id="@+id/fee_label_order"
+                android:id="@+id/fee_label_order_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/time_delivery"
@@ -112,10 +112,19 @@
                 android:text="Fee:"
                 android:textSize="18sp"/>
             <TextView
-                android:id="@+id/delivery_location_label_order"
+                android:id="@+id/pickup_location_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fee_label_order"
+                android:layout_below="@id/fee_label_order_progress"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:text="Delivery location"
+                android:textSize="18sp"
+                android:padding="2dp"/>
+            <TextView
+                android:id="@+id/delivery_location_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pickup_location_progress"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="Delivery location"
                 android:textSize="18sp"

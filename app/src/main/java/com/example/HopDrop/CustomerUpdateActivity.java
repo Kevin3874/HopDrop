@@ -9,8 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -56,18 +59,33 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         // Update the UI with the Order details
         //TextView customerNameTextView = findViewById(R.id.customer_name);
         //customerNameTextView.setText(mOrder.getCustomer_name());
+        TextView name = findViewById(R.id.customer_name);
+        fb.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    //get first and last name
+                    DocumentSnapshot doc = task.getResult();
+                    String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                    name.setText(full_name);
+                }
+            }
+        });
 
         TextView srcTextView = findViewById(R.id.pickup_location_label);
-        srcTextView.setText(mOrder.getFrom());
+        String string = "Pickup location: " + mOrder.getFrom();
+        srcTextView.setText(string);
 
-        TextView destTextView = findViewById(R.id.delivery_location_label_order);
-        destTextView.setText(mOrder.getDest());
+        TextView destTextView = findViewById(R.id.delivery_location_progress);
+        string = "Delivery location: " + mOrder.getDest();
+        destTextView.setText(string);
 
-        TextView feeTextView = findViewById(R.id.fee_label_order);
-        feeTextView.setText(String.valueOf(mOrder.getFee()));
+        TextView feeTextView = findViewById(R.id.fee_label_order_progress);
+        string = "Fee: " + mOrder.getFee();
+        feeTextView.setText(string);
 
-        TextView notesTextView = findViewById(R.id.additional_details_label_delivery);
-        notesTextView.setText(String.valueOf(mOrder.getNotes()));
+        TextView notesTextView = findViewById(R.id.additional_details_update);
+        notesTextView.setText(mOrder.getNotes());
 
 
         Button cancelButton = findViewById(R.id.cancel_btn);
@@ -94,7 +112,6 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
                      */
                     DocumentReference userRef = fb.collection("user_id").document(username_string);
-                    DocumentReference ordererRef = fb.collection("user_id").document(mOrder.getCustomerName());
                     userRef.get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
