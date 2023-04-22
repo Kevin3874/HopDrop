@@ -39,12 +39,6 @@
             android:screenOrientation="locked"
             android:theme="@style/Theme.HopDrop" />
         <activity
-            android:name=".CustomerUpdateDeliveredActivity"
-            android:exported="false"
-            android:label="Delivery Update"
-            android:screenOrientation="locked"
-            android:theme="@style/Theme.HopDrop" />
-        <activity
             android:name=".OrderProgress"
             android:exported="false"
             android:screenOrientation="locked"

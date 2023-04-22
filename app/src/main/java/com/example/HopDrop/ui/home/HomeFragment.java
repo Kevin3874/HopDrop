@@ -58,12 +58,7 @@ public class HomeFragment extends Fragment {
         orderViewPager.setAdapter(new ViewPagerAdapter(this));
         TabLayout orderTabLayout  = myview.findViewById(R.id.orderTabLayoutHome);
 
-        new TabLayoutMediator(orderTabLayout, orderViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(tab_names[position]);
-            }
-        }).attach();
+        new TabLayoutMediator(orderTabLayout, orderViewPager, (tab, position) -> tab.setText(tab_names[position])).attach();
 
         //Launch new order page
         FloatingActionButton fab = (FloatingActionButton) myview.findViewById(R.id.fab);
@@ -95,7 +90,7 @@ class ViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return new ViewPagerFragment("New Pager", "home" + Integer.toString(position));
+        return new ViewPagerFragment("New Pager", "home" + position);
     }
 
     @Override

@@ -44,22 +44,6 @@ public class OrderFragment extends Fragment {
         mRecyclerView.setAdapter(mOrderAdapter);
         
         updateOrders();
-        
-        /*
-        // Get the list of orders
-        EventChangeListener(new ViewPagerFragment.OnOrdersFetchedListener() {
-            @Override
-            public void onOrdersFetched(List<Order> orders) {
-                if (orders != null) {
-                    // Set up the RecyclerView and adapter
-                    mRecyclerView = view.findViewById(R.id.recycler_view);
-                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    mOrderAdapter = new OrderAdapter(orders, "orders");
-                    mRecyclerView.setAdapter(mOrderAdapter);
-                }
-            }
-        });
-         */
 
         return view;
     }

@@ -1,7 +1,6 @@
 package com.example.HopDrop;
 
 import static com.example.HopDrop.LoginActivity.username_string;
-import static com.example.HopDrop.MainActivity.orders;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

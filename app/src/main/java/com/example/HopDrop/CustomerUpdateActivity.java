@@ -1,9 +1,11 @@
 package com.example.HopDrop;
 
+import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +43,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
         // Get the Order object passed from the previous activity
         mOrder = (Order) getIntent().getSerializableExtra("order");
+
         //pull from firebase to get the order
         Button action_button = findViewById(R.id.pickup_button);
         StepView progress_bar = findViewById(R.id.step_view);
@@ -99,13 +102,15 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentDeliveries");
-
                             if (currentDeliveriesData != null) {
                                 for (Map<String, Object> orderData : currentDeliveriesData) {
                                     String id = (String) orderData.get("orderID");
                                     if (!Objects.equals(id, mOrder.getOrderID())) {
+                                        Log.d(TAG, id);
+                                        Log.d(TAG, mOrder.getOrderID());
                                         continue;
                                     }
+                                    Log.d(TAG, "onClick: Updating in Firebase");
                                     // move to past orders
                                     userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
                                     userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));

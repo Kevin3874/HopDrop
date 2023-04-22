@@ -91,9 +91,9 @@ public class ViewPagerFragment extends Fragment {
                                 String fee = (String) orderData.get("fee");
                                 String notes = (String) orderData.get("notes");
                                 Order order = new Order(customer, from, dest, fee, notes);
+                                order.setOrderID((String) orderData.get("orderID"));
                                 orders.add(order);
                             }
-                            System.out.println("potato" + String.valueOf(orders));
                             Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("currentOrders"));
                             mOrderAdapter = new OrderAdapter(orders, tab);
                             mRecyclerView.setAdapter(mOrderAdapter);
@@ -120,9 +120,9 @@ public class ViewPagerFragment extends Fragment {
                             String fee = (String) orderData.get("fee");
                             String notes = (String) orderData.get("notes");
                             Order order = new Order(customer, from, dest, fee, notes);
+                            order.setOrderID((String) orderData.get("orderID"));
                             orders.add(order);
                         }
-                        System.out.println("potato" + String.valueOf(orders));
                         Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("currentDeliveries"));
                         mOrderAdapter = new OrderAdapter(orders, tab);
                         mRecyclerView.setAdapter(mOrderAdapter);
