@@ -91,7 +91,7 @@ public class ViewPagerFragment extends Fragment {
                                 String dest = (String) orderData.get("dest");
                                 String fee = (String) orderData.get("fee");
                                 String notes = (String) orderData.get("notes");
-                                Order order = new Order(customer, from, dest, fee, notes);
+                                Order order = new Order(customer, from, dest, fee, notes, null);
                                 order.setOrderID((String) orderData.get("orderID"));
                                 order.setDeliverer((String) orderData.get("deliverer_name"));
                                 orders.add(order);
@@ -121,7 +121,7 @@ public class ViewPagerFragment extends Fragment {
                             String dest = (String) orderData.get("dest");
                             String fee = (String) orderData.get("fee");
                             String notes = (String) orderData.get("notes");
-                            Order order = new Order(customer, from, dest, fee, notes);
+                            Order order = new Order(customer, from, dest, fee, notes, null);
                             order.setOrderID((String) orderData.get("orderID"));
                             order.setDeliverer((String) orderData.get("deliverer_name"));
                             orders.add(order);
