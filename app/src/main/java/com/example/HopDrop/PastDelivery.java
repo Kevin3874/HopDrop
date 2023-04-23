@@ -1,5 +1,7 @@
 package com.example.HopDrop;
 
+import static com.example.HopDrop.LoginActivity.username_string;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,7 +35,36 @@ public class PastDelivery extends AppCompatActivity {
         TextView add_details = findViewById(R.id.additional_details_delivery);
 
 
-        fb.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        /*
+        orderRef.get().addOnCompleteListener(task -> {
+               if (task.isSuccessful()) {
+                   DocumentSnapshot document = task.getResult();
+                   List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentOrders");
+                   //remove from current deliveries, add to past deliveries
+                   int index = -1;
+                   if (currentDeliveriesData != null) {
+                       for (Map<String, Object> orderData : currentDeliveriesData) {
+                           index++;
+                           String id = (String) orderData.get("orderID");
+                           if (!Objects.equals(id, mOrder.getOrderID())) {
+                               continue;
+                           }
+                           // move to past orders
+                           orderRef.update("pastOrders", FieldValue.arrayUnion(mOrder));
+                           currentDeliveriesData.remove(index);
+                           //figure out how to delete
+                           //userRef.update("currentDeliveries", FieldValue.arrayRemove(mOrder));
+                           orderRef.update("currentOrders", FieldValue.arrayRemove(orderData));
+
+                           break;
+                       }
+                   }
+               }
+            });
+         */
+
+
+        fb.collection("user_id").document(username_string).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {

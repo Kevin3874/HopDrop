@@ -1,7 +1,10 @@
 package com.example.HopDrop;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +37,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
-        Order order = (Order) mOrders.get(position);
+        Order order = mOrders.get(position);
         holder.customerNameTextView.setText(order.getCustomerName());
         holder.srcTextView.setText(order.getFrom());
         holder.destTextView.setText(order.getDest());
@@ -66,9 +69,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             notesTextView = itemView.findViewById(R.id.notes);
             detailsButton = itemView.findViewById(R.id.details_button);
 
+            Log.d(TAG, "OrderViewHolder: TESTING DATA");
 
             detailsButton.setOnClickListener(view -> {
                 Order order = mOrders.get(getAdapterPosition());
+
+                Log.d(TAG, order.getOrderID());
+                Log.d(TAG, order.getDeliverer());
+
                 Intent intent = new Intent(view.getContext(), OrderProgress.class);
                 if (tab.compareTo("home0") == 0) {
                     intent = new Intent(view.getContext(), OrderProgress.class);

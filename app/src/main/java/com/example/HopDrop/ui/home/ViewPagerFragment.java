@@ -60,12 +60,13 @@ public class ViewPagerFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_view_pager, container, false);
         View view = inflater.inflate(R.layout.fragment_order, container, false);
 
+        updateData();
+
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mOrderAdapter = new OrderAdapter(orders, tab);
         mRecyclerView.setAdapter(mOrderAdapter);
 
-        updateData();
 
         return view;
     }
@@ -92,6 +93,7 @@ public class ViewPagerFragment extends Fragment {
                                 String notes = (String) orderData.get("notes");
                                 Order order = new Order(customer, from, dest, fee, notes);
                                 order.setOrderID((String) orderData.get("orderID"));
+                                order.setDeliverer((String) orderData.get("deliverer_name"));
                                 orders.add(order);
                             }
                             Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("currentOrders"));
@@ -121,6 +123,7 @@ public class ViewPagerFragment extends Fragment {
                             String notes = (String) orderData.get("notes");
                             Order order = new Order(customer, from, dest, fee, notes);
                             order.setOrderID((String) orderData.get("orderID"));
+                            order.setDeliverer((String) orderData.get("deliverer_name"));
                             orders.add(order);
                         }
                         Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("currentDeliveries"));

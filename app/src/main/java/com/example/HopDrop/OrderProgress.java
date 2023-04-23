@@ -38,13 +38,9 @@ public class OrderProgress extends AppCompatActivity {
     StepView progress_bar;
     List<String> steps = new ArrayList<>();
     FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     FirebaseHelper firebaseHelper = new FirebaseHelper();
     Order mOrder;
 
-    public DatabaseReference getCurrentOrdersRef(String userId) {
-        return rootRef.child(userId).child("currentOrders");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +55,7 @@ public class OrderProgress extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mOrder = (Order) getIntent().getSerializableExtra("order");
+
         String deliverer = mOrder.getDeliverer();
         String orderId = mOrder.getOrderID();
 
@@ -97,46 +94,17 @@ public class OrderProgress extends AppCompatActivity {
         steps.add("Delivered"); // order.getState() == 2
         progress_bar.setSteps(steps);
 
-        if (Objects.equals(mOrder.getDeliverer(), "")) {
+        //if no one has picked up
+        // if firebase orderID/deliverer is empty, return default page
+        if (Objects.equals(mOrder.getOrderID(), "") || Objects.equals(mOrder.getDeliverer(), "")) {
             return;
         }
 
         //if updated while not open
         updateProgress();
 
-        //if updated while open
-        FirebaseHelper.OnOrderStateChangedListener orderStateListener = new FirebaseHelper.OnOrderStateChangedListener() {
-            @Override
-            public void onOrderStateChanged(Order updatedOrder) {
-                Log.d(TAG, "onOrderStateChanged: ORDER IS UPDATED");
-                Log.d(TAG, "onOrderStateChanged: ORDER IS UPDATED AND STATE IS 1");
-                progress_bar.go(1, true);
-            }
-
-            @Override
-            public void onOrderRemoved(Order removedOrder) {
-                Log.d(TAG, "onOrderStateChanged: ORDER IS REMOVED");
-                if (mOrder.getState() == 1) {
-                    Log.d(TAG, "onOrderStateChanged: ORDER IS REMOVED AND STATE IS 1");
-                    progress_bar.go(1, true);
-                }
-                if (mOrder.getState() == 2) {
-                    Log.d(TAG, "onOrderStateChanged: ORDER IS REMOVED AND STATE IS 2");
-                    progress_bar.go(1, false);
-                    progress_bar.go(1, true);
-                }
-            }
-
-            @Override
-            public void onError(Exception error) {
-                // Handle the error
-            }
-        };
-
-        ListenerRegistration listenerRegistration = firebaseHelper.setupOrderStateListener(deliverer, mOrder.getOrderID(), orderStateListener);
 
 
-        firebaseHelper.removeOrderStateListener(listenerRegistration);
 
     }
 
@@ -153,13 +121,12 @@ public class OrderProgress extends AppCompatActivity {
                     Log.d("Order state set", "onEvent" + mOrder.getState());
                 }
             }
-            ;
+
             if (mOrder.getState() == 1) {
                 progress_bar.go(1, true);
             }
-            if (mOrder.getState() == 2) {
-                progress_bar.go(1, false);
-                progress_bar.go(1, true);
+            if(mOrder.getState() == 2) {
+                progress_bar.go(2, true);
             }
         });
     }

@@ -14,6 +14,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class OrderDetailsActivity extends AppCompatActivity {
@@ -56,7 +58,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
             DocumentReference orderRef = rootRef.collection("orders").document(mOrder.getOrderID());
             // What happens when the user clicks accept
             Intent intent = new Intent(OrderDetailsActivity.this, CustomerUpdateActivity.class);
-            intent.putExtra("order", mOrder);
             //delete from active orders collections
             orderRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -72,11 +73,32 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Error getting order", Toast.LENGTH_SHORT).show();
                 }
             });
-            //add to user
+            //add to deliverer
             DocumentReference userRef = rootRef.collection("user_id").document(username_string);
             mOrder.setDeliverer(username_string);
             userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
 
+
+            //add to orders for user
+            DocumentReference userRef1 = rootRef.collection("user_id").document(mOrder.getCustomerName());
+            userRef1.update("currentOrders", FieldValue.arrayUnion(mOrder));
+
+
+            userRef1.get().addOnCompleteListener(task -> {
+                DocumentSnapshot document = task.getResult();
+                List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentOrders");
+                if (currentDeliveriesData != null) {
+                    for (Map<String, Object> orderData : currentDeliveriesData) {
+                        if (Objects.equals(orderData.get("orderID"), "test")) {
+                            userRef1.update("currentOrders", FieldValue.arrayRemove(orderData));
+                        }
+                    }
+                }
+            });
+
+
+
+            intent.putExtra("order", mOrder);
             startActivity(intent);
         });
     }

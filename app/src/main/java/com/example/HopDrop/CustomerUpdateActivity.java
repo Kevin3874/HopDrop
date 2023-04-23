@@ -122,6 +122,21 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                     action_button.setText("Delivered");
                 } else if (mOrder.getState() == 1) {
                     mOrder.setState(2);
+                    DocumentReference userRef1 = fb.collection("user_id").document(mOrder.getCustomerName());
+                    userRef1.get().addOnCompleteListener(task -> {
+                        DocumentSnapshot document = task.getResult();
+                        List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentDeliveries");
+                        if (currentDeliveriesData != null) {
+                            for (Map<String, Object> orderData : currentDeliveriesData) {
+                                if (!Objects.equals(orderData.get("orderID"), mOrder.getOrderID())) {
+                                    continue;
+                                }
+                                userRef1.update("currentDeliveries", FieldValue.arrayRemove(orderData));
+                                userRef1.update("currentDeliveries", FieldValue.arrayUnion(orderData));
+                                break;
+                            }
+                        }
+                    });
                     progress_bar.go(1, true);
                     Intent intent = new Intent(CustomerUpdateActivity.this, ConfirmOrderActivity.class);
                     intent.putExtra("order", mOrder);

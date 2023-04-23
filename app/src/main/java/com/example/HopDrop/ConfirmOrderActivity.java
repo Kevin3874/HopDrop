@@ -72,6 +72,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             // Define what should happen when the button is clicked
             // Move the delivery to past deliveries and past orders
             DocumentReference userRef = rootRef.collection("user_id").document(username_string);
+            DocumentReference orderRef = rootRef.collection("user_id").document(mOrder.getCustomerName());
             userRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
@@ -91,10 +92,37 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                             //figure out how to delete
                             //userRef.update("currentDeliveries", FieldValue.arrayRemove(mOrder));
                             userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
+
                             break;
                         }
                     }
                 }
+            });
+
+            orderRef.get().addOnCompleteListener(task -> {
+               if (task.isSuccessful()) {
+                   DocumentSnapshot document = task.getResult();
+                   List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentOrders");
+                   //remove from current deliveries, add to past deliveries
+                   int index = -1;
+                   if (currentDeliveriesData != null) {
+                       for (Map<String, Object> orderData : currentDeliveriesData) {
+                           index++;
+                           String id = (String) orderData.get("orderID");
+                           if (!Objects.equals(id, mOrder.getOrderID())) {
+                               continue;
+                           }
+                           // move to past orders
+                           orderRef.update("pastOrders", FieldValue.arrayUnion(mOrder));
+                           currentDeliveriesData.remove(index);
+                           //figure out how to delete
+                           //userRef.update("currentDeliveries", FieldValue.arrayRemove(mOrder));
+                           orderRef.update("currentOrders", FieldValue.arrayRemove(orderData));
+
+                           break;
+                       }
+                   }
+               }
             });
 
             Intent intent = new Intent(ConfirmOrderActivity.this, MainActivity.class);

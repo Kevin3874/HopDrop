@@ -1,7 +1,6 @@
 package com.example.HopDrop;
 
 import static com.example.HopDrop.LoginActivity.username_string;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -63,18 +62,15 @@ public class NewOrder extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please fix the fee input", Toast.LENGTH_SHORT).show();
                 } else {
                     DocumentReference userRef = rootRef.collection("user_id").document(username_string);
-                    rootRef.collection("orders").document("orders").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                //add to firebase for all orders
-                                Order order = new Order(username_string, from, to, fee, details);
-                                rootRef.collection("orders").add(order);
-                                //add to user's collection
-                                userRef.update("currentOrders", FieldValue.arrayUnion(order));
-                            } else {
-                                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
-                            }
+                    rootRef.collection("orders").document("orders").get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            //add to firebase for all orders
+                            Order order = new Order(username_string, from, to, fee, details);
+                            rootRef.collection("orders").add(order);
+                            //add to user's collection
+                            userRef.update("currentOrders", FieldValue.arrayUnion(order));
+                        } else {
+                            Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
                         }
                     });
                     finish();

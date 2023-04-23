@@ -33,7 +33,7 @@ public class Order implements Serializable {
         this.notes = notes;
         state = 0;
         this.deliverer_name = "";
-        orderID = "";
+        orderID = "test";
 
     }
     @PropertyName("customer_name")

@@ -1,5 +1,7 @@
 package com.example.HopDrop;
 
+import static com.example.HopDrop.LoginActivity.username_string;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,22 +33,19 @@ public class PastOrders extends AppCompatActivity {
         TextView add_details = findViewById(R.id.additional_details_order);
 
 
-        fb.collection("user_id").document(mOrder.getDeliverer()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    //get first and last name
-                    DocumentSnapshot doc = task.getResult();
-                    String full_name = doc.get("firstName") + " " + doc.get("lastName");
-                    name.setText(full_name);
-                    String string = "Fee: " + mOrder.getFee();
-                    fee.setText(string);
-                    string = "Destination: " + mOrder.getDest();
-                    dest.setText(string);
-                    string = "Pickup location: " + mOrder.getFrom();
-                    pickup.setText(string);
-                    add_details.setText(mOrder.getNotes());
-                }
+        fb.collection("user_id").document(username_string).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                //get first and last name
+                DocumentSnapshot doc = task.getResult();
+                String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                name.setText(full_name);
+                String string = "Fee: " + mOrder.getFee();
+                fee.setText(string);
+                string = "Destination: " + mOrder.getDest();
+                dest.setText(string);
+                string = "Pickup location: " + mOrder.getFrom();
+                pickup.setText(string);
+                add_details.setText(mOrder.getNotes());
             }
         });
     }
