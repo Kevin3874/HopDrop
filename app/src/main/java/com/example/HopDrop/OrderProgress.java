@@ -1,11 +1,16 @@
 package com.example.HopDrop;
 
+import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,21 +19,32 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.shuhart.stepview.StepView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderProgress extends AppCompatActivity {
     StepView progress_bar;
     List<String> steps = new ArrayList<>();
     FirebaseFirestore fb = FirebaseFirestore.getInstance();
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+    FirebaseHelper firebaseHelper = new FirebaseHelper();
     Order mOrder;
+
+    public DatabaseReference getCurrentOrdersRef(String userId) {
+        return rootRef.child(userId).child("currentOrders");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +59,10 @@ public class OrderProgress extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mOrder = (Order) getIntent().getSerializableExtra("order");
+        String deliverer = mOrder.getDeliverer();
+        String orderId = mOrder.getOrderID();
+
+
         TextView name = findViewById(R.id.customer_name_accept);
         fb.collection("user_id").document(username_string).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -77,67 +97,79 @@ public class OrderProgress extends AppCompatActivity {
         steps.add("Delivered"); // order.getState() == 2
         progress_bar.setSteps(steps);
 
+        if (Objects.equals(mOrder.getDeliverer(), "")) {
+            return;
+        }
 
-
+        //if updated while not open
         updateProgress();
-    }
 
-    private void updateProgress() {
-        fb.collection("user_id").document(username_string).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        //if updated while open
+        FirebaseHelper.OnOrderStateChangedListener orderStateListener = new FirebaseHelper.OnOrderStateChangedListener() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null)  {
-                    return;
-                }
-                        // Set Order object fields using orderData map
-                        for (Map<String, Object> orderData : (List<Map<String, Object>>) value.get("currentDeliveries")) {
-                            if (orderData.get("orderID").equals(mOrder.getOrderID())) {
-                                mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
-                                Log.d("Order state set", "onEvent" + mOrder.getState());
-                            }
-                        };
+            public void onOrderStateChanged(Order updatedOrder) {
+                Log.d(TAG, "onOrderStateChanged: ORDER IS UPDATED");
+                Log.d(TAG, "onOrderStateChanged: ORDER IS UPDATED AND STATE IS 1");
+                progress_bar.go(1, true);
+            }
+
+            @Override
+            public void onOrderRemoved(Order removedOrder) {
+                Log.d(TAG, "onOrderStateChanged: ORDER IS REMOVED");
                 if (mOrder.getState() == 1) {
+                    Log.d(TAG, "onOrderStateChanged: ORDER IS REMOVED AND STATE IS 1");
                     progress_bar.go(1, true);
-                } if (mOrder.getState() == 2) {
+                }
+                if (mOrder.getState() == 2) {
+                    Log.d(TAG, "onOrderStateChanged: ORDER IS REMOVED AND STATE IS 2");
                     progress_bar.go(1, false);
                     progress_bar.go(1, true);
                 }
             }
-        });
 
-        /*
-        DocumentReference userRef = fb.collection("user_id").document(username_string);
-        userRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentDeliveries");
+            @Override
+            public void onError(Exception error) {
+                // Handle the error
+            }
+        };
 
-                if (currentDeliveriesData != null) {
-                    for (Map<String, Object> orderData : currentDeliveriesData) {
-                        String id = (String) orderData.get("orderID");
-                        if (!Objects.equals(id, mOrder.getOrderID())) {
-                            continue;
-                        }
-                        // move to past orders
-                        userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
-                        userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
-                        break;
-                    }
+        ListenerRegistration listenerRegistration = firebaseHelper.setupOrderStateListener(deliverer, mOrder.getOrderID(), orderStateListener);
+
+
+        firebaseHelper.removeOrderStateListener(listenerRegistration);
+
+    }
+
+
+    private void updateProgress() {
+        fb.collection("user_id").document(username_string).addSnapshotListener((value, error) -> {
+            if (error != null) {
+                return;
+            }
+            // Set Order object fields using orderData map
+            for (Map<String, Object> orderData : (List<Map<String, Object>>) value.get("currentDeliveries")) {
+                if (orderData.get("orderID").equals(mOrder.getOrderID())) {
+                    mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
+                    Log.d("Order state set", "onEvent" + mOrder.getState());
                 }
             }
+            ;
+            if (mOrder.getState() == 1) {
+                progress_bar.go(1, true);
+            }
+            if (mOrder.getState() == 2) {
+                progress_bar.go(1, false);
+                progress_bar.go(1, true);
+            }
         });
-         */
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

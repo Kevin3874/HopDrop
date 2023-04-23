@@ -71,28 +71,4 @@ public class OrderFragment extends Fragment {
                     }
                 });
     }
-
-    public interface OnOrdersFetchedListener {
-        void onOrdersFetched(List<Order> orders);
-    }
-
-    private void EventChangeListener(final ViewPagerFragment.OnOrdersFetchedListener listener) {
-        List<Order> orders = new ArrayList<>();
-        rootRef.collection("orders").whereNotEqualTo("state", 2)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                Order order = document.toObject(Order.class);
-                                order.setOrderID(document.getId());
-                                orders.add(order);
-                                Log.d("Order array", String.valueOf(orders));
-                            }
-                            listener.onOrdersFetched(orders);
-                        }
-                    }
-                });
-    }
 }

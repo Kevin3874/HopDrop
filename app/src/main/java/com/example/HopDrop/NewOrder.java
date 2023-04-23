@@ -83,22 +83,14 @@ public class NewOrder extends AppCompatActivity {
         });
 
 
-        Button qbtn = (Button) findViewById(R.id.quit_btn);
-        qbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        Button qbtn = findViewById(R.id.quit_btn);
+        qbtn.setOnClickListener(v -> finish());
 
-        Button qrbtn = (Button) findViewById(R.id.upload_qr);
-        qrbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 0);
-            }
+        Button qrbtn = findViewById(R.id.upload_qr);
+        qrbtn.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, 0);
         });
     }
 

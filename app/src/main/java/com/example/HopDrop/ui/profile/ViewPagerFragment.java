@@ -68,22 +68,6 @@ public class ViewPagerFragment extends Fragment {
         mRecyclerView.setAdapter(mOrderAdapter);
 
         updateData();
-        /*
-        // Set up the RecyclerView and adapter
-        EventChangeListener(new com.example.HopDrop.ui.home.ViewPagerFragment.OnOrdersFetchedListener() {
-            @Override
-            public void onOrdersFetched(List<Order> orders) {
-                if (orders != null) {
-                    // Set up the RecyclerView and adapter
-                    mRecyclerView = view.findViewById(R.id.recycler_view);
-                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    mOrderAdapter = new OrderAdapter(orders, tab);
-                    mRecyclerView.setAdapter(mOrderAdapter);
-                }
-            }
-        }, tab);
-
-         */
 
         return view;
     }
@@ -91,77 +75,61 @@ public class ViewPagerFragment extends Fragment {
     private void updateData() {
         orders = new ArrayList<>();
         if (tab.compareTo("profile0") == 0) {
-            rootRef.collection("user_id").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    orders.clear();
-                    if (error != null)  {
-                        return;
-                    }
-                    List<DocumentSnapshot> documentChanges = value.getDocuments();
-                    for(DocumentSnapshot document : documentChanges) {
-                        if (document.getId().compareTo(username_string) == 0) {
-                            // Set Order object fields using orderData map
-                            for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("pastOrders")) {
-                                String customer = (String) orderData.get("customer_name");
-                                String from = (String) orderData.get("fromLocation");
-                                String dest = (String) orderData.get("dest");
-                                String fee = (String) orderData.get("fee");
-                                String notes = (String) orderData.get("notes");
-                                Order order = new Order(customer, from, dest, fee, notes);
-                                orders.add(order);
-                            }
-                            System.out.println("potato" + String.valueOf(orders));
-                            Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("pastOrders"));
-                            mOrderAdapter = new OrderAdapter(orders, tab);
-                            mRecyclerView.setAdapter(mOrderAdapter);
-                            break;
-                        }
-                    }
-                    mOrderAdapter.notifyDataSetChanged();
+            rootRef.collection("user_id").addSnapshotListener((value, error) -> {
+                orders.clear();
+                if (error != null)  {
+                    return;
                 }
+                List<DocumentSnapshot> documentChanges = value.getDocuments();
+                for(DocumentSnapshot document : documentChanges) {
+                    if (document.getId().compareTo(username_string) == 0) {
+                        // Set Order object fields using orderData map
+                        for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("pastOrders")) {
+                            String customer = (String) orderData.get("customer_name");
+                            String from = (String) orderData.get("fromLocation");
+                            String dest = (String) orderData.get("dest");
+                            String fee = (String) orderData.get("fee");
+                            String notes = (String) orderData.get("notes");
+                            Order order = new Order(customer, from, dest, fee, notes);
+                            orders.add(order);
+                        }
+                        System.out.println("potato" + String.valueOf(orders));
+                        Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("pastOrders"));
+                        mOrderAdapter = new OrderAdapter(orders, tab);
+                        mRecyclerView.setAdapter(mOrderAdapter);
+                        break;
+                    }
+                }
+                mOrderAdapter.notifyDataSetChanged();
             });
         } else if (tab.compareTo("profile1") == 0) {
-            rootRef.collection("user_id").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    orders.clear();
-                    if (error != null)  {
-                        return;
-                    }
-                    List<DocumentSnapshot> documentChanges = value.getDocuments();
-                    for(DocumentSnapshot document : documentChanges) {
-                        if (document.getId().compareTo(username_string) == 0) {
-                            // Set Order object fields using orderData map
-                            for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("pastDeliveries")) {
-                                String customer = (String) orderData.get("customer_name");
-                                String from = (String) orderData.get("fromLocation");
-                                String dest = (String) orderData.get("dest");
-                                String fee = (String) orderData.get("fee");
-                                String notes = (String) orderData.get("notes");
-                                Order order = new Order(customer, from, dest, fee, notes);
-                                orders.add(order);
-                            }
-                            System.out.println("potato" + String.valueOf(orders));
-                            Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("pastDeliveries"));
-                            mOrderAdapter = new OrderAdapter(orders, tab);
-                            mRecyclerView.setAdapter(mOrderAdapter);
-                            break;
-                        }
-                    }
-                    mOrderAdapter.notifyDataSetChanged();
+            rootRef.collection("user_id").addSnapshotListener((value, error) -> {
+                orders.clear();
+                if (error != null)  {
+                    return;
                 }
+                List<DocumentSnapshot> documentChanges = value.getDocuments();
+                for(DocumentSnapshot document : documentChanges) {
+                    if (document.getId().compareTo(username_string) == 0) {
+                        // Set Order object fields using orderData map
+                        for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("pastDeliveries")) {
+                            String customer = (String) orderData.get("customer_name");
+                            String from = (String) orderData.get("fromLocation");
+                            String dest = (String) orderData.get("dest");
+                            String fee = (String) orderData.get("fee");
+                            String notes = (String) orderData.get("notes");
+                            Order order = new Order(customer, from, dest, fee, notes);
+                            orders.add(order);
+                        }
+                        System.out.println("potato" + String.valueOf(orders));
+                        Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("pastDeliveries"));
+                        mOrderAdapter = new OrderAdapter(orders, tab);
+                        mRecyclerView.setAdapter(mOrderAdapter);
+                        break;
+                    }
+                }
+                mOrderAdapter.notifyDataSetChanged();
             });
         }
-    }
-
-    // Returns a list of dummy orders
-    private List<Order> getOrders() {
-        //TODO: Update information based on Firestore account
-        List<Order> orders = new ArrayList<>();
-        //orders.add(new Order("John Smith", "New York", "Los Angeles", 500.00f, "I am Brody cafe", "as7d9h"));
-        //orders.add(new Order("Jane Doe", "San Francisco", "Seattle", 300.00f, "please give me a call when arrived"));
-        //orders.add(new Order("Bob Johnson", "Boston", "Chicago", 250.00f, "ketchup and fork please"));
-        return orders;
     }
 }

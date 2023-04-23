@@ -5,23 +5,16 @@ import static com.example.HopDrop.LoginActivity.username_string;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.HopDrop.ui.home.HomeFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class OrderDetailsActivity extends AppCompatActivity {
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
@@ -32,29 +25,29 @@ public class OrderDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // Get the Order object passed from the previous activity
         mOrder = (Order) getIntent().getSerializableExtra("order");
 
         // Update the UI with the Order details
-        TextView customerNameTextView = findViewById(R.id.customer_name);
+        TextView customerNameTextView = findViewById(R.id.customer_name_accept);
         String string = "";
         customerNameTextView.setText(mOrder.getCustomerName());
 
-        TextView srcTextView = findViewById(R.id.src);
+        TextView srcTextView = findViewById(R.id.pickup_location_accept);
         string = "Pickup location: " + mOrder.getFrom();
         srcTextView.setText(string);
 
-        TextView destTextView = findViewById(R.id.dest);
+        TextView destTextView = findViewById(R.id.destination_accept);
         string = "Delivery location: " + mOrder.getDest();
         destTextView.setText(string);
 
-        TextView feeTextView = findViewById(R.id.fee);
+        TextView feeTextView = findViewById(R.id.fee_accept);
         string = "Fee: " + mOrder.getFee();
         feeTextView.setText(string);
 
-        TextView notesTextView = findViewById(R.id.notes);
+        TextView notesTextView = findViewById(R.id.additional_details_progress);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));
 
         Button acceptButton = findViewById(R.id.accept_button);
@@ -65,21 +58,18 @@ public class OrderDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(OrderDetailsActivity.this, CustomerUpdateActivity.class);
             intent.putExtra("order", mOrder);
             //delete from active orders collections
-            orderRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Remove the order from the Firestore collection
-                            orderRef.delete();
-                            // Add it to the user's collection
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Order not found", Toast.LENGTH_SHORT).show();
-                        }
+            orderRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Remove the order from the Firestore collection
+                        orderRef.delete();
+                        // Add it to the user's collection
                     } else {
-                        Toast.makeText(getApplicationContext(), "Error getting order", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Order not found", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error getting order", Toast.LENGTH_SHORT).show();
                 }
             });
             //add to user

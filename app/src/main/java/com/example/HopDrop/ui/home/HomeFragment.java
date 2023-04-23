@@ -43,8 +43,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // TODO: make the homeview with user's current orders/deliveries
-
         // Inflate the layout for this fragment
         View myview = inflater.inflate(R.layout.fragment_home, container, false);
 

@@ -48,10 +48,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView (@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        // eliminated for simplicity
-  //      ProfileViewModel dashboardViewModel =
-  //              new ViewModelProvider(this).get(ProfileViewModel.class);
-
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -59,12 +55,7 @@ public class ProfileFragment extends Fragment {
         orderViewPager.setAdapter(new ViewPagerAdapter(this));
         TabLayout orderTabLayout  = root.findViewById(R.id.orderTabLayoutProfile);
 
-        new TabLayoutMediator(orderTabLayout, orderViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(tab_names[position]);
-            }
-        }).attach();
+        new TabLayoutMediator(orderTabLayout, orderViewPager, (tab, position) -> tab.setText(tab_names[position])).attach();
 
 
         username = binding.userName;
@@ -78,24 +69,21 @@ public class ProfileFragment extends Fragment {
 
         //set data from database
         //TODO: change to update number of deliveries automatically
-        db.collection("user_id").document(username_text).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    //get first and last name
-                    DocumentSnapshot document = task.getResult();
-                    String firstName = document.getString("firstName");
-                    String lastName = document.getString("lastName");
-                    String fullName = firstName + " " + lastName;
-                    username.setText(fullName);
-                    // TODO: update with past deliveries
+        db.collection("user_id").document(username_text).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                //get first and last name
+                DocumentSnapshot document = task.getResult();
+                String firstName = document.getString("firstName");
+                String lastName = document.getString("lastName");
+                String fullName = firstName + " " + lastName;
+                username.setText(fullName);
+                // TODO: update with past deliveries
 
-                    //get number of deliveries
-                    ArrayList<Order> numDeliveries = (ArrayList<Order>) document.get("pastDeliveries");
-                    number_deliveries.setText(String.format("%d", numDeliveries.size()));
-                } else {
-                    Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
-                }
+                //get number of deliveries
+                ArrayList<Order> numDeliveries = (ArrayList<Order>) document.get("pastDeliveries");
+                number_deliveries.setText(String.format("%d", numDeliveries.size()));
+            } else {
+                Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -39,7 +39,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_update);
 
         // Add the code for the back button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // Get the Order object passed from the previous activity
         mOrder = (Order) getIntent().getSerializableExtra("order");
@@ -106,8 +106,6 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                                 for (Map<String, Object> orderData : currentDeliveriesData) {
                                     String id = (String) orderData.get("orderID");
                                     if (!Objects.equals(id, mOrder.getOrderID())) {
-                                        Log.d(TAG, id);
-                                        Log.d(TAG, mOrder.getOrderID());
                                         continue;
                                     }
                                     Log.d(TAG, "onClick: Updating in Firebase");

@@ -77,9 +77,6 @@ public class Order implements Serializable {
     public void setState(int new_state) {
         state = new_state;
     }
-    public void updateState() {
-        state++;
-    }
 
 }
 
