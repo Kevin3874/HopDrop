@@ -100,6 +100,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
             intent.putExtra("order", mOrder);
             startActivity(intent);
+            finish();
         });
     }
     @Override

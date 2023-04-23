@@ -33,6 +33,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
     List<String> steps = new ArrayList<String>();
 
     FirebaseFirestore fb = FirebaseFirestore.getInstance();
+    String curr_state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +54,33 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         steps.add("Picked Up");
         steps.add("Delivered");
         progress_bar.setSteps(steps);
-        if (mOrder.getState() == 0) {
-            action_button.setText("Picked Up");
-        } else if (mOrder.getState() == 1) {
-            progress_bar.go(1, true);
-            action_button.setText("Delivered");
-        }
+        fb.collection("user_id").document(username_string).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) doc.get("currentDeliveries");
+                    if (currentDeliveriesData != null) {
+                        for (Map<String, Object> orderData : currentDeliveriesData) {
+                            String id = (String) orderData.get("orderID");
+                            if (!Objects.equals(id, mOrder.getOrderID())) {
+                                continue;
+                            }
+                            curr_state = String.valueOf(orderData.get("state"));
+                            System.out.println("curr: " + curr_state);
+                            if (curr_state.compareTo("0") == 0) {
+                                action_button.setText("Picked Up");
+                            } else if (curr_state.compareTo("1") == 0) {
+                                progress_bar.go(1, true);
+                                action_button.setText("Delivered");
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
 
         // Update the UI with the Order details
         //TextView customerNameTextView = findViewById(R.id.customer_name);
@@ -98,8 +120,9 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         action_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                if (mOrder.getState() == 0) {
+                if (curr_state.compareTo("0") == 0) {
                     mOrder.setState(1);
+                    curr_state = "1";
                     DocumentReference userRef = fb.collection("user_id").document(username_string);
                     userRef.get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -123,7 +146,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
                     progress_bar.go(1, true);
                     action_button.setText("Delivered");
-                } else if (mOrder.getState() == 1) {
+                } else if (curr_state.compareTo("1") == 0) {
                     mOrder.setState(2);
                     DocumentReference userRef1 = fb.collection("user_id").document(mOrder.getCustomerName());
                     userRef1.get().addOnCompleteListener(task -> {
