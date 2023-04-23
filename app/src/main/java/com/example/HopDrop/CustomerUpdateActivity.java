@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -90,6 +91,8 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         TextView notesTextView = findViewById(R.id.additional_details_confirm);
         notesTextView.setText(mOrder.getNotes());
 
+        ImageButton qr_button = findViewById(R.id.qr_button);
+        //TODO: create activity that displays the qr code image uploaded by orderer (requires figuring out how to upload picture to firestore first
 
         Button cancelButton = findViewById(R.id.cancel_btn);
         action_button.setOnClickListener(new View.OnClickListener() {

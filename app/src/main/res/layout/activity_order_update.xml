@@ -38,6 +38,15 @@
                     android:text="Your Customer"
                     android:textSize="20sp"
                     android:padding="9dp"/>
+                <ImageButton
+                    android:id="@+id/qr_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="15dp"
+                    android:src="@drawable/qr_code_svgrepo_com"
+                    android:background="@null"
+                    android:contentDescription="" />
                 <ImageView
                     android:id="@+id/customer_image"
                     android:layout_centerHorizontal="true"
