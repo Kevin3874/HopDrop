@@ -1,35 +1,21 @@
 package com.example.HopDrop.ui.profile;
 
+import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.HopDrop.Order;
 import com.example.HopDrop.OrderAdapter;
 import com.example.HopDrop.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,40 +26,43 @@ public class ViewPagerFragment extends Fragment {
     private OrderAdapter mOrderAdapter;
     private String title;
     private String tab;
-    private FirebaseFirestore rootRef;
+    FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     List<Order> orders;
 
-    public ViewPagerFragment(){}
+    public ViewPagerFragment(){
+
+    }
     public ViewPagerFragment(String title, String tab) {
         // Required empty public constructor
-
         this.title = title;
         this.tab = tab;
+        // Get the list of orders
+        this.orders = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View root =  inflater.inflate(R.layout.fragment_view_pager, container, false);
-        View view = inflater.inflate(R.layout.fragment_order, container, false);
-        rootRef = FirebaseFirestore.getInstance();
 
-        // Get the list of orders
-        orders = new ArrayList<>();
+        // Inflate the layout for this fragment
+        View root = inflater.inflate(R.layout.fragment_view_pager, container, false);
+        View view = inflater.inflate(R.layout.fragment_order, container, false);
+
+        updateData();
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mOrderAdapter = new OrderAdapter(orders, tab);
         mRecyclerView.setAdapter(mOrderAdapter);
 
-        updateData();
 
         return view;
     }
 
     private void updateData() {
         orders = new ArrayList<>();
+        Log.d(TAG, "TEST TEST TEST");
+        Log.d(TAG, tab);
         if (tab.compareTo("profile0") == 0) {
             rootRef.collection("user_id").addSnapshotListener((value, error) -> {
                 orders.clear();

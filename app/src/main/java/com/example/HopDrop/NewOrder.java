@@ -1,52 +1,29 @@
 package com.example.HopDrop;
 
 import static com.example.HopDrop.LoginActivity.username_string;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.app.ProgressDialog;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class NewOrder extends AppCompatActivity {
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     private boolean mediaUploaded = false;
+    Bitmap bitmap;
     Order order;
     Uri imageUri;
     @Override
@@ -81,8 +58,7 @@ public class NewOrder extends AppCompatActivity {
                     rootRef.collection("orders").document("orders").get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             //add to firebase for all orders
-                            Order tempOrder = new Order(username_string, from, to, fee, details, null);
-                            order = tempOrder;
+                            order = new Order(username_string, from, to, fee, details, null);
                             rootRef.collection("orders").add(order);
                             //add to user's collection
                             userRef.update("currentOrders", FieldValue.arrayUnion(order));
@@ -113,7 +89,7 @@ public class NewOrder extends AppCompatActivity {
         if (requestCode == 0 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
                 //imageView.setImageBitmap(bitmap);
                 //order.setImage(bitmap);
                 mediaUploaded = true;
