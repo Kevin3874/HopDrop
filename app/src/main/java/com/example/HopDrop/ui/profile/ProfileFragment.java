@@ -31,23 +31,19 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FragmentProfileBinding binding;
-    private Button btn;
     private String [] tab_names = {"Past orders", "Past deliveries"};
     private TextView username;
 
     private TextView number_deliveries;
-    private SharedPreferences myPrefs;
     Context cntx;
-    private MainActivity myact;
 
-    public View onCreateView (@NonNull LayoutInflater inflater,
+
+    public View onCreateView (LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View myview = inflater.inflate(R.layout.fragment_profile, container, false);
 
         cntx = getActivity().getApplicationContext();
-        myact = (MainActivity) getActivity();
 
         ViewPager2 orderViewPager = myview.findViewById(R.id.pagerProfile);
         orderViewPager.setAdapter(new ViewPagerAdapter(this));
