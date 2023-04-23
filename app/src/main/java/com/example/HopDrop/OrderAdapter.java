@@ -14,6 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
@@ -38,7 +43,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         Order order = mOrders.get(position);
-        holder.customerNameTextView.setText(order.getCustomerName());
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        rootRef.collection("user_id").document(order.getCustomerName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    //get first and last name
+                    DocumentSnapshot doc = task.getResult();
+                    String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                    holder.customerNameTextView.setText(full_name);
+                }
+            }
+        });
         holder.srcTextView.setText(order.getFrom());
         holder.destTextView.setText(order.getDest());
         holder.feeTextView.setText(String.valueOf(order.getFee()));
@@ -63,9 +79,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         public OrderViewHolder(View itemView) {
             super(itemView);
             customerNameTextView = itemView.findViewById(R.id.customer_name);
-            srcTextView = itemView.findViewById(R.id.src);
-            destTextView = itemView.findViewById(R.id.dest);
-            feeTextView = itemView.findViewById(R.id.fee);
+            srcTextView = itemView.findViewById(R.id.src_accept);
+            destTextView = itemView.findViewById(R.id.dest_accept);
+            feeTextView = itemView.findViewById(R.id.fee_accept);
             notesTextView = itemView.findViewById(R.id.notes);
             detailsButton = itemView.findViewById(R.id.details_button);
 

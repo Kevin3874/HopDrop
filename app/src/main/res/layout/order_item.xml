@@ -10,110 +10,93 @@
     app:cardBackgroundColor="#A9D8F3"
     android:layout_gravity="end|top">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
+        <TextView
+            android:id="@+id/customer_name_label"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/customer_name_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Customer Name: "
-                android:textStyle="bold"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/customer_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/details_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/info"
-                android:background="@null"
-                android:contentDescription=" " />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:text="Customer Name: "
+            android:textStyle="bold"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/customer_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_toRightOf="@id/customer_name_label"
+            android:text="insert name"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/src_label"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="From: "
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/src"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/details_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/info"
+            android:background="@null"
+            android:contentDescription=" " />
 
-            <TextView
-                android:id="@+id/dest_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="To: "
-                android:textStyle="bold"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/dest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/fee_accept"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_toRightOf="@id/fee"
+            android:layout_below="@id/customer_name_label"
+            android:text="insert fee"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/fee_accept"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fee: $"
-                android:textStyle="bold"
-                android:textSize="16sp" />
+        <TextView
+            android:id="@+id/fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/customer_name_label"
+            android:textStyle="bold"
+            android:text="Fee: "
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/fee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
+        <TextView
+            android:id="@+id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/src_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fee"
+            android:layout_toRightOf="@id/src"
+            android:text="Pickup location: "
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/src"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fee"
+            android:text="Pickup location: "
+            android:textStyle="bold"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/notes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:textSize="16sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/dest_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/src"
+            android:layout_toRightOf="@id/dest"
+            android:text="insert destination"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/dest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/src"
+            android:text="Destination: "
+            android:textStyle="bold"
+            android:textSize="16sp" />
 
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
