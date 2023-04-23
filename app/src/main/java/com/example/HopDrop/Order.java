@@ -1,5 +1,6 @@
 package com.example.HopDrop;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.google.firebase.firestore.PropertyName;
@@ -15,7 +16,7 @@ public class Order implements Serializable {
     private final String notes;
     private int state;
     private String orderID;
-    Uri imageuri;
+    Bitmap image;
 
     public Order() {
         this.customer_name = "default";
@@ -25,10 +26,9 @@ public class Order implements Serializable {
         this.notes = "default";
         this.state = 0;
         this.deliverer_name = "";
-        imageuri = null;
     }
 
-    public Order(String customer_name, String fromLocation, String dest, String fee, String notes, Uri imageuri) {
+    public Order(String customer_name, String fromLocation, String dest, String fee, String notes, Bitmap image) {
         this.customer_name = customer_name;
         this.fromLocation = fromLocation;
         this.dest = dest;
@@ -37,7 +37,7 @@ public class Order implements Serializable {
         state = 0;
         this.deliverer_name = "";
         orderID = "test";
-        this.imageuri = imageuri;
+        this.image = image;
 
     }
     @PropertyName("customer_name")
@@ -70,8 +70,8 @@ public class Order implements Serializable {
     @PropertyName("orderID")
     public String getOrderID() { return orderID; }
 
-    public Uri getImageuri() {
-        return imageuri;
+    public Bitmap getImage() {
+        return image;
     }
 
     public void setOrderID(String id) {
@@ -87,8 +87,8 @@ public class Order implements Serializable {
         state = new_state;
     }
 
-    public void setImageuri(Uri imageuri) {
-        this.imageuri = imageuri;
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }
 
