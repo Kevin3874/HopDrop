@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ViewPagerFragment extends Fragment {
 
@@ -61,9 +62,7 @@ public class ViewPagerFragment extends Fragment {
 
     private void updateData() {
         orders = new ArrayList<>();
-        Log.d(TAG, "TEST TEST TEST");
-        Log.d(TAG, tab);
-        if (tab.compareTo("profile0") == 0) {
+        if (Objects.equals(tab, "profile0")) {
             rootRef.collection("user_id").addSnapshotListener((value, error) -> {
                 orders.clear();
                 if (error != null)  {
@@ -91,7 +90,7 @@ public class ViewPagerFragment extends Fragment {
                 }
                 mOrderAdapter.notifyDataSetChanged();
             });
-        } else if (tab.compareTo("profile1") == 0) {
+        } else if (Objects.equals(tab, "profile1")) {
             rootRef.collection("user_id").addSnapshotListener((value, error) -> {
                 orders.clear();
                 if (error != null)  {
