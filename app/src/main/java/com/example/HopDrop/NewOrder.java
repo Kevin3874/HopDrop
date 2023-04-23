@@ -44,9 +44,7 @@ import java.util.Objects;
 public class NewOrder extends AppCompatActivity {
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     private boolean mediaUploaded = false;
-    Uri imageuri;
-    private StorageReference mStorageref = FirebaseStorage.getInstance().getReference();
-    private DatabaseReference mDatabaseref = FirebaseDatabase.getInstance().getReference();
+    Order order;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +77,8 @@ public class NewOrder extends AppCompatActivity {
                     rootRef.collection("orders").document("orders").get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             //add to firebase for all orders
-                            Order order = new Order(username_string, from, to, fee, details);
+                            Order tempOrder = new Order(username_string, from, to, fee, details, null);
+                            order = tempOrder;
                             rootRef.collection("orders").add(order);
                             //add to user's collection
                             userRef.update("currentOrders", FieldValue.arrayUnion(order));
@@ -106,61 +105,13 @@ public class NewOrder extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading");
-        progressDialog.show();
 
-        if (imageuri !=null){
-            StorageReference filereference  = mStorageref.child(System.currentTimeMillis()+
-                    "."+getFileExtension(imageuri));
-
-            filereference.putFile(imageuri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //Toast.makeText(Upload_Photos.this, "Upload Successfull", Toast.LENGTH_SHORT).show();
-                            filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Uri downloadUrl = uri;
-                                    Upload upload = new Upload(downloadUrl.toString());
-                                    progressDialog.show();
-                                    String  uploadId = mDatabaseref.push().getKey();
-                                    mDatabaseref.child(uploadId).setValue(upload);
-                                    progressDialog.setCanceledOnTouchOutside(false);
-                                    progressDialog.dismiss();
-                                }
-                            });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
-                            progressDialog.setCanceledOnTouchOutside(false);
-                            progressDialog.setMessage("Uploaded  " +(int)progress+"%");
-
-
-
-                        }
-                    });
-
-        }else
-            Toast.makeText(this, "Please Select a Image", Toast.LENGTH_SHORT).show();
+        if (resultCode == RESULT_OK) {
+            order.setImageuri(data.getData());
+        }
     }
 
-    private String getFileExtension(Uri uri){
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(uri));
 
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
