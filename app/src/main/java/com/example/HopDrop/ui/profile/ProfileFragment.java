@@ -3,14 +3,13 @@ package com.example.HopDrop.ui.profile;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -18,32 +17,33 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+
 import com.example.HopDrop.MainActivity;
 import com.example.HopDrop.Order;
 import com.example.HopDrop.R;
-import com.example.HopDrop.databinding.FragmentProfileBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
-// import com.example.a5_sample.ui.profile.ProfileViewModel;
 
 public class ProfileFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private String [] tab_names = {"Past orders", "Past deliveries"};
+    public String [] tab_names = {"Past orders", "Past deliveries"};
     private TextView username;
-
+    private MainActivity myact;
     private TextView number_deliveries;
     Context cntx;
 
-
+    @Override
     public View onCreateView (LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View myview = inflater.inflate(R.layout.fragment_profile, container, false);
 
         cntx = getActivity().getApplicationContext();
+        myact = (MainActivity) getActivity();
 
         ViewPager2 orderViewPager = myview.findViewById(R.id.pagerProfile);
         orderViewPager.setAdapter(new ViewPagerAdapter(this));
@@ -73,10 +73,7 @@ public class ProfileFragment extends Fragment {
 
         return myview;
     }
-
-
     class ViewPagerAdapter extends FragmentStateAdapter {
-
         public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
         }
@@ -94,7 +91,6 @@ public class ProfileFragment extends Fragment {
         public Fragment createFragment(int position) {
             return new ViewPagerFragment("New Pager", "profile" + position);
         }
-
 
         @Override
         public int getItemCount() {

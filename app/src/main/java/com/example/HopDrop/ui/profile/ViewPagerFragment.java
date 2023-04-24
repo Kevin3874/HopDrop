@@ -3,19 +3,23 @@ package com.example.HopDrop.ui.profile;
 import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.HopDrop.Order;
 import com.example.HopDrop.OrderAdapter;
 import com.example.HopDrop.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +29,22 @@ public class ViewPagerFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private OrderAdapter mOrderAdapter;
+
+    FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+    View view;
     private String title;
     private String tab;
-    FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+    View root;
+
+    private Context context;
+
     List<Order> orders;
+
 
     public ViewPagerFragment(){
 
     }
+
     public ViewPagerFragment(String title, String tab) {
         // Required empty public constructor
         this.title = title;
@@ -46,8 +58,8 @@ public class ViewPagerFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_view_pager, container, false);
-        View view = inflater.inflate(R.layout.fragment_order, container, false);
+        root = inflater.inflate(R.layout.fragment_view_pager, container, false);
+        view = inflater.inflate(R.layout.fragment_order, container, false);
 
         updateData();
 
@@ -61,8 +73,8 @@ public class ViewPagerFragment extends Fragment {
     }
 
     private void updateData() {
-        orders = new ArrayList<>();
         if (Objects.equals(tab, "profile0")) {
+            Log.d(TAG, "updateData: PROFILE0 GOES IN");
             rootRef.collection("user_id").addSnapshotListener((value, error) -> {
                 orders.clear();
                 if (error != null)  {
@@ -83,16 +95,15 @@ public class ViewPagerFragment extends Fragment {
                             order.setDeliverer((String) orderData.get("deliverer_name"));
                             orders.add(order);
                         }
-                        System.out.println("potato" + String.valueOf(orders));
-                        Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("pastOrders"));
                         mOrderAdapter = new OrderAdapter(orders, tab);
                         mRecyclerView.setAdapter(mOrderAdapter);
-                        break;
+                        return;
                     }
                 }
                 mOrderAdapter.notifyDataSetChanged();
             });
         } else if (Objects.equals(tab, "profile1")) {
+            Log.d(TAG, "updateData: PROFILE1 GOES IN");
             rootRef.collection("user_id").addSnapshotListener((value, error) -> {
                 orders.clear();
                 if (error != null)  {
@@ -113,11 +124,9 @@ public class ViewPagerFragment extends Fragment {
                             order.setDeliverer((String) orderData.get("deliverer_name"));
                             orders.add(order);
                         }
-                        System.out.println("potato" + String.valueOf(orders));
-                        Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("pastDeliveries"));
                         mOrderAdapter = new OrderAdapter(orders, tab);
                         mRecyclerView.setAdapter(mOrderAdapter);
-                        break;
+                        return;
                     }
                 }
                 mOrderAdapter.notifyDataSetChanged();

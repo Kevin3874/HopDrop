@@ -45,36 +45,29 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         Order order = mOrders.get(position);
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-        System.out.println(tab + ":" + order.getDeliverer() + ";");
         if (tab.compareTo("home0") == 0 || tab.compareTo("profile0") == 0) {
             holder.customerNameLabel.setText(context.getResources().getString(R.string.courier_name));
             if (order.getDeliverer().equals("")) {
                 holder.customerNameTextView.setText("");
             } else {
-                rootRef.collection("user_id").document(String.valueOf(order.getDeliverer())).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            //get first and last name
-                            DocumentSnapshot doc = task.getResult();
-                            String full_name = doc.get("firstName") + " " + doc.get("lastName");
-                            holder.customerNameTextView.setText(full_name);
-                        }
-                    }
-                });
-            }
-
-        } else if (tab.compareTo("home1") == 0 || tab.compareTo("profile1") == 0 || tab.compareTo("orders") == 0) {
-            holder.customerNameLabel.setText(context.getResources().getString(R.string.customer_name));
-            rootRef.collection("user_id").document(String.valueOf(order.getCustomerName())).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                rootRef.collection("user_id").document(String.valueOf(order.getDeliverer())).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         //get first and last name
                         DocumentSnapshot doc = task.getResult();
                         String full_name = doc.get("firstName") + " " + doc.get("lastName");
                         holder.customerNameTextView.setText(full_name);
                     }
+                });
+            }
+
+        } else if (tab.compareTo("home1") == 0 || tab.compareTo("profile1") == 0 || tab.compareTo("orders") == 0) {
+            holder.customerNameLabel.setText(context.getResources().getString(R.string.customer_name));
+            rootRef.collection("user_id").document(String.valueOf(order.getCustomerName())).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    //get first and last name
+                    DocumentSnapshot doc = task.getResult();
+                    String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                    holder.customerNameTextView.setText(full_name);
                 }
             });
         }
@@ -112,14 +105,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             customerNameLabel = itemView.findViewById(R.id.customer_name_label);
 
 
-
-            Log.d(TAG, "OrderViewHolder: TESTING DATA");
-
             detailsButton.setOnClickListener(view -> {
                 Order order = mOrders.get(getAdapterPosition());
-
-                Log.d(TAG, order.getOrderID());
-                Log.d(TAG, order.getDeliverer());
 
                 Intent intent = new Intent(view.getContext(), OrderProgress.class);
                 if (tab.compareTo("home0") == 0) {

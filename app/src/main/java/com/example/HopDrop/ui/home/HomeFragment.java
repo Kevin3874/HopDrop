@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
     private ListView myList;
     private MainActivity myact;
 
-    private String [] tab_names = { "Your orders", "Your Deliveries"};
+    public String [] tab_names = { "Your orders", "Your Deliveries"};
 
     public static final int MENU_ITEM_EDITVIEW = Menu.FIRST;
     public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;
@@ -65,29 +65,28 @@ public class HomeFragment extends Fragment {
         return myview;
     }
 
-class ViewPagerAdapter extends FragmentStateAdapter {
+    class ViewPagerAdapter extends FragmentStateAdapter {
+        public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+        }
 
-    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
-    }
-
-    public ViewPagerAdapter(@NonNull Fragment fragment) {
+        public ViewPagerAdapter(@NonNull Fragment fragment) {
         super(fragment);
     }
 
-    public ViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-        super(fragmentManager, lifecycle);
-    }
+        public ViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
+        }
 
-    @NonNull
-    @Override
-    public Fragment createFragment(int position) {
-        return new ViewPagerFragment("New Pager", "home" + position);
-    }
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return new ViewPagerFragment("New Pager", "home" + position);
+        }
 
-    @Override
-    public int getItemCount() {
+        @Override
+        public int getItemCount() {
         return tab_names.length;
     }
-}
+    }
 }
