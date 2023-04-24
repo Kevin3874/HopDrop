@@ -85,6 +85,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             notesTextView = itemView.findViewById(R.id.notes);
             detailsButton = itemView.findViewById(R.id.details_button);
 
+
+
             Log.d(TAG, "OrderViewHolder: TESTING DATA");
 
             detailsButton.setOnClickListener(view -> {

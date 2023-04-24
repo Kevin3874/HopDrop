@@ -8,7 +8,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -35,7 +40,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
         // Update the UI with the Order details
         TextView customerNameTextView = findViewById(R.id.customer_name_accept);
         String string = "";
-        customerNameTextView.setText(mOrder.getCustomerName());
+        rootRef.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                //get first and last name
+                DocumentSnapshot doc = task.getResult();
+                String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                customerNameTextView.setText(full_name);
+            }
+        });
 
         TextView srcTextView = findViewById(R.id.pickup_location_accept);
         string = "Pickup location: " + mOrder.getFrom();

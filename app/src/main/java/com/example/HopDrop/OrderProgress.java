@@ -58,20 +58,25 @@ public class OrderProgress extends AppCompatActivity {
 
         String deliverer = mOrder.getDeliverer();
         String orderId = mOrder.getOrderID();
-
-
         TextView name = findViewById(R.id.customer_name_accept);
-        fb.collection("user_id").document(username_string).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    //get first and last name
-                    DocumentSnapshot doc = task.getResult();
-                    String full_name = doc.get("firstName") + " " + doc.get("lastName");
-                    name.setText(full_name);
+        if (!deliverer.equals("")) {
+            fb.collection("user_id").document(deliverer).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        //get first and last name
+                        DocumentSnapshot doc = task.getResult();
+                        String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                        name.setText(full_name);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            name.setText("Pending Deliverer");
+        }
+
+
+
         TextView srcTextView = findViewById(R.id.pickup_location_accept);
         String string = "Pickup location: " + mOrder.getFrom();
         srcTextView.setText(string);
@@ -102,7 +107,6 @@ public class OrderProgress extends AppCompatActivity {
 
         //if updated while not open
         updateProgress();
-
 
 
 

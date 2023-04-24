@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -33,9 +34,10 @@ public class ViewPagerFragment extends Fragment {
     private OrderAdapter mOrderAdapter;
 
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-
+    View view;
     private String title;
     private String tab;
+    View root;
 
     private Context context;
 
@@ -57,8 +59,8 @@ public class ViewPagerFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_view_pager, container, false);
-        View view = inflater.inflate(R.layout.fragment_order, container, false);
+        root = inflater.inflate(R.layout.fragment_view_pager, container, false);
+        view = inflater.inflate(R.layout.fragment_order, container, false);
 
         updateData();
 
