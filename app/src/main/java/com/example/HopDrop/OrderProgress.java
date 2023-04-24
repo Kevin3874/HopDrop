@@ -60,17 +60,11 @@ public class OrderProgress extends AppCompatActivity {
         String orderId = mOrder.getOrderID();
         TextView name = findViewById(R.id.customer_name_accept);
         if (!deliverer.equals("")) {
-            fb.collection("user_id").document(deliverer).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        //get first and last name
-                        DocumentSnapshot doc = task.getResult();
-                        String full_name = doc.get("firstName") + " " + doc.get("lastName");
-                        name.setText(full_name);
-                    }
-                }
+            fb.collection("user_id").document(deliverer).addSnapshotListener((value, error) -> {
+                String full_name = value.get("firstName") + " " + value.get("lastName");
+                name.setText(full_name);
             });
+
         } else {
             name.setText("Pending Deliverer");
         }
@@ -109,12 +103,11 @@ public class OrderProgress extends AppCompatActivity {
         updateProgress();
 
 
-
     }
 
 
     private void updateProgress() {
-        fb.collection("user_id").document(username_string).addSnapshotListener((value, error) -> {
+        fb.collection("user_id").document(mOrder.getDeliverer()).addSnapshotListener((value, error) -> {
             if (error != null) {
                 return;
             }

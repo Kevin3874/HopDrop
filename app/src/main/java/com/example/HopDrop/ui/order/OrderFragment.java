@@ -51,24 +51,21 @@ public class OrderFragment extends Fragment {
     private void updateOrders() {
         List<Order> orders = new ArrayList<>();
         rootRef.collection("orders").whereNotEqualTo("state", 2)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        orders.clear();
-                        if (error != null)  {
-                            return;
-                        }
-                        List<DocumentSnapshot> documentChanges = value.getDocuments();
-                        for (DocumentSnapshot document : documentChanges) {
-                            Order order = document.toObject(Order.class);
-                            order.setOrderID(document.getId());
-                            orders.add(order);
-                            Log.d("Order array", String.valueOf(orders));
-                        }
-                        mOrderAdapter = new OrderAdapter(orders, "orders");
-                        mRecyclerView.setAdapter(mOrderAdapter);
-                        mOrderAdapter.notifyDataSetChanged();
+                .addSnapshotListener((value, error) -> {
+                    orders.clear();
+                    if (error != null)  {
+                        return;
                     }
+                    List<DocumentSnapshot> documentChanges = value.getDocuments();
+                    for (DocumentSnapshot document : documentChanges) {
+                        Order order = document.toObject(Order.class);
+                        order.setOrderID(document.getId());
+                        orders.add(order);
+                        Log.d("Order array", String.valueOf(orders));
+                    }
+                    mOrderAdapter = new OrderAdapter(orders, "orders");
+                    mRecyclerView.setAdapter(mOrderAdapter);
+                    mOrderAdapter.notifyDataSetChanged();
                 });
     }
 }

@@ -76,36 +76,33 @@ public class ViewPagerFragment extends Fragment {
     private void updateData() {
         orders = new ArrayList<>();
         if (tab.compareTo("home0") == 0) {
-            rootRef.collection("user_id").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    orders.clear();
-                    if (error != null)  {
-                        return;
-                    }
-                    List<DocumentSnapshot> documentChanges = value.getDocuments();
-                    for(DocumentSnapshot document : documentChanges) {
-                        if (document.getId().compareTo(username_string) == 0) {
-                            // Set Order object fields using orderData map
-                            for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("currentOrders")) {
-                                String customer = (String) orderData.get("customer_name");
-                                String from = (String) orderData.get("fromLocation");
-                                String dest = (String) orderData.get("dest");
-                                String fee = (String) orderData.get("fee");
-                                String notes = (String) orderData.get("notes");
-                                Order order = new Order(customer, from, dest, fee, notes, null);
-                                order.setOrderID((String) orderData.get("orderID"));
-                                order.setDeliverer((String) orderData.get("deliverer_name"));
-                                orders.add(order);
-                            }
-                            Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("currentOrders"));
-                            mOrderAdapter = new OrderAdapter(orders, tab);
-                            mRecyclerView.setAdapter(mOrderAdapter);
-                            break;
-                        }
-                    }
-                    mOrderAdapter.notifyDataSetChanged();
+            rootRef.collection("user_id").addSnapshotListener((value, error) -> {
+                orders.clear();
+                if (error != null)  {
+                    return;
                 }
+                List<DocumentSnapshot> documentChanges = value.getDocuments();
+                for(DocumentSnapshot document : documentChanges) {
+                    if (document.getId().compareTo(username_string) == 0) {
+                        // Set Order object fields using orderData map
+                        for (Map<String, Object> orderData : (List<Map<String, Object>>) document.get("currentOrders")) {
+                            String customer = (String) orderData.get("customer_name");
+                            String from = (String) orderData.get("fromLocation");
+                            String dest = (String) orderData.get("dest");
+                            String fee = (String) orderData.get("fee");
+                            String notes = (String) orderData.get("notes");
+                            Order order = new Order(customer, from, dest, fee, notes, null);
+                            order.setOrderID((String) orderData.get("orderID"));
+                            order.setDeliverer((String) orderData.get("deliverer_name"));
+                            orders.add(order);
+                        }
+                        Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("currentOrders"));
+                        mOrderAdapter = new OrderAdapter(orders, tab);
+                        mRecyclerView.setAdapter(mOrderAdapter);
+                        break;
+                    }
+                }
+                mOrderAdapter.notifyDataSetChanged();
             });
         } else if (tab.compareTo("home1") == 0) {
             rootRef.collection("user_id").addSnapshotListener((value, error) -> {

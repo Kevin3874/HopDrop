@@ -63,7 +63,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         TextView feeTextView = findViewById(R.id.fee_confirm);
         string = "Fee: " + mOrder.getFee();
-        feeTextView.setText(String.valueOf(mOrder.getFee()));
+        feeTextView.setText(string);
 
         TextView notesTextView = findViewById(R.id.additional_details_confirm);
         notesTextView.setText(String.valueOf(mOrder.getNotes()));

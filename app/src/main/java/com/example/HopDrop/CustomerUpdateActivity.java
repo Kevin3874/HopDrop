@@ -55,28 +55,25 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         steps.add("Picked Up");
         steps.add("Delivered");
         progress_bar.setSteps(steps);
-        fb.collection("user_id").document(username_string).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) doc.get("currentDeliveries");
-                    if (currentDeliveriesData != null) {
-                        for (Map<String, Object> orderData : currentDeliveriesData) {
-                            String id = (String) orderData.get("orderID");
-                            if (!Objects.equals(id, mOrder.getOrderID())) {
-                                continue;
-                            }
-                            curr_state = String.valueOf(orderData.get("state"));
-                            System.out.println("curr: " + curr_state);
-                            if (curr_state.compareTo("0") == 0) {
-                                action_button.setText("Picked Up");
-                            } else if (curr_state.compareTo("1") == 0) {
-                                progress_bar.go(1, true);
-                                action_button.setText("Delivered");
-                            }
-                            break;
+        fb.collection("user_id").document(username_string).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot doc = task.getResult();
+                List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) doc.get("currentDeliveries");
+                if (currentDeliveriesData != null) {
+                    for (Map<String, Object> orderData : currentDeliveriesData) {
+                        String id = (String) orderData.get("orderID");
+                        if (!Objects.equals(id, mOrder.getOrderID())) {
+                            continue;
                         }
+                        curr_state = String.valueOf(orderData.get("state"));
+                        System.out.println("curr: " + curr_state);
+                        if (curr_state.compareTo("0") == 0) {
+                            action_button.setText("Picked Up");
+                        } else if (curr_state.compareTo("1") == 0) {
+                            progress_bar.go(1, true);
+                            action_button.setText("Delivered");
+                        }
+                        break;
                     }
                 }
             }
