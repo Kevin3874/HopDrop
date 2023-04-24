@@ -84,30 +84,10 @@
                 android:text="Details"
                 android:textSize="20sp"/>
             <TextView
-                android:id="@+id/date_delivery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/detail_title_delivery"
-                android:fontFamily="@font/roboto_condensed_regular"
-                android:text="date"
-                android:drawableStart="@drawable/calendar_icon"
-                android:textSize="18sp"
-                android:padding="2dp"/>
-            <TextView
-                android:id="@+id/time_delivery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/date_delivery"
-                android:fontFamily="@font/roboto_condensed_regular"
-                android:text="time"
-                android:textSize="18sp"
-                android:padding="2dp"
-                android:drawableStart="@drawable/clock_icon" />
-            <TextView
                 android:id="@+id/fee_label_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/time_delivery"
+                android:layout_below="@id/detail_title_delivery"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="Fee:"
                 android:textSize="18sp"/>

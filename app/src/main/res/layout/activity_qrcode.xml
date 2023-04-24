@@ -11,7 +11,9 @@
         android:id="@+id/qr_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/qr_code_svgrepo_com"
-        tools:layout_editor_absoluteX="139dp"
-        tools:layout_editor_absoluteY="311dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/qr" />
 </androidx.constraintlayout.widget.ConstraintLayout>
