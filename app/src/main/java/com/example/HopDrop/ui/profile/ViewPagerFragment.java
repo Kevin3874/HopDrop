@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,13 +61,15 @@ public class ViewPagerFragment extends Fragment {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_view_pager, container, false);
         view = inflater.inflate(R.layout.fragment_order, container, false);
-
-        updateData();
+        orders = new ArrayList<>();
+        //updateData();
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        updateData();
         mOrderAdapter = new OrderAdapter(orders, tab);
         mRecyclerView.setAdapter(mOrderAdapter);
+
 
 
         return view;

@@ -87,8 +87,9 @@ public class OrderProgress extends AppCompatActivity {
         notesTextView.setText(mOrder.getNotes());
 
         progress_bar = findViewById(R.id.step_view);
-        progress_bar.setStepsNumber(3);
-        steps.add("Order Accepted"); // order.getState() == 0
+        progress_bar.setStepsNumber(4);
+        steps.add("Pending"); //Order is pending
+        steps.add("Accepted"); // order.getState() == 0
         steps.add("Picked Up"); // order.getState() == 1
         steps.add("Delivered"); // order.getState() == 2
         progress_bar.setSteps(steps);
@@ -118,7 +119,9 @@ public class OrderProgress extends AppCompatActivity {
                     Log.d("Order state set", "onEvent" + mOrder.getState());
                 }
             }
-
+            if (mOrder.getState() == 0) {
+                progress_bar.go(1, true);
+            }
             if (mOrder.getState() == 1) {
                 progress_bar.go(1, true);
             }

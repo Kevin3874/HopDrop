@@ -88,6 +88,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             //add to deliverer
             DocumentReference userRef = rootRef.collection("user_id").document(username_string);
             mOrder.setDeliverer(username_string);
+            mOrder.setState(0);
             userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
 
 

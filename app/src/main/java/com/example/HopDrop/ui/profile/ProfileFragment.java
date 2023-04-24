@@ -35,12 +35,13 @@ public class ProfileFragment extends Fragment {
     private MainActivity myact;
     private TextView number_deliveries;
     Context cntx;
+    View myview;
 
     @Override
     public View onCreateView (LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View myview = inflater.inflate(R.layout.fragment_profile, container, false);
+        myview = inflater.inflate(R.layout.fragment_profile, container, false);
 
         cntx = getActivity().getApplicationContext();
         myact = (MainActivity) getActivity();
@@ -73,6 +74,14 @@ public class ProfileFragment extends Fragment {
 
         return myview;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ViewPager2 orderViewPager = myview.findViewById(R.id.pagerProfile);
+        orderViewPager.setAdapter(new ViewPagerAdapter(this));
+    }
+
     class ViewPagerAdapter extends FragmentStateAdapter {
         public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);

@@ -24,7 +24,7 @@ public class Order implements Serializable {
         this.dest = "default";
         this.fee = "3";
         this.notes = "default";
-        this.state = 0;
+        this.state = -1;
         this.deliverer_name = "";
     }
 
@@ -34,7 +34,7 @@ public class Order implements Serializable {
         this.dest = dest;
         this.fee = fee;
         this.notes = notes;
-        state = 0;
+        state = -1;
         this.deliverer_name = "";
         orderID = "test";
         this.image = image;
