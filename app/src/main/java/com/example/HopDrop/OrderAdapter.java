@@ -36,6 +36,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.order_item, parent, false);
+        context = parent.getContext();
         return new OrderViewHolder(view);
     }
 
@@ -44,17 +45,40 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         Order order = mOrders.get(position);
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-        rootRef.collection("user_id").document(order.getCustomerName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    //get first and last name
-                    DocumentSnapshot doc = task.getResult();
-                    String full_name = doc.get("firstName") + " " + doc.get("lastName");
-                    holder.customerNameTextView.setText(full_name);
-                }
+        System.out.println(tab + ":" + order.getDeliverer() + ";");
+        if (tab.compareTo("home0") == 0 || tab.compareTo("profile0") == 0) {
+            holder.customerNameLabel.setText(context.getResources().getString(R.string.courier_name));
+            if (order.getDeliverer().equals("")) {
+                holder.customerNameTextView.setText("");
+            } else {
+                rootRef.collection("user_id").document(String.valueOf(order.getDeliverer())).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            //get first and last name
+                            DocumentSnapshot doc = task.getResult();
+                            String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                            holder.customerNameTextView.setText(full_name);
+                        }
+                    }
+                });
             }
-        });
+
+        } else if (tab.compareTo("home1") == 0 || tab.compareTo("profile1") == 0 || tab.compareTo("orders") == 0) {
+            holder.customerNameLabel.setText(context.getResources().getString(R.string.customer_name));
+            rootRef.collection("user_id").document(String.valueOf(order.getCustomerName())).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        //get first and last name
+                        DocumentSnapshot doc = task.getResult();
+                        String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                        holder.customerNameTextView.setText(full_name);
+                    }
+                }
+            });
+        }
+
         holder.srcTextView.setText(order.getFrom());
         holder.destTextView.setText(order.getDest());
         holder.feeTextView.setText(String.valueOf(order.getFee()));
@@ -75,6 +99,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         public TextView notesTextView;
 
         public ImageButton detailsButton;
+        public TextView customerNameLabel;
 
         public OrderViewHolder(View itemView) {
             super(itemView);
@@ -84,6 +109,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             feeTextView = itemView.findViewById(R.id.fee_accept);
             notesTextView = itemView.findViewById(R.id.notes);
             detailsButton = itemView.findViewById(R.id.details_button);
+            customerNameLabel = itemView.findViewById(R.id.customer_name_label);
 
 
 

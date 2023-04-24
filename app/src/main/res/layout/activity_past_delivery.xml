@@ -83,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="Details"
+                android:textStyle="bold"
                 android:textSize="20sp"/>
             <TextView
                 android:id="@+id/fee_label_delivery"
@@ -133,7 +134,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_condensed_regular"
                 android:text="Additional Details"
-                android:textSize="18sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:padding="2dp"/>
             <TextView
                 android:id="@+id/additional_details_delivery"
