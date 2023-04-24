@@ -8,17 +8,27 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 public class NewOrder extends AppCompatActivity {
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
@@ -27,6 +37,7 @@ public class NewOrder extends AppCompatActivity {
     Order order;
     Uri imageUri;
     private String myUri = "";
+    int GET_IMAGE_CODE = 10001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,29 +90,81 @@ public class NewOrder extends AppCompatActivity {
 
         Button qrbtn = findViewById(R.id.upload_qr);
         qrbtn.setOnClickListener(view -> {
+
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, 0);
+            startActivityForResult(intent, GET_IMAGE_CODE);
         });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
+        /*
+        if (requestCode == GET_IMAGE_CODE) {
+            switch (resultCode) {
+
+                case RESULT_OK:
+                    bitmap = (Bitmap) data.getExtras().get("data");
+                    ImageView imageView = findViewById(R.id.test);
+                    imageView.setImageBitmap(bitmap);
+                    handleUpload(bitmap);
+                    mediaUploaded = true;
+            }
+        }
+        */
+
+
         ImageView imageView = findViewById(R.id.test);
 
-        if (requestCode == 0 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == 10001 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
-                //imageView.setImageBitmap(bitmap);
-                //order.setImage(bitmap);
+                //imageView.setImageBitmap(bitmap); //This makes the image show on the screen which we don't need
+                handleUpload(bitmap);
                 mediaUploaded = true;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
+
     }
 
+    private void handleUpload(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
+        StorageReference reference = FirebaseStorage.getInstance().getReference()
+                .child("images")
+                .child(username_string + ".jpeg");
+
+        reference.putBytes(baos.toByteArray()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                getDownloadUrl(reference);
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Failure", "onFailure: ", e.getCause());
+                    }
+                });
+    }
+
+    private void getDownloadUrl(StorageReference reference) {
+        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d("DownloadUrl: ", "onSuccess: " + uri);
+                setUserProfileUrl(uri);
+            }
+        });
+    }
+
+    private void setUserProfileUrl(Uri uri) {
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
