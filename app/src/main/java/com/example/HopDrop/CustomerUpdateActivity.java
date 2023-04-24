@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -169,6 +170,13 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
 
+            }
+        });
+        qr_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CustomerUpdateActivity.this, QRCode.class);
+                startActivity(intent);
             }
         });
 

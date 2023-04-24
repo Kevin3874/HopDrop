@@ -49,6 +49,8 @@ public class NewOrder extends AppCompatActivity {
     private boolean mediaUploaded = false;
     Order order;
     Uri imageUri;
+    private String myUri = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
