@@ -1,9 +1,11 @@
 package com.example.HopDrop;
 
+import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
@@ -94,8 +96,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
             //add to orders for user
             DocumentReference userRef1 = rootRef.collection("user_id").document(mOrder.getCustomerName());
-            userRef1.update("currentOrders", FieldValue.arrayUnion(mOrder));
-
 
             userRef1.get().addOnCompleteListener(task -> {
                 DocumentSnapshot document = task.getResult();
@@ -104,12 +104,13 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     for (Map<String, Object> orderData : currentDeliveriesData) {
                         if (Objects.equals(orderData.get("orderID"), "test")) {
                             userRef1.update("currentOrders", FieldValue.arrayRemove(orderData));
+                            Log.d(TAG, "onCreate: CURRENT ORDERS REMOVED");
                         }
                     }
                 }
             });
 
-
+            userRef1.update("currentOrders", FieldValue.arrayUnion(mOrder));
 
             intent.putExtra("order", mOrder);
             startActivity(intent);

@@ -40,15 +40,12 @@ public class ConfirmOrderActivity extends AppCompatActivity {
 
         // Update the UI with the Order details
         TextView customerNameTextView = findViewById(R.id.customer_name_confirm);
-        rootRef.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    //get first and last name
-                    DocumentSnapshot doc = task.getResult();
-                    String full_name = doc.get("firstName") + " " + doc.get("lastName");
-                    customerNameTextView.setText(full_name);
-                }
+        rootRef.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                //get first and last name
+                DocumentSnapshot doc = task.getResult();
+                String full_name = doc.get("firstName") + " " + doc.get("lastName");
+                customerNameTextView.setText(full_name);
             }
         });
         //customerNameTextView.setText(mOrder.getCustomer_name());

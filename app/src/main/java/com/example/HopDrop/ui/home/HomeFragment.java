@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.HopDrop.MainActivity;
 import com.example.HopDrop.NewOrder;
 import com.example.HopDrop.R;
+import com.example.HopDrop.ui.profile.ProfileFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -32,13 +33,14 @@ public class HomeFragment extends Fragment {
     public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;
 
     Context cntx;
+    View myview;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View myview = inflater.inflate(R.layout.fragment_home, container, false);
+        myview = inflater.inflate(R.layout.fragment_home, container, false);
 
         cntx = getActivity().getApplicationContext();
         myact = (MainActivity) getActivity();
@@ -63,6 +65,13 @@ public class HomeFragment extends Fragment {
         });
 
         return myview;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ViewPager2 orderViewPager = myview.findViewById(R.id.pagerHome);
+        orderViewPager.setAdapter(new HomeFragment.ViewPagerAdapter(this));
     }
 
     class ViewPagerAdapter extends FragmentStateAdapter {
