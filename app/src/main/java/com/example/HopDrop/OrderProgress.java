@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -59,7 +61,7 @@ public class OrderProgress extends AppCompatActivity {
         String deliverer = mOrder.getDeliverer();
         String orderId = mOrder.getOrderID();
         TextView name = findViewById(R.id.customer_name_accept);
-        if (!deliverer.equals("")) {
+        if (!deliverer.equals("Pending Deliverer")) {
             fb.collection("user_id").document(deliverer).addSnapshotListener((value, error) -> {
                 String full_name = value.get("firstName") + " " + value.get("lastName");
                 name.setText(full_name);
@@ -86,14 +88,13 @@ public class OrderProgress extends AppCompatActivity {
         TextView notesTextView = findViewById(R.id.additional_details_progress);
         notesTextView.setText(mOrder.getNotes());
 
-        progress_bar = findViewById(R.id.step_view);
+        progress_bar = findViewById(R.id.step_view_progress);
         progress_bar.setStepsNumber(4);
         steps.add("Pending"); //Order is pending
         steps.add("Accepted"); // order.getState() == 0
         steps.add("Picked Up"); // order.getState() == 1
         steps.add("Delivered"); // order.getState() == 2
         progress_bar.setSteps(steps);
-
         //if no one has picked up
         // if firebase orderID/deliverer is empty, return default page
         /*
@@ -112,7 +113,7 @@ public class OrderProgress extends AppCompatActivity {
 
     private void updateProgress() {
         System.out.println("Does it ever get into here: " + String.valueOf(mOrder.getDeliverer()));
-        if (Objects.equals(mOrder.getDeliverer(), "")) {
+        if (Objects.equals(mOrder.getDeliverer(), "Pending Deliverer")) {
             fb.collection("user_id").document(mOrder.getCustomerName()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -134,6 +135,9 @@ public class OrderProgress extends AppCompatActivity {
                             System.out.println("8");
                             mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
                             mOrder.setOrderID(String.valueOf(orderData.get("orderID")));
+                            mOrder.setDeliverer(String.valueOf(orderData.get("deliverer_name")));
+                            System.out.println("This is the orderData deliverer: " + orderData.get("deliverer_name"));
+                            System.out.println("This is the value of the deliver: " + mOrder.getDeliverer());
                             System.out.println("9");
                             Log.d("Order state set at start", "onEvent" + mOrder.getState());
                         }
@@ -141,6 +145,7 @@ public class OrderProgress extends AppCompatActivity {
                     System.out.println("This is the state in here: " + mOrder.getState());
                     if (mOrder.getState() == 0) {
                         progress_bar.go(1, true);
+                        recreate();
                     }
                 }
             });
@@ -150,27 +155,33 @@ public class OrderProgress extends AppCompatActivity {
                     return;
                 }
                 // Set Order object fields using orderData map
-                System.out.println("5");
+                System.out.println("101010101010101");
+                boolean exists = false;
                 for (Map<String, Object> orderData : (List<Map<String, Object>>) Objects.requireNonNull(value.get("currentDeliveries"))) {
                     if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID())) {
                         System.out.println("6");
                         mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
                         System.out.println("7");
+                        exists = true;
                         Log.d("Order state set", "onEvent" + mOrder.getState());
+                        break;
                     }
                 }
+                System.out.println("this is the orderrrrr: " + mOrder.getState());
                 if (mOrder.getState() == 0) {
+                    System.out.println("It's in 1");
                     progress_bar.go(1, true);
                 }
                 if (mOrder.getState() == 1) {
-                    progress_bar.go(1, true);
-                }
-                if(mOrder.getState() == 2) {
+                    System.out.println("It's in 2");
                     progress_bar.go(2, true);
+                }
+                if (!exists) {
+                    progress_bar.go(3, true);
+                    finish();
                 }
             });
         }
-
     }
 
     @Override

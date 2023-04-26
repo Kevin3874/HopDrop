@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="15dp"
-        android:layout_below="@id/step_view"
+        android:layout_below="@id/step_view_progress"
         android:elevation="8dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -152,7 +152,7 @@
     </androidx.cardview.widget.CardView>
     <!--Progress Bar created-->
     <com.shuhart.stepview.StepView
-        android:id="@+id/step_view"
+        android:id="@+id/step_view_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="26dp"

@@ -106,7 +106,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentOrders");
                 if (currentDeliveriesData != null) {
                     for (Map<String, Object> orderData : currentDeliveriesData) {
-                        if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID()) && Objects.equals(orderData.get("deliverer_name"),"" )) {
+                        if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID()) && Objects.equals(orderData.get("deliverer_name"),"Pending Deliverer" )) {
                             System.out.println("3");
                             userRef1.update("currentOrders", FieldValue.arrayRemove(orderData));
                             System.out.println("4");
