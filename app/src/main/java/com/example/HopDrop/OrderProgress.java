@@ -6,6 +6,11 @@ import static com.example.HopDrop.LoginActivity.username_string;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+import com.example.HopDrop.ui.profile.ProfileFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -29,6 +35,8 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.shuhart.stepview.StepView;
 
 import java.util.ArrayList;
@@ -36,11 +44,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class OrderProgress extends AppCompatActivity {
     StepView progress_bar;
     List<String> steps = new ArrayList<>();
     FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    FirebaseHelper firebaseHelper = new FirebaseHelper();
+    StorageReference reference;
+    CircleImageView profile_image;
     Order mOrder;
 
 
@@ -71,6 +82,26 @@ public class OrderProgress extends AppCompatActivity {
             name.setText("Pending Deliverer");
         }
 
+        if (!mOrder.getDeliverer().equals("Pending Deliverer")) {
+            reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(mOrder.getDeliverer() + ".jpeg");
+            profile_image = findViewById(R.id.customer_profile_image);
+            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    if (uri != null) { // add null check here
+                        Glide.with(OrderProgress.this).load(uri).error(R.drawable.ic_launcher_background)
+                                .into(profile_image);
+                    } else {
+                        System.out.println("This is null");
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        }
 
 
         TextView srcTextView = findViewById(R.id.pickup_location_accept);
@@ -94,15 +125,6 @@ public class OrderProgress extends AppCompatActivity {
         steps.add("Accepted"); // order.getState() == 0
         steps.add("Picked Up"); // order.getState() == 1
         steps.add("Delivered"); // order.getState() == 2
-        progress_bar.setSteps(steps);
-        //if no one has picked up
-        // if firebase orderID/deliverer is empty, return default page
-        /*
-        if (Objects.equals(mOrder.getOrderID(), "") || Objects.equals(mOrder.getDeliverer(), "")) {
-            return;
-        }
-
-         */
 
         //if updated while not open
         updateProgress();
@@ -112,7 +134,7 @@ public class OrderProgress extends AppCompatActivity {
 
 
     private void updateProgress() {
-        System.out.println("Does it ever get into here: " + String.valueOf(mOrder.getDeliverer()));
+        //If not one has picked up yet
         if (Objects.equals(mOrder.getDeliverer(), "Pending Deliverer")) {
             fb.collection("user_id").document(mOrder.getCustomerName()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
@@ -121,24 +143,33 @@ public class OrderProgress extends AppCompatActivity {
                         return;
                     }
                     // Set Order object fields using orderData map
-                    System.out.println("555555");
                     for (Map<String, Object> orderData : (List<Map<String, Object>>) value.get("currentOrders")) {
-                        System.out.println("ininin");
-                        System.out.println("Order list" + value.get("currentOrders"));
                         if (orderData.get("orderID").equals("test")) {
                             System.out.println("hit");
                         }
-                        System.out.println("This is the first comparison: " + orderData.get("orderID") + " : " + mOrder.getOrderID());
-                        System.out.println("This is the second comparison: " + String.valueOf(orderData.get("state")) + " : " + String.valueOf(orderData.get("state")).compareTo("-1"));
                         //Make another look to update the mOrder deliverer from the deliverer side
                         if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID()) && String.valueOf(orderData.get("state")).compareTo("-1") != 0) {
-                            System.out.println("8");
                             mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
                             mOrder.setOrderID(String.valueOf(orderData.get("orderID")));
                             mOrder.setDeliverer(String.valueOf(orderData.get("deliverer_name")));
-                            System.out.println("This is the orderData deliverer: " + orderData.get("deliverer_name"));
-                            System.out.println("This is the value of the deliver: " + mOrder.getDeliverer());
-                            System.out.println("9");
+                            reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(mOrder.getDeliverer() + ".jpeg");
+                            profile_image = findViewById(R.id.customer_profile_image);
+                            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    if (uri != null) { // add null check here
+                                        Glide.with(OrderProgress.this).load(uri).error(R.drawable.ic_launcher_background)
+                                                .into(profile_image);
+                                    } else {
+                                        System.out.println("This is null");
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
                             Log.d("Order state set at start", "onEvent" + mOrder.getState());
                         }
                     }
@@ -151,29 +182,41 @@ public class OrderProgress extends AppCompatActivity {
             });
         } else {
             fb.collection("user_id").document(mOrder.getDeliverer()).addSnapshotListener((value, error) -> {
+                reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(mOrder.getDeliverer() + ".jpeg");
+                profile_image = findViewById(R.id.customer_profile_image);
+                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        if (uri != null) { // add null check here
+                            Glide.with(OrderProgress.this).load(uri).error(R.drawable.ic_launcher_background)
+                                    .into(profile_image);
+                        } else {
+                            System.out.println("This is null");
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
                 if (error != null) {
                     return;
                 }
                 // Set Order object fields using orderData map
-                System.out.println("101010101010101");
                 boolean exists = false;
                 for (Map<String, Object> orderData : (List<Map<String, Object>>) Objects.requireNonNull(value.get("currentDeliveries"))) {
                     if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID())) {
-                        System.out.println("6");
                         mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
-                        System.out.println("7");
                         exists = true;
                         Log.d("Order state set", "onEvent" + mOrder.getState());
                         break;
                     }
                 }
-                System.out.println("this is the orderrrrr: " + mOrder.getState());
                 if (mOrder.getState() == 0) {
-                    System.out.println("It's in 1");
                     progress_bar.go(1, true);
                 }
                 if (mOrder.getState() == 1) {
-                    System.out.println("It's in 2");
                     progress_bar.go(2, true);
                 }
                 if (!exists) {

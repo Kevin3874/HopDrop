@@ -3,10 +3,12 @@ package com.example.HopDrop.ui.profile;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,15 +20,23 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.example.HopDrop.MainActivity;
 import com.example.HopDrop.Order;
+import com.example.HopDrop.QRCode;
 import com.example.HopDrop.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -34,6 +44,9 @@ public class ProfileFragment extends Fragment {
     private TextView username;
     private MainActivity myact;
     private TextView number_deliveries;
+
+    StorageReference reference;
+    CircleImageView profile_image;
     Context cntx;
     View myview;
 
@@ -69,6 +82,25 @@ public class ProfileFragment extends Fragment {
                 number_deliveries.setText(String.format("%d", numDeliveries.size()));
             } else {
                 Toast.makeText(cntx, "ERROR", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(username_string+ ".jpeg");
+        profile_image = myview.findViewById(R.id.customer_profile_image);
+        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                if (uri != null) { // add null check here
+                    Glide.with(ProfileFragment.this).load(uri).error(R.drawable.ic_launcher_background)
+                            .into(profile_image);
+                } else {
+                    System.out.println("This is null");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
             }
         });
 
