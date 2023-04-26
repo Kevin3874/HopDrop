@@ -103,7 +103,6 @@ public class OrderProgress extends AppCompatActivity {
             });
         }
 
-
         TextView srcTextView = findViewById(R.id.pickup_location_accept);
         String string = "Pickup location: " + mOrder.getFrom();
         srcTextView.setText(string);
@@ -125,6 +124,7 @@ public class OrderProgress extends AppCompatActivity {
         steps.add("Accepted"); // order.getState() == 0
         steps.add("Picked Up"); // order.getState() == 1
         steps.add("Delivered"); // order.getState() == 2
+        progress_bar.setSteps(steps);
 
         //if updated while not open
         updateProgress();
@@ -152,54 +152,17 @@ public class OrderProgress extends AppCompatActivity {
                             mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
                             mOrder.setOrderID(String.valueOf(orderData.get("orderID")));
                             mOrder.setDeliverer(String.valueOf(orderData.get("deliverer_name")));
-                            reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(mOrder.getDeliverer() + ".jpeg");
-                            profile_image = findViewById(R.id.customer_profile_image);
-                            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    if (uri != null) { // add null check here
-                                        Glide.with(OrderProgress.this).load(uri).error(R.drawable.ic_launcher_background)
-                                                .into(profile_image);
-                                    } else {
-                                        System.out.println("This is null");
-                                    }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                }
-                            });
                             Log.d("Order state set at start", "onEvent" + mOrder.getState());
                         }
                     }
                     System.out.println("This is the state in here: " + mOrder.getState());
                     if (mOrder.getState() == 0) {
                         progress_bar.go(1, true);
-                        recreate();
                     }
                 }
             });
         } else {
             fb.collection("user_id").document(mOrder.getDeliverer()).addSnapshotListener((value, error) -> {
-                reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(mOrder.getDeliverer() + ".jpeg");
-                profile_image = findViewById(R.id.customer_profile_image);
-                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        if (uri != null) { // add null check here
-                            Glide.with(OrderProgress.this).load(uri).error(R.drawable.ic_launcher_background)
-                                    .into(profile_image);
-                        } else {
-                            System.out.println("This is null");
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
                 if (error != null) {
                     return;
                 }
@@ -215,13 +178,12 @@ public class OrderProgress extends AppCompatActivity {
                 }
                 if (mOrder.getState() == 0) {
                     progress_bar.go(1, true);
-                }
-                if (mOrder.getState() == 1) {
+                } else if (mOrder.getState() == 1) {
                     progress_bar.go(2, true);
                 }
                 if (!exists) {
                     progress_bar.go(3, true);
-                    finish();
+                    //finish();
                 }
             });
         }

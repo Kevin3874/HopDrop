@@ -42,7 +42,7 @@ public class NewOrder extends AppCompatActivity {
     Order order;
     Uri imageUri;
     private String myUri = "";
-    String docID;
+    String docID = "";
     int GET_IMAGE_CODE = 10001;
 
     @Override
@@ -84,6 +84,7 @@ public class NewOrder extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(DocumentReference documentReference) {
                                             order.setOrderID(documentReference.getId());
+                                            docID = documentReference.getId();
                                             Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                                             System.out.println("This is right after you get the document reference");
                                             System.out.println("this is the order in the new order: " + String.valueOf(order.getOrderID()));
