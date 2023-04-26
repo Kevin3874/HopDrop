@@ -47,8 +47,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
         if (tab.compareTo("home0") == 0 || tab.compareTo("profile0") == 0) {
             holder.customerNameLabel.setText(context.getResources().getString(R.string.courier_name));
-            if (order.getDeliverer().equals("")) {
-                holder.customerNameTextView.setText("");
+            if (order.getDeliverer().equals("Pending Deliverer")) {
+                holder.customerNameTextView.setText("Pending Deliverer");
             } else {
                 rootRef.collection("user_id").document(String.valueOf(order.getDeliverer())).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

@@ -35,7 +35,7 @@ public class Order implements Serializable {
         this.fee = fee;
         this.notes = notes;
         state = -1;
-        this.deliverer_name = "";
+        this.deliverer_name = "Pending Deliverer";
         orderID = "test";
         this.image = image;
 
