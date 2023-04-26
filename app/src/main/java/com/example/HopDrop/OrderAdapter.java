@@ -107,8 +107,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
             detailsButton.setOnClickListener(view -> {
                 Order order = mOrders.get(getAdapterPosition());
+                System.out.println(order);
 
-                Intent intent = new Intent(view.getContext(), OrderProgress.class);
+                Intent intent = null;
                 if (tab.compareTo("home0") == 0) {
                     intent = new Intent(view.getContext(), OrderProgress.class);
                 } else if (tab.compareTo("home1") == 0) {

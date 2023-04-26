@@ -112,7 +112,6 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         notesTextView.setText(mOrder.getNotes());
 
         ImageButton qr_button = findViewById(R.id.qr_button);
-        //TODO: create activity that displays the qr code image uploaded by orderer (requires figuring out how to upload picture to firestore first
 
         Button cancelButton = findViewById(R.id.cancel_btn);
         action_button.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +172,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CustomerUpdateActivity.this, QRCode.class);
+                intent.putExtra("order", mOrder);
                 startActivity(intent);
             }
         });

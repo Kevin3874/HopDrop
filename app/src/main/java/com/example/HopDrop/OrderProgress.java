@@ -96,9 +96,12 @@ public class OrderProgress extends AppCompatActivity {
 
         //if no one has picked up
         // if firebase orderID/deliverer is empty, return default page
+        /*
         if (Objects.equals(mOrder.getOrderID(), "") || Objects.equals(mOrder.getDeliverer(), "")) {
             return;
         }
+
+         */
 
         //if updated while not open
         updateProgress();
@@ -108,27 +111,66 @@ public class OrderProgress extends AppCompatActivity {
 
 
     private void updateProgress() {
-        fb.collection("user_id").document(mOrder.getDeliverer()).addSnapshotListener((value, error) -> {
-            if (error != null) {
-                return;
-            }
-            // Set Order object fields using orderData map
-            for (Map<String, Object> orderData : (List<Map<String, Object>>) value.get("currentDeliveries")) {
-                if (orderData.get("orderID").equals(mOrder.getOrderID())) {
-                    mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
-                    Log.d("Order state set", "onEvent" + mOrder.getState());
+        System.out.println("Does it ever get into here: " + String.valueOf(mOrder.getDeliverer()));
+        if (Objects.equals(mOrder.getDeliverer(), "")) {
+            fb.collection("user_id").document(mOrder.getCustomerName()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (error != null) {
+                        return;
+                    }
+                    // Set Order object fields using orderData map
+                    System.out.println("555555");
+                    for (Map<String, Object> orderData : (List<Map<String, Object>>) value.get("currentOrders")) {
+                        System.out.println("ininin");
+                        System.out.println("Order list" + value.get("currentOrders"));
+                        if (orderData.get("orderID").equals("test")) {
+                            System.out.println("hit");
+                        }
+                        System.out.println("This is the first comparison: " + orderData.get("orderID") + " : " + mOrder.getOrderID());
+                        System.out.println("This is the second comparison: " + String.valueOf(orderData.get("state")) + " : " + String.valueOf(orderData.get("state")).compareTo("-1"));
+                        //Make another look to update the mOrder deliverer from the deliverer side
+                        if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID()) && String.valueOf(orderData.get("state")).compareTo("-1") != 0) {
+                            System.out.println("8");
+                            mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
+                            mOrder.setOrderID(String.valueOf(orderData.get("orderID")));
+                            System.out.println("9");
+                            Log.d("Order state set at start", "onEvent" + mOrder.getState());
+                        }
+                    }
+                    System.out.println("This is the state in here: " + mOrder.getState());
+                    if (mOrder.getState() == 0) {
+                        progress_bar.go(1, true);
+                    }
                 }
-            }
-            if (mOrder.getState() == 0) {
-                progress_bar.go(1, true);
-            }
-            if (mOrder.getState() == 1) {
-                progress_bar.go(1, true);
-            }
-            if(mOrder.getState() == 2) {
-                progress_bar.go(2, true);
-            }
-        });
+            });
+        } else {
+            fb.collection("user_id").document(mOrder.getDeliverer()).addSnapshotListener((value, error) -> {
+                if (error != null) {
+                    return;
+                }
+                // Set Order object fields using orderData map
+                System.out.println("5");
+                for (Map<String, Object> orderData : (List<Map<String, Object>>) Objects.requireNonNull(value.get("currentDeliveries"))) {
+                    if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID())) {
+                        System.out.println("6");
+                        mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
+                        System.out.println("7");
+                        Log.d("Order state set", "onEvent" + mOrder.getState());
+                    }
+                }
+                if (mOrder.getState() == 0) {
+                    progress_bar.go(1, true);
+                }
+                if (mOrder.getState() == 1) {
+                    progress_bar.go(1, true);
+                }
+                if(mOrder.getState() == 2) {
+                    progress_bar.go(2, true);
+                }
+            });
+        }
+
     }
 
     @Override

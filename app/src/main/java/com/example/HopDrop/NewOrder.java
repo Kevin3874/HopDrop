@@ -1,5 +1,6 @@
 package com.example.HopDrop;
 
+import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import android.content.Intent;
@@ -28,7 +29,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Document;
+
 import java.io.ByteArrayOutputStream;
+
+import io.grpc.Context;
 
 public class NewOrder extends AppCompatActivity {
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
@@ -37,6 +42,7 @@ public class NewOrder extends AppCompatActivity {
     Order order;
     Uri imageUri;
     private String myUri = "";
+    String docID;
     int GET_IMAGE_CODE = 10001;
 
     @Override
@@ -72,9 +78,25 @@ public class NewOrder extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             //add to firebase for all orders
                             order = new Order(username_string, from, to, fee, details, null);
-                            rootRef.collection("orders").add(order);
+                            rootRef.collection("orders")
+                                    .add(order)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            order.setOrderID(documentReference.getId());
+                                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                            System.out.println("This is right after you get the document reference");
+                                            System.out.println("this is the order in the new order: " + String.valueOf(order.getOrderID()));
+                                            userRef.update("currentOrders", FieldValue.arrayUnion(order));
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error adding document", e);
+                                        }
+                                    });
                             //add to user's collection
-                            userRef.update("currentOrders", FieldValue.arrayUnion(order));
                         } else {
                             Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
                         }
@@ -157,7 +179,9 @@ public class NewOrder extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Log.d("DownloadUrl: ", "onSuccess: " + uri);
-                setUserProfileUrl(uri);
+                StorageReference imageRef = reference.child("images/" + username_string + ".jpeg");
+
+
             }
         });
     }

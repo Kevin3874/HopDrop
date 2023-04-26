@@ -42,7 +42,7 @@ public class OrderFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mOrderAdapter = new OrderAdapter(orders, "orders");
         mRecyclerView.setAdapter(mOrderAdapter);
-        
+
         updateOrders();
 
         return view;

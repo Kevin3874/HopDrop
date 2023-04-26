@@ -87,11 +87,12 @@ public class ViewPagerFragment extends Fragment {
                             String fee = (String) orderData.get("fee");
                             String notes = (String) orderData.get("notes");
                             Order order = new Order(customer, from, dest, fee, notes, null);
+                            System.out.println("This is in the homeviewpager orderID: " + orderData.get("orderID"));
                             order.setOrderID((String) orderData.get("orderID"));
                             order.setDeliverer((String) orderData.get("deliverer_name"));
                             orders.add(order);
                         }
-                        Log.d("Order added", "onEvent" + (ArrayList<Order>) document.get("currentOrders"));
+                        Log.d("Order added", "onEvent: " + String.valueOf(orders));
                         mOrderAdapter = new OrderAdapter(orders, tab);
                         mRecyclerView.setAdapter(mOrderAdapter);
                         break;

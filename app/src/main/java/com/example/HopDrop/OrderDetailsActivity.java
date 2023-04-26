@@ -36,6 +36,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         // Get the Order object passed from the previous activity
         mOrder = (Order) getIntent().getSerializableExtra("order");
+        System.out.println("This is the order id in the order details: " + mOrder.getOrderID());
 
         // Update the UI with the Order details
         TextView customerNameTextView = findViewById(R.id.customer_name_accept);
@@ -67,6 +68,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         Button acceptButton = findViewById(R.id.accept_button);
 
         acceptButton.setOnClickListener(view -> {
+            System.out.println("This is the order id in the order details: " + mOrder.getOrderID());
             DocumentReference orderRef = rootRef.collection("orders").document(mOrder.getOrderID());
             // What happens when the user clicks accept
             Intent intent = new Intent(OrderDetailsActivity.this, CustomerUpdateActivity.class);
@@ -94,7 +96,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
             //add to orders for user
             DocumentReference userRef1 = rootRef.collection("user_id").document(mOrder.getCustomerName());
+            System.out.println("1");
             userRef1.update("currentOrders", FieldValue.arrayUnion(mOrder));
+            System.out.println("2");
 
 
             userRef1.get().addOnCompleteListener(task -> {
@@ -102,8 +106,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentOrders");
                 if (currentDeliveriesData != null) {
                     for (Map<String, Object> orderData : currentDeliveriesData) {
-                        if (Objects.equals(orderData.get("orderID"), "test")) {
+                        if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID()) && Objects.equals(orderData.get("deliverer_name"),"" )) {
+                            System.out.println("3");
                             userRef1.update("currentOrders", FieldValue.arrayRemove(orderData));
+                            System.out.println("4");
                         }
                     }
                 }
