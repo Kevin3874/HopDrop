@@ -16,7 +16,7 @@ public class Order implements Serializable {
     private final String notes;
     private int state;
     private String orderID;
-    Bitmap image;
+    String image_str;
 
     public Order() {
         this.customer_name = "default";
@@ -28,7 +28,7 @@ public class Order implements Serializable {
         this.deliverer_name = "";
     }
 
-    public Order(String customer_name, String fromLocation, String dest, String fee, String notes, Bitmap image) {
+    public Order(String customer_name, String fromLocation, String dest, String fee, String notes) {
         this.customer_name = customer_name;
         this.fromLocation = fromLocation;
         this.dest = dest;
@@ -37,7 +37,7 @@ public class Order implements Serializable {
         state = -1;
         this.deliverer_name = "Pending Deliverer";
         orderID = "test";
-        this.image = image;
+        image_str = null;
 
     }
     @PropertyName("customer_name")
@@ -70,8 +70,8 @@ public class Order implements Serializable {
     @PropertyName("orderID")
     public String getOrderID() { return orderID; }
 
-    public Bitmap getImage() {
-        return image;
+    public String getImage() {
+        return image_str;
     }
 
     public void setOrderID(String id) {
@@ -87,8 +87,8 @@ public class Order implements Serializable {
         state = new_state;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public void setImage(String image_str) {
+        this.image_str = image_str;
     }
 }
 

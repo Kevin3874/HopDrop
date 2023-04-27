@@ -32,6 +32,8 @@ import com.google.firebase.storage.UploadTask;
 import org.w3c.dom.Document;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.grpc.Context;
 
@@ -44,6 +46,7 @@ public class NewOrder extends AppCompatActivity {
     private String myUri = "";
     String docID = "";
     int GET_IMAGE_CODE = 10001;
+    StorageReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +80,17 @@ public class NewOrder extends AppCompatActivity {
                     rootRef.collection("orders").document("orders").get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             //add to firebase for all orders
-                            order = new Order(username_string, from, to, fee, details, null);
+                            order = new Order(username_string, from, to, fee, details);
                             rootRef.collection("orders")
                                     .add(order)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                         @Override
                                         public void onSuccess(DocumentReference documentReference) {
                                             order.setOrderID(documentReference.getId());
+                                            Log.d(TAG, "Dpes the uri ever get set: " + myUri);
+                                            order.setImage(myUri);
                                             docID = documentReference.getId();
+                                            documentReference.update("image", myUri);
                                             Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                                             System.out.println("This is right after you get the document reference");
                                             System.out.println("this is the order in the new order: " + String.valueOf(order.getOrderID()));
@@ -156,21 +162,37 @@ public class NewOrder extends AppCompatActivity {
     private void handleUpload(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
-        StorageReference reference = FirebaseStorage.getInstance().getReference()
-                .child("images")
-                .child(username_string + ".jpeg");
-
-        reference.putBytes(baos.toByteArray()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                getDownloadUrl(reference);
-            }
-        })
+        Map<String, Object> data = new HashMap<>();
+        data.put("image", username_string);
+        rootRef.collection("images")
+                .add(data)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        System.out.println("This is the image document id: " + documentReference.getId());
+                        myUri = documentReference.getId();
+                        reference = FirebaseStorage.getInstance().getReference()
+                                .child("images")
+                                .child(myUri + ".jpeg");
+                        reference.putBytes(baos.toByteArray()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        //getDownloadUrl(reference);
+                                        Log.d(TAG, "Successfully uploaded image");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("Failure", "onFailure: ", e.getCause());
+                                    }
+                                });
+                    }
+                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e("Failure", "onFailure: ", e.getCause());
+                        Log.w(TAG, "Error adding document", e);
                     }
                 });
     }
@@ -180,7 +202,8 @@ public class NewOrder extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Log.d("DownloadUrl: ", "onSuccess: " + uri);
-                StorageReference imageRef = reference.child("images/" + username_string + ".jpeg");
+                String uri_str = String.valueOf(uri);
+                StorageReference imageRef = reference.child("images/" + uri_str + ".jpeg");
 
 
             }
