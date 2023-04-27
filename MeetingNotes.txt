@@ -89,3 +89,109 @@ Date: April 9th
     5) Recording Sprint 1 Demonstration
     
 --------------------------------------------------
+
+Title: Meeting After Class, First meeting of Sprint 2
+Date: April 12th
+  Met to determine immediate next steps:
+    1) Condense order progress for deliverer into one activity
+      - With progress bar
+      - Updating button text only
+    2) Improve design
+      - Update information in firebase
+      - Put profile image in firebase
+    3) Populate orders in each page based on information in database
+    4) Add QR code page/or popup
+      - Figure out how to connect the app to the camera roll
+    5) Figure out how to update the progress bar
+
+--------------------------------------------------------
+
+Title: Meeting with John, go over implementation
+Date: April 16th
+  Met with our TA, John, to confirm some changes we should make:
+    1) Home page New order button design improvements
+      - Instead of having it in the corner where the color is similar to the order cards, maybe make it a darker color (flip the existing colors
+      - Instead of the details button, add a Info (i) icon in the top right corner
+        - Should be intuitive enough for people to know to press it for more details
+    2) Retrieving orders from firebase
+      - Orders currently being added with the fields in a map
+        - Changed it to be added as an order object
+      - Problem: When adding orders from Firestore into a list, the function is returning faster than the list can be updated so it’s returning an empty list
+        - Solution: Take a look at the slides to add a data changed listener which will wait until the data is updated before returning
+            - Day17 slides
+            - Look at recycler view example
+            
+    Divided some tasks:
+      What we need to do:
+      - Image for profile - Kevin
+      - Add an image for delivery - Ehong
+      - Make QR code pages - Ehong
+      - Update firestore when the order is accepted and remove from orders and add it under userId Current delieveries in firebase- Joey
+      - Update past orders and deliveries - Vivian
+      - Update the card design for home page - Joey
+      - Update the states and progress bar - Vivian
+      Bug to fix
+      - Clicking back, the delivered button doesn’t go to next page or update progress bar anymore
+
+--------------------------------------------------------------
+
+Title: Weekly Meeting
+Date: April 21
+  
+  Discussed in detail what we implemented, as well as what we need to do next:
+    - Change QR code button in details page so it doesn’t look like the make order and cancel buttons + buttons in general - Joey
+    - Test progress bar - Joey
+    - Change the fab color with blue for the plus sign and black on the outside and info button at the top the blue should be the card blue - Joey
+    - fix nullpointerexception for comparing tab - Vivian
+    - Populate the profile picture
+      - In profile page
+      - In order progress page
+      - In update delivery page
+    - Make past deliveries page - Vivian (finished)
+    - Populate the right data into each field for details pages - Vivian (in-progress)
+    - Change accept order and confirm delivery page to similar to order details pages
+      - Basically improve layout.
+    - All the data consistently updates without having to refresh (test it out) for example: profile page - number of past deliveries should update automatically
+    - Order Details for Deliverer need to add QR code mimic what we have in figma
+    - Update overall design
+      - Maybe choose new font?
+      - Make sure that all fonts are cohesive (ie same) mimic the details page
+      - Make details page look better by finding a better structure for the details
+
+   Extra
+    - Dropdown for from location in new order
+
+   Minor fixes:
+    - Change font size in additional details to differentiate between title and message
+
+------------------------------------------------------------------
+
+Title: Meeting before Presentation
+Date: April 23
+
+  Discussed last minute changes for presentation:
+      - Progress bar updates
+      - When order is delivered it should delete off of your orders on home page
+      - When you click on your deliveries it should go to appropriate page (picked up or delivered button based on state)
+      - Need to add finished order to pastOrders
+      - Add qr code button along with functionality
+
+  Final changes
+      - Make sure progress bar updates in real time if the order is accepted while the order progress page is already open
+      - Figure out how to make the progress bar start off not colored for any of them
+      
+------------------------------------------------------------------------------
+
+Title: Last meeting for Sprint 2
+Date: April 27
+
+    Went over any last things we need before turning in for sprint 2:
+        - Make images unique
+        - Fix the cancel delivery button so that it notifies the user and then it add order back available orders list
+
+    Potential Improvements:
+        - Popup menu after order is delivered on the customer side
+        - Date and time add
+        - Improve the design
+
+-------------------------------------------------------------------------------
