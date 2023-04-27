@@ -59,6 +59,13 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
         //pull from firebase to get the order
         Button action_button = findViewById(R.id.pickup_button);
+        Button cancel_button = findViewById(R.id.cancel_btn);
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         StepView progress_bar = findViewById(R.id.step_view);
         progress_bar.setStepsNumber(3);
         steps.add("Order Accepted");
