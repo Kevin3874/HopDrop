@@ -63,7 +63,28 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fb.collection("user_id").document(username_string).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot doc = task.getResult();
+                        List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) doc.get("currentDeliveries");
+                        if (currentDeliveriesData != null) {
+                            // find the specific delivery with the customer name and update the state and then refresh on the available orders
+                            for (Map<String, Object> orderData : currentDeliveriesData) {
+                                String id = (String) orderData.get("orderID");
+                                if (!Objects.equals(id, mOrder.getOrderID())) {
+                                    continue;
+                                }
+                                // change the state to 0 and update orderlist and change the courier name
+                                orderData.put("state", -1);
+                                orderData.put("deliverer_name", "Pending Deliverer");
+                                fb.collection("user_id").document(username_string).update("currentDeliveries", currentDeliveriesData);
 
+                            }
+                        }
+                    } else {
+                        // handle the error
+                    }
+                });
             }
         });
         StepView progress_bar = findViewById(R.id.step_view);
@@ -83,7 +104,6 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                             continue;
                         }
                         curr_state = String.valueOf(orderData.get("state"));
-                        System.out.println("curr: " + curr_state);
                         if (curr_state.compareTo("0") == 0) {
                             action_button.setText("Picked Up");
                         } else if (curr_state.compareTo("1") == 0) {
@@ -210,15 +230,6 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                 Intent intent = new Intent(CustomerUpdateActivity.this, QRCode.class);
                 intent.putExtra("order", mOrder);
                 startActivity(intent);
-            }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(CustomerUpdateActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
     }
