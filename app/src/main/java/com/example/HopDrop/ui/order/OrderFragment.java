@@ -30,7 +30,7 @@ import java.util.List;
 public class OrderFragment extends Fragment {
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     private RecyclerView mRecyclerView;
-    private OrderAdapter mOrderAdapter;
+    public OrderAdapter mOrderAdapter;
     List<Order> orders = new ArrayList<>();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +48,7 @@ public class OrderFragment extends Fragment {
         return view;
     }
 
-    private void updateOrders() {
+    public void updateOrders() {
         List<Order> orders = new ArrayList<>();
         rootRef.collection("orders").whereNotEqualTo("state", 2)
                 .addSnapshotListener((value, error) -> {

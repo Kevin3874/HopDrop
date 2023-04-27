@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.HopDrop.ui.order.OrderFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -78,7 +79,11 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                                 orderData.put("state", -1);
                                 orderData.put("deliverer_name", "Pending Deliverer");
                                 fb.collection("user_id").document(username_string).update("currentDeliveries", currentDeliveriesData);
-
+                                OrderFragment orderFragment = (OrderFragment) getSupportFragmentManager().findFragmentByTag("OrderFragment");
+                                if (orderFragment != null) {
+                                    System.out.println("not null");
+                                    orderFragment.updateOrders();
+                                }
                             }
                         }
                     } else {
