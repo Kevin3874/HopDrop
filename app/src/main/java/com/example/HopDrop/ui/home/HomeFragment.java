@@ -65,7 +65,6 @@ public class HomeFragment extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            System.out.println("Makes another home fragment");
             return new ViewPagerFragment("New Pager", "home" + position);
         }
 

@@ -24,9 +24,11 @@ public class QRCode extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         Order mOrder = (Order) getIntent().getSerializableExtra("order");
+
         qr_image = findViewById(R.id.qr_code);
-        System.out.println(mOrder.getImage() + ".jpeg");
+
         reference = FirebaseStorage.getInstance().getReference().child("images").child(mOrder.getImage() + ".jpeg");
         reference.getDownloadUrl().addOnSuccessListener((OnSuccessListener<Uri>) uri -> {
             if (uri != null) { // add null check here

@@ -144,7 +144,6 @@ public class NewOrder extends AppCompatActivity {
                             .child("images")
                             .child(myUri + ".jpeg");
                     reference.putBytes(baos.toByteArray()).addOnSuccessListener((OnSuccessListener<UploadTask.TaskSnapshot>) taskSnapshot -> {
-                        //getDownloadUrl(reference);
                         Log.d(TAG, "Successfully uploaded image");
                     })
                             .addOnFailureListener((OnFailureListener) e -> Log.e("Failure", "onFailure: ", e.getCause()));

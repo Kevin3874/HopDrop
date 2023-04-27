@@ -103,8 +103,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                             // move to past orders
                             userRef.update("pastDeliveries", FieldValue.arrayUnion(mOrder));
                             currentDeliveriesData.remove(index);
-                            //figure out how to delete
-                            //userRef.update("currentDeliveries", FieldValue.arrayRemove(mOrder));
                             userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
 
                             break;
@@ -129,8 +127,6 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                            // move to past orders
                            orderRef.update("pastOrders", FieldValue.arrayUnion(mOrder));
                            currentDeliveriesData.remove(index);
-                           //figure out how to delete
-                           //userRef.update("currentDeliveries", FieldValue.arrayRemove(mOrder));
                            orderRef.update("currentOrders", FieldValue.arrayRemove(orderData));
 
                            break;
