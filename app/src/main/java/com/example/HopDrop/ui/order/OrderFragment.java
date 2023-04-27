@@ -1,29 +1,19 @@
 package com.example.HopDrop.ui.order;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.HopDrop.Order;
 import com.example.HopDrop.OrderAdapter;
 import com.example.HopDrop.R;
-import com.example.HopDrop.ui.home.ViewPagerFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +38,10 @@ public class OrderFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateOrders() {
         List<Order> orders = new ArrayList<>();
+        //get all the orders that are not in the delivered state
         rootRef.collection("orders").whereNotEqualTo("state", 2)
                 .addSnapshotListener((value, error) -> {
                     orders.clear();

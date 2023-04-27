@@ -1,27 +1,21 @@
 package com.example.HopDrop;
 
-import static com.example.HopDrop.LoginActivity.username_string;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -46,21 +40,11 @@ public class PastDelivery extends AppCompatActivity {
 
         reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(mOrder.getCustomerName() + ".jpeg");
         profile_image = findViewById(R.id.customer_profile_image_delivery);
-        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                if (uri != null) { // add null check here
-                    Glide.with(PastDelivery.this).load(uri).error(R.drawable.ic_launcher_background)
-                            .into(profile_image);
-                } else {
-                    System.out.println("This is null");
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
+        reference.getDownloadUrl().addOnSuccessListener((OnSuccessListener<Uri>) uri -> {
+            if (uri != null) { // add null check here
+                Glide.with(PastDelivery.this).load(uri).error(R.drawable.ic_launcher_background)
+                        .into(profile_image);
+            };
         });
 
         fb.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(task -> {

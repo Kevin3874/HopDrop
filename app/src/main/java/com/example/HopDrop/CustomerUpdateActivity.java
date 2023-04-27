@@ -4,7 +4,6 @@ import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.HopDrop.ui.order.OrderFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -40,7 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CustomerUpdateActivity extends AppCompatActivity {
     private Order mOrder;
-    List<String> steps = new ArrayList<String>();
+    List<String> steps = new ArrayList<>();
 
     FirebaseFirestore fb = FirebaseFirestore.getInstance();
     String curr_state;
@@ -61,37 +59,91 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         //pull from firebase to get the order
         Button action_button = findViewById(R.id.pickup_button);
         Button cancel_button = findViewById(R.id.cancel_btn);
-        cancel_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fb.collection("user_id").document(username_string).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot doc = task.getResult();
-                        List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) doc.get("currentDeliveries");
-                        if (currentDeliveriesData != null) {
-                            // find the specific delivery with the customer name and update the state and then refresh on the available orders
-                            for (Map<String, Object> orderData : currentDeliveriesData) {
+        //background for cancelling
+        cancel_button.setOnClickListener(v -> fb.collection("user_id").document(username_string).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot doc = task.getResult();
+                List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) doc.get("currentDeliveries");
+                if (currentDeliveriesData != null) {
+                    // find the specific delivery with the customer name and update the state and then refresh on the available orders
+                    for (Map<String, Object> orderData : currentDeliveriesData) {
+                        String id = (String) orderData.get("orderID");
+                        if (!Objects.equals(id, mOrder.getOrderID())) {
+                            continue;
+                        }
+                        // change the state to 0 and update orderlist and change the courier name
+                        orderData.put("state", -1);
+                        orderData.put("deliverer_name", "Pending Deliverer");
+                        fb.collection("user_id").document(username_string).update("currentDeliveries", currentDeliveriesData);
+                        OrderFragment orderFragment = (OrderFragment) getSupportFragmentManager().findFragmentByTag("OrderFragment");
+                        if (orderFragment != null) {
+                            orderFragment.updateOrders();
+                        }
+                    }
+                }
+                //add back to orders
+                DocumentReference userRef = fb.collection("user_id").document(username_string);
+                DocumentReference orderRef = fb.collection("user_id").document(mOrder.getDeliverer());
+                fb.collection("orders").document("orders").get().addOnCompleteListener(task1 -> {
+                    Order order = new Order(username_string, mOrder.getFrom(), mOrder.getDest(), mOrder.getFee(), mOrder.getNotes());
+                    fb.collection("orders")
+                            .add(order)
+                            .addOnSuccessListener(documentReference -> {
+                                userRef.update("currentOrders", FieldValue.arrayUnion(order));
+                            })
+                            .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+                });
+                //remove from both users
+                userRef.get().addOnCompleteListener(task2 -> {
+                    if (task2.isSuccessful()) {
+                        DocumentSnapshot document = task2.getResult();
+                        List<Map<String, Object>> currentDeliveriesData2 = (List<Map<String, Object>>) document.get("currentDeliveries");
+                        //remove from current deliveries, add to past deliveries
+                        int index = -1;
+                        if (currentDeliveriesData2 != null) {
+                            for (Map<String, Object> orderData : currentDeliveriesData2) {
+                                index++;
                                 String id = (String) orderData.get("orderID");
                                 if (!Objects.equals(id, mOrder.getOrderID())) {
                                     continue;
                                 }
-                                // change the state to 0 and update orderlist and change the courier name
-                                orderData.put("state", -1);
-                                orderData.put("deliverer_name", "Pending Deliverer");
-                                fb.collection("user_id").document(username_string).update("currentDeliveries", currentDeliveriesData);
-                                OrderFragment orderFragment = (OrderFragment) getSupportFragmentManager().findFragmentByTag("OrderFragment");
-                                if (orderFragment != null) {
-                                    System.out.println("not null");
-                                    orderFragment.updateOrders();
-                                }
+                                currentDeliveriesData2.remove(index);
+                                //figure out how to delete
+                                //userRef.update("currentDeliveries", FieldValue.arrayRemove(mOrder));
+                                userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
+
+                                break;
                             }
                         }
-                    } else {
-                        // handle the error
+                    }
+                });
+
+                orderRef.get().addOnCompleteListener(task3 -> {
+                    if (task3.isSuccessful()) {
+                        DocumentSnapshot document = task3.getResult();
+                        List<Map<String, Object>> currentDeliveriesData3 = (List<Map<String, Object>>) document.get("currentOrders");
+                        //remove from current deliveries, add to past deliveries
+                        int index = -1;
+                        if (currentDeliveriesData3 != null) {
+                            for (Map<String, Object> orderData : currentDeliveriesData3) {
+                                index++;
+                                String id = (String) orderData.get("orderID");
+                                if (!Objects.equals(id, mOrder.getOrderID())) {
+                                    continue;
+                                }
+                                currentDeliveriesData3.remove(index);
+                                //figure out how to delete
+                                //userRef.update("currentDeliveries", FieldValue.arrayRemove(mOrder));
+                                orderRef.update("currentOrders", FieldValue.arrayRemove(orderData));
+
+                                break;
+                            }
+                        }
                     }
                 });
             }
-        });
+            finish();
+        }));
         StepView progress_bar = findViewById(R.id.step_view);
         progress_bar.setStepsNumber(3);
         steps.add("Order Accepted");
@@ -112,6 +164,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                         if (curr_state.compareTo("0") == 0) {
                             action_button.setText("Picked Up");
                         } else if (curr_state.compareTo("1") == 0) {
+                            cancel_button.setVisibility(View.GONE);
                             progress_bar.go(1, true);
                             action_button.setText("Delivered");
                         }
@@ -121,10 +174,6 @@ public class CustomerUpdateActivity extends AppCompatActivity {
             }
         });
 
-
-        // Update the UI with the Order details
-        //TextView customerNameTextView = findViewById(R.id.customer_name);
-        //customerNameTextView.setText(mOrder.getCustomer_name());
         TextView name = findViewById(R.id.customer_name);
         fb.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -140,20 +189,12 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
         reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(mOrder.getCustomerName() + ".jpeg");
         profile_image = findViewById(R.id.customer_image);
-        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                if (uri != null) { // add null check here
-                    Glide.with(CustomerUpdateActivity.this).load(uri).error(R.drawable.ic_launcher_background)
-                            .into(profile_image);
-                } else {
-                    System.out.println("This is null");
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
+        reference.getDownloadUrl().addOnSuccessListener((OnSuccessListener<Uri>) uri -> {
+            if (uri != null) { // add null check here
+                Glide.with(CustomerUpdateActivity.this).load(uri).error(R.drawable.ic_launcher_background)
+                        .into(profile_image);
+            } else {
+                System.out.println("This is null");
             }
         });
 
@@ -174,68 +215,62 @@ public class CustomerUpdateActivity extends AppCompatActivity {
 
         ImageButton qr_button = findViewById(R.id.qr_button);
 
-        Button cancelButton = findViewById(R.id.cancel_btn);
-        action_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                if (curr_state.compareTo("0") == 0) {
-                    mOrder.setState(1);
-                    curr_state = "1";
-                    DocumentReference userRef = fb.collection("user_id").document(username_string);
-                    userRef.get().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentDeliveries");
-                            if (currentDeliveriesData != null) {
-                                for (Map<String, Object> orderData : currentDeliveriesData) {
-                                    String id = (String) orderData.get("orderID");
-                                    if (!Objects.equals(id, mOrder.getOrderID())) {
-                                        continue;
-                                    }
-                                    Log.d(TAG, "onClick: Updating in Firebase");
-                                    // move to past orders
-                                    userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
-                                    userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
-                                    break;
-                                }
-                            }
-                        }
-                    });
-
-                    progress_bar.go(1, true);
-                    action_button.setText("Delivered");
-                } else if (curr_state.compareTo("1") == 0) {
-                    mOrder.setState(2);
-                    DocumentReference userRef1 = fb.collection("user_id").document(mOrder.getCustomerName());
-                    userRef1.get().addOnCompleteListener(task -> {
+        action_button.setOnClickListener(view -> {
+            cancel_button.setVisibility(View.GONE);
+            if (curr_state.compareTo("0") == 0) {
+                mOrder.setState(1);
+                curr_state = "1";
+                DocumentReference userRef = fb.collection("user_id").document(username_string);
+                userRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentDeliveries");
                         if (currentDeliveriesData != null) {
                             for (Map<String, Object> orderData : currentDeliveriesData) {
-                                if (!Objects.equals(orderData.get("orderID"), mOrder.getOrderID())) {
+                                String id = (String) orderData.get("orderID");
+                                if (!Objects.equals(id, mOrder.getOrderID())) {
                                     continue;
                                 }
-                                userRef1.update("currentDeliveries", FieldValue.arrayRemove(orderData));
-                                userRef1.update("currentDeliveries", FieldValue.arrayUnion(orderData));
+                                Log.d(TAG, "onClick: Updating in Firebase");
+                                // move to past orders
+                                userRef.update("currentDeliveries", FieldValue.arrayRemove(orderData));
+                                userRef.update("currentDeliveries", FieldValue.arrayUnion(mOrder));
                                 break;
                             }
                         }
-                    });
-                    progress_bar.go(1, true);
-                    Intent intent = new Intent(CustomerUpdateActivity.this, ConfirmOrderActivity.class);
-                    intent.putExtra("order", mOrder);
-                    startActivity(intent);
-                }
+                    }
+                });
 
-            }
-        });
-        qr_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CustomerUpdateActivity.this, QRCode.class);
+                progress_bar.go(1, true);
+                action_button.setText("Delivered");
+            } else if (curr_state.compareTo("1") == 0) {
+                mOrder.setState(2);
+                DocumentReference userRef1 = fb.collection("user_id").document(mOrder.getCustomerName());
+                userRef1.get().addOnCompleteListener(task -> {
+                    DocumentSnapshot document = task.getResult();
+                    List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) document.get("currentDeliveries");
+                    if (currentDeliveriesData != null) {
+                        for (Map<String, Object> orderData : currentDeliveriesData) {
+                            if (!Objects.equals(orderData.get("orderID"), mOrder.getOrderID())) {
+                                continue;
+                            }
+                            userRef1.update("currentDeliveries", FieldValue.arrayRemove(orderData));
+                            userRef1.update("currentDeliveries", FieldValue.arrayUnion(orderData));
+                            break;
+                        }
+                    }
+                });
+                progress_bar.go(1, true);
+                Intent intent = new Intent(CustomerUpdateActivity.this, ConfirmOrderActivity.class);
                 intent.putExtra("order", mOrder);
                 startActivity(intent);
             }
+
+        });
+        qr_button.setOnClickListener(view -> {
+            Intent intent = new Intent(CustomerUpdateActivity.this, QRCode.class);
+            intent.putExtra("order", mOrder);
+            startActivity(intent);
         });
     }
 

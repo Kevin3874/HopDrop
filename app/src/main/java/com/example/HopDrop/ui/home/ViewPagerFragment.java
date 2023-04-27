@@ -27,14 +27,11 @@ public class ViewPagerFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private OrderAdapter mOrderAdapter;
-
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     View view;
     private String title;
     private String tab;
     View root;
-
-    private Context context;
 
     List<Order> orders;
 
@@ -58,7 +55,6 @@ public class ViewPagerFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_order, container, false);
 
 
-
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mOrderAdapter = new OrderAdapter(orders, tab);
@@ -71,12 +67,15 @@ public class ViewPagerFragment extends Fragment {
 
     private void updateData() {
         orders = new ArrayList<>();
+        //check the tab
         if (tab.compareTo("home0") == 0) {
+            //go into user data
             rootRef.collection("user_id").addSnapshotListener((value, error) -> {
                 orders.clear();
                 if (error != null)  {
                     return;
                 }
+                //go through all the documents
                 List<DocumentSnapshot> documentChanges = value.getDocuments();
                 for(DocumentSnapshot document : documentChanges) {
                     if (document.getId().compareTo(username_string) == 0) {
@@ -132,10 +131,4 @@ public class ViewPagerFragment extends Fragment {
             });
         }
     }
-
-
-    public interface OnOrdersFetchedListener {
-        void onOrdersFetched(List<Order> orders);
-    }
-
 }

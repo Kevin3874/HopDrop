@@ -14,10 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -46,7 +44,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         // Get the Order object passed from the previous activity
         mOrder = (Order) getIntent().getSerializableExtra("order");
-        System.out.println("This is the order id in the order details: " + mOrder.getOrderID());
 
         // Update the UI with the Order details
         TextView customerNameTextView = findViewById(R.id.customer_name_accept);
@@ -61,20 +58,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
         });
         reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(mOrder.getCustomerName() + ".jpeg");
         profile_image = findViewById(R.id.customer_profile_image);
-        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                if (uri != null) { // add null check here
-                    Glide.with(OrderDetailsActivity.this).load(uri).error(R.drawable.ic_launcher_background)
-                            .into(profile_image);
-                } else {
-                    System.out.println("This is null");
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
+        reference.getDownloadUrl().addOnSuccessListener((OnSuccessListener<Uri>) uri -> {
+            if (uri != null) { // add null check here
+                Glide.with(OrderDetailsActivity.this).load(uri).error(R.drawable.ic_launcher_background)
+                        .into(profile_image);
             }
         });
 
@@ -96,7 +83,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         Button acceptButton = findViewById(R.id.accept_button);
 
         acceptButton.setOnClickListener(view -> {
-            System.out.println("This is the order id in the order details: " + mOrder.getOrderID());
             DocumentReference orderRef = rootRef.collection("orders").document(mOrder.getOrderID());
             // What happens when the user clicks accept
             Intent intent = new Intent(OrderDetailsActivity.this, CustomerUpdateActivity.class);
@@ -124,10 +110,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
             //add to orders for user
             DocumentReference userRef1 = rootRef.collection("user_id").document(mOrder.getCustomerName());
-            System.out.println("1");
             userRef1.update("currentOrders", FieldValue.arrayUnion(mOrder));
-            System.out.println("2");
-
 
             userRef1.get().addOnCompleteListener(task -> {
                 DocumentSnapshot document = task.getResult();
@@ -135,15 +118,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 if (currentDeliveriesData != null) {
                     for (Map<String, Object> orderData : currentDeliveriesData) {
                         if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID()) && Objects.equals(orderData.get("deliverer_name"),"Pending Deliverer" )) {
-                            System.out.println("3");
                             userRef1.update("currentOrders", FieldValue.arrayRemove(orderData));
-                            System.out.println("4");
                         }
                     }
                 }
             });
-
-
 
             intent.putExtra("order", mOrder);
             startActivity(intent);

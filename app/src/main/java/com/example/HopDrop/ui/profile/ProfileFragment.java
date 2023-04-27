@@ -8,24 +8,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.HopDrop.MainActivity;
 import com.example.HopDrop.Order;
-import com.example.HopDrop.QRCode;
 import com.example.HopDrop.R;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -87,20 +81,10 @@ public class ProfileFragment extends Fragment {
 
         reference = FirebaseStorage.getInstance().getReference().child("profile_images").child(username_string+ ".jpeg");
         profile_image = myview.findViewById(R.id.customer_profile_image);
-        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                if (uri != null) { // add null check here
-                    Glide.with(ProfileFragment.this).load(uri).error(R.drawable.ic_launcher_background)
-                            .into(profile_image);
-                } else {
-                    System.out.println("This is null");
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
+        reference.getDownloadUrl().addOnSuccessListener((OnSuccessListener<Uri>) uri -> {
+            if (uri != null) { // add null check here
+                Glide.with(ProfileFragment.this).load(uri).error(R.drawable.ic_launcher_background)
+                        .into(profile_image);
             }
         });
 
@@ -115,16 +99,9 @@ public class ProfileFragment extends Fragment {
     }
 
     class ViewPagerAdapter extends FragmentStateAdapter {
-        public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
-            super(fragmentActivity);
-        }
 
         public ViewPagerAdapter(@NonNull Fragment fragment) {
             super(fragment);
-        }
-
-        public ViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-            super(fragmentManager, lifecycle);
         }
 
         @NonNull

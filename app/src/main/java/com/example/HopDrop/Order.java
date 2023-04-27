@@ -1,8 +1,5 @@
 package com.example.HopDrop;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import com.google.firebase.firestore.PropertyName;
 
 import java.io.Serializable;
@@ -16,7 +13,7 @@ public class Order implements Serializable {
     private final String notes;
     private int state;
     private String orderID;
-    String image_str;
+    private String image_str;
 
     public Order() {
         this.customer_name = "default";

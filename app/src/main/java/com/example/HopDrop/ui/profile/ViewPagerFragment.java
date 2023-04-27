@@ -3,6 +3,7 @@ package com.example.HopDrop.ui.profile;
 import static android.content.ContentValues.TAG;
 import static com.example.HopDrop.LoginActivity.username_string;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,20 +27,14 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ViewPagerFragment extends Fragment {
-
     private RecyclerView mRecyclerView;
     private OrderAdapter mOrderAdapter;
-
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     View view;
     private String title;
     private String tab;
     View root;
-
-    private Context context;
-
     List<Order> orders;
-
 
     public ViewPagerFragment(){
 
@@ -75,9 +69,10 @@ public class ViewPagerFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void updateData() {
+        //check for which tab is open
         if (Objects.equals(tab, "profile0")) {
-            Log.d(TAG, "updateData: PROFILE0 GOES IN");
             rootRef.collection("user_id").addSnapshotListener((value, error) -> {
                 orders.clear();
                 if (error != null)  {
@@ -107,7 +102,6 @@ public class ViewPagerFragment extends Fragment {
                 mOrderAdapter.notifyDataSetChanged();
             });
         } else if (Objects.equals(tab, "profile1")) {
-            Log.d(TAG, "updateData: PROFILE1 GOES IN");
             rootRef.collection("user_id").addSnapshotListener((value, error) -> {
                 orders.clear();
                 if (error != null)  {

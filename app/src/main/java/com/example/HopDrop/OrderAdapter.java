@@ -1,21 +1,15 @@
 package com.example.HopDrop;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -45,6 +39,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         Order order = mOrders.get(position);
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        //Check which tab is open
         if (tab.compareTo("home0") == 0 || tab.compareTo("profile0") == 0) {
             holder.customerNameLabel.setText(context.getResources().getString(R.string.courier_name));
             if (order.getDeliverer().equals("Pending Deliverer")) {
@@ -96,6 +91,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         public OrderViewHolder(View itemView) {
             super(itemView);
+            //set all card labels
             customerNameTextView = itemView.findViewById(R.id.customer_name);
             srcTextView = itemView.findViewById(R.id.src_accept);
             destTextView = itemView.findViewById(R.id.dest_accept);
@@ -107,7 +103,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
             detailsButton.setOnClickListener(view -> {
                 Order order = mOrders.get(getAdapterPosition());
-                System.out.println(order);
 
                 Intent intent = null;
                 if (tab.compareTo("home0") == 0) {
@@ -121,6 +116,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 } else if (tab.compareTo("profile1") == 0) {
                     intent = new Intent(view.getContext(), PastDelivery.class);
                 }
+
                 intent.putExtra("order", order);
                 view.getContext().startActivity(intent);
             });

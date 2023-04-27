@@ -29,13 +29,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Document;
-
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.grpc.Context;
 
 public class NewOrder extends AppCompatActivity {
     FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
@@ -54,7 +50,7 @@ public class NewOrder extends AppCompatActivity {
         setContentView(R.layout.activity_new_order);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button sbtn = (Button) findViewById(R.id.save_btn);
+        Button sbtn = findViewById(R.id.save_btn);
 
         sbtn.setOnClickListener(v -> {
             // put them into a new object then put that object into firestore
@@ -73,7 +69,7 @@ public class NewOrder extends AppCompatActivity {
             } else if (!mediaUploaded) {
                 Toast.makeText(getApplicationContext(), "Please upload your QR code", Toast.LENGTH_SHORT).show();
             } else {
-                if (fee.toString().chars().filter(ch -> ch == '.').count() > 1) {
+                if (fee.chars().filter(ch -> ch == '.').count() > 1) {
                     Toast.makeText(getApplicationContext(), "Please fix the fee input", Toast.LENGTH_SHORT).show();
                 } else {
                     DocumentReference userRef = rootRef.collection("user_id").document(username_string);
@@ -83,26 +79,15 @@ public class NewOrder extends AppCompatActivity {
                             order = new Order(username_string, from, to, fee, details);
                             rootRef.collection("orders")
                                     .add(order)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            order.setOrderID(documentReference.getId());
-                                            Log.d(TAG, "Dpes the uri ever get set: " + myUri);
-                                            order.setImage(myUri);
-                                            docID = documentReference.getId();
-                                            documentReference.update("image", myUri);
-                                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                                            System.out.println("This is right after you get the document reference");
-                                            System.out.println("this is the order in the new order: " + String.valueOf(order.getOrderID()));
-                                            userRef.update("currentOrders", FieldValue.arrayUnion(order));
-                                        }
+                                    .addOnSuccessListener(documentReference -> {
+                                        order.setOrderID(documentReference.getId());
+                                        order.setImage(myUri);
+                                        docID = documentReference.getId();
+                                        documentReference.update("image", myUri);
+                                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                        userRef.update("currentOrders", FieldValue.arrayUnion(order));
                                     })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w(TAG, "Error adding document", e);
-                                        }
-                                    });
+                                    .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
                             //add to user's collection
                         } else {
                             Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
@@ -128,19 +113,6 @@ public class NewOrder extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        /*
-        if (requestCode == GET_IMAGE_CODE) {
-            switch (resultCode) {
-
-                case RESULT_OK:
-                    bitmap = (Bitmap) data.getExtras().get("data");
-                    ImageView imageView = findViewById(R.id.test);
-                    imageView.setImageBitmap(bitmap);
-                    handleUpload(bitmap);
-                    mediaUploaded = true;
-            }
-        }
-        */
 
 
         ImageView imageView = findViewById(R.id.test);
@@ -166,52 +138,18 @@ public class NewOrder extends AppCompatActivity {
         data.put("image", username_string);
         rootRef.collection("images")
                 .add(data)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        System.out.println("This is the image document id: " + documentReference.getId());
-                        myUri = documentReference.getId();
-                        reference = FirebaseStorage.getInstance().getReference()
-                                .child("images")
-                                .child(myUri + ".jpeg");
-                        reference.putBytes(baos.toByteArray()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        //getDownloadUrl(reference);
-                                        Log.d(TAG, "Successfully uploaded image");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e("Failure", "onFailure: ", e.getCause());
-                                    }
-                                });
-                    }
+                .addOnSuccessListener(documentReference -> {
+                    myUri = documentReference.getId();
+                    reference = FirebaseStorage.getInstance().getReference()
+                            .child("images")
+                            .child(myUri + ".jpeg");
+                    reference.putBytes(baos.toByteArray()).addOnSuccessListener((OnSuccessListener<UploadTask.TaskSnapshot>) taskSnapshot -> {
+                        //getDownloadUrl(reference);
+                        Log.d(TAG, "Successfully uploaded image");
+                    })
+                            .addOnFailureListener((OnFailureListener) e -> Log.e("Failure", "onFailure: ", e.getCause()));
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-    }
-
-    private void getDownloadUrl(StorageReference reference) {
-        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.d("DownloadUrl: ", "onSuccess: " + uri);
-                String uri_str = String.valueOf(uri);
-                StorageReference imageRef = reference.child("images/" + uri_str + ".jpeg");
-
-
-            }
-        });
-    }
-
-    private void setUserProfileUrl(Uri uri) {
-
+                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
     }
 
     @Override
