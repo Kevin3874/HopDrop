@@ -134,32 +134,36 @@ public class OrderProgress extends AppCompatActivity {
 
 
     private void updateProgress() {
+        System.out.println("This is the order delivery: " + mOrder.getDeliverer());
         //If not one has picked up yet
         if (Objects.equals(mOrder.getDeliverer(), "Pending Deliverer")) {
-            fb.collection("user_id").document(mOrder.getCustomerName()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (error != null) {
-                        return;
+            fb.collection("user_id").document(mOrder.getCustomerName()).addSnapshotListener((value, error) -> {
+                if (error != null) {
+                    return;
+                }
+                // Set Order object fields using orderData map
+                for (Map<String, Object> orderData : (List<Map<String, Object>>) value.get("currentOrders")) {
+                    if (orderData.get("orderID").equals("test")) {
+                        System.out.println("hit");
                     }
-                    // Set Order object fields using orderData map
-                    for (Map<String, Object> orderData : (List<Map<String, Object>>) value.get("currentOrders")) {
-                        if (orderData.get("orderID").equals("test")) {
-                            System.out.println("hit");
-                        }
-                        //Make another look to update the mOrder deliverer from the deliverer side
-                        if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID()) && String.valueOf(orderData.get("state")).compareTo("-1") != 0) {
-                            mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
-                            mOrder.setOrderID(String.valueOf(orderData.get("orderID")));
-                            mOrder.setDeliverer(String.valueOf(orderData.get("deliverer_name")));
-                            Log.d("Order state set at start", "onEvent" + mOrder.getState());
-                        }
-                    }
-                    System.out.println("This is the state in here: " + mOrder.getState());
-                    if (mOrder.getState() == 0) {
-                        progress_bar.go(1, true);
+                    //Make another look to update the mOrder deliverer from the deliverer side
+                    if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID()) && String.valueOf(orderData.get("state")).compareTo("-1") != 0) {
+                        mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
+                        mOrder.setOrderID(String.valueOf(orderData.get("orderID")));
+                        mOrder.setDeliverer(String.valueOf(orderData.get("deliverer_name")));
+                        Log.d("Order state set at start", "onEvent" + mOrder.getState());
                     }
                 }
+                System.out.println("This is the state in here: " + mOrder.getState());
+                System.out.println("This is the deliverer in here: " + mOrder.getDeliverer());
+                if (mOrder.getState() == 0) {
+                    progress_bar.go(1, true);
+                    Intent intent = new Intent(this, OrderProgress.class);
+                    intent.putExtra("order", mOrder);
+                    startActivity(intent);
+                    finish();
+                }
+
             });
         } else {
             fb.collection("user_id").document(mOrder.getDeliverer()).addSnapshotListener((value, error) -> {
@@ -172,13 +176,16 @@ public class OrderProgress extends AppCompatActivity {
                     if (Objects.equals(orderData.get("orderID"), mOrder.getOrderID())) {
                         mOrder.setState(Integer.parseInt(String.valueOf(orderData.get("state"))));
                         exists = true;
-                        Log.d("Order state set", "onEvent" + mOrder.getState());
+                        Log.d("Order state sejt", "onEvent" + mOrder.getState());
                         break;
                     }
                 }
-                if (mOrder.getState() == 0) {
+                if (Objects.equals(mOrder.getState(), 0)) {
+                    System.out.println("It gets to 0");
                     progress_bar.go(1, true);
-                } else if (mOrder.getState() == 1) {
+                }
+                if (Objects.equals(mOrder.getState(), 1)) {
+                    System.out.println("It gets to 1");
                     progress_bar.go(2, true);
                 }
                 if (!exists) {
