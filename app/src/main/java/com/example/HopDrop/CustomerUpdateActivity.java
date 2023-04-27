@@ -6,6 +6,7 @@ import static com.example.HopDrop.LoginActivity.username_string;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.example.HopDrop.ui.order.OrderFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -71,6 +74,13 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                         if (!Objects.equals(id, mOrder.getOrderID())) {
                             continue;
                         }
+
+                        // send the message to the customer to say that their order is canceled
+                        CollectionReference messagesRef = fb.collection("messages");
+                        String customer_id = (String) orderData.get("customer_name");
+                        Messages messages = new Messages("Your delivery request has been canceled, your new courier is pending", customer_id);
+                        messagesRef.add(messages);
+                        fb.collection("messages").document("message_doc").update("message_value", messages);
                         // change the state to 0 and update orderlist and change the courier name
                         orderData.put("state", -1);
                         orderData.put("deliverer_name", "Pending Deliverer");
