@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -28,11 +30,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.shuhart.stepview.StepView;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,6 +48,7 @@ public class CustomerUpdateActivity extends AppCompatActivity {
     List<String> steps = new ArrayList<>();
 
     FirebaseFirestore fb = FirebaseFirestore.getInstance();
+
     String curr_state;
     StorageReference reference;
     CircleImageView profile_image;
@@ -91,6 +96,42 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                         }
                     }
                 }
+
+                // make sure to update the customer
+                DocumentReference messageRef = fb.collection("messages").document();
+                messageRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Get the message data from the document
+                                Messages message = document.toObject(Messages.class);
+                                if (username_string != null && username_string.equals(message.getRecipientUserId())) {
+                                    View popupView = LayoutInflater.from(CustomerUpdateActivity.this).inflate(R.layout.popup_window, null);
+                                    TextView popupText = popupView.findViewById(R.id.popup_text);
+                                    popupText.setText(message.getContent());
+                                    Button popupButton = popupView.findViewById(R.id.popup_button);
+
+                                    // Declare and initialize alertDialog before setting the OnClickListener for popupButton
+                                    AlertDialog alertDialog = new AlertDialog.Builder(CustomerUpdateActivity.this)
+                                            .setView(popupView)
+                                            .create();
+
+                                    popupButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            alertDialog.dismiss();
+                                        }
+                                    });
+
+                                    // Show the AlertDialog
+                                    alertDialog.show();
+                                }
+                            }
+                        }
+                    }
+                });
                 //add back to orders
                 DocumentReference userRef = fb.collection("user_id").document(username_string);
                 DocumentReference orderRef = fb.collection("user_id").document(mOrder.getDeliverer());
@@ -293,4 +334,6 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+
+
 
