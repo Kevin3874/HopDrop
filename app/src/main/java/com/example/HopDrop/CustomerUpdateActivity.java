@@ -68,10 +68,10 @@ public class CustomerUpdateActivity extends AppCompatActivity {
         Button action_button = findViewById(R.id.pickup_button);
         Button cancel_button = findViewById(R.id.cancel_btn);
         //background for cancelling
-        cancel_button.setOnClickListener(v -> fb.collection("user_id").document(username_string).get().addOnCompleteListener(task -> {
+        cancel_button.setOnClickListener(v -> fb.collection("user_id").document(mOrder.getCustomerName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot doc = task.getResult();
-                List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) doc.get("currentDeliveries");
+                List<Map<String, Object>> currentDeliveriesData = (List<Map<String, Object>>) doc.get("currentOrders");
                 if (currentDeliveriesData != null) {
                     // find the specific delivery with the customer name and update the state and then refresh on the available orders
                     for (Map<String, Object> orderData : currentDeliveriesData) {
@@ -85,11 +85,11 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                         String customer_id = (String) orderData.get("customer_name");
                         Messages messages = new Messages("Your delivery request has been canceled, your new courier is pending", customer_id);
                         messagesRef.add(messages);
-                        fb.collection("messages").document("message_doc").update("message_value", messages);
+                        //fb.collection("messages").document("message_doc").update("message_value", messages);
                         // change the state to 0 and update orderlist and change the courier name
                         orderData.put("state", -1);
                         orderData.put("deliverer_name", "Pending Deliverer");
-                        fb.collection("user_id").document(username_string).update("currentDeliveries", currentDeliveriesData);
+                        fb.collection("user_id").document(mOrder.getCustomerName()).update("currentOrders", currentDeliveriesData);
                         OrderFragment orderFragment = (OrderFragment) getSupportFragmentManager().findFragmentByTag("OrderFragment");
                         if (orderFragment != null) {
                             orderFragment.updateOrders();
@@ -136,13 +136,14 @@ public class CustomerUpdateActivity extends AppCompatActivity {
                 DocumentReference userRef = fb.collection("user_id").document(username_string);
                 DocumentReference orderRef = fb.collection("user_id").document(mOrder.getDeliverer());
                 fb.collection("orders").document("orders").get().addOnCompleteListener(task1 -> {
-                    Order order = new Order(username_string, mOrder.getFrom(), mOrder.getDest(), mOrder.getFee(), mOrder.getNotes());
+                    Order order = new Order(mOrder.getCustomerName(), mOrder.getFrom(), mOrder.getDest(), mOrder.getFee(), mOrder.getNotes());
                     fb.collection("orders")
-                            .add(order)
-                            .addOnSuccessListener(documentReference -> {
-                                userRef.update("currentOrders", FieldValue.arrayUnion(order));
-                            })
-                            .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+                            .add(order).addOnSuccessListener(documentReference -> {
+                                String oldDocumentId = documentReference.getId();
+                                String newDocumentId = mOrder.getOrderID();
+                                fb.collection("orders").document(newDocumentId).set(order);
+                                fb.collection("orders").document(oldDocumentId).delete();
+                            });
                 });
                 //remove from both users
                 userRef.get().addOnCompleteListener(task2 -> {
