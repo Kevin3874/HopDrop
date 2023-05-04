@@ -43,6 +43,7 @@ public class NewOrder extends AppCompatActivity {
     String docID = "";
     int GET_IMAGE_CODE = 10001;
     StorageReference reference;
+    Button qrbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class NewOrder extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button sbtn = findViewById(R.id.save_btn);
+        qrbtn = findViewById(R.id.upload_qr);
+        qrbtn.setText("Upload QR Code");
 
         sbtn.setOnClickListener(v -> {
             // put them into a new object then put that object into firestore
@@ -102,7 +105,7 @@ public class NewOrder extends AppCompatActivity {
         Button qbtn = findViewById(R.id.quit_btn);
         qbtn.setOnClickListener(v -> finish());
 
-        Button qrbtn = findViewById(R.id.upload_qr);
+
         qrbtn.setOnClickListener(view -> {
 
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -124,6 +127,7 @@ public class NewOrder extends AppCompatActivity {
                 //imageView.setImageBitmap(bitmap); //This makes the image show on the screen which we don't need
                 handleUpload(bitmap);
                 mediaUploaded = true;
+                qrbtn.setText("QR Code Upload Successful!");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
