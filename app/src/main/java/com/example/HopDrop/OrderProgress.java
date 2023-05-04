@@ -9,16 +9,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.shuhart.stepview.StepView;
@@ -146,6 +142,13 @@ public class OrderProgress extends AppCompatActivity {
                 if (Objects.equals(mOrder.getState(), 1)) {
                     progress_bar.go(2, true);
                 }
+                if(Objects.equals(mOrder.getState(), 2)) {
+                    Intent intent = new Intent(this, OrderDelivered.class);
+                    intent.putExtra("order", mOrder);
+                    startActivity(intent);
+                    finish();
+                }
+
                 if (!exists) {
                     Handler handler = new Handler();
                     handler.postDelayed(() -> fb.collection("orders").whereNotEqualTo("state", 2)
