@@ -3,15 +3,22 @@ package com.example.HopDrop;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.shuhart.stepview.StepView;
@@ -140,7 +147,24 @@ public class OrderProgress extends AppCompatActivity {
                     progress_bar.go(2, true);
                 }
                 if (!exists) {
-                    progress_bar.go(3, true);
+                    Handler handler = new Handler();
+                    handler.postDelayed(() -> fb.collection("orders").whereNotEqualTo("state", 2)
+                            .addSnapshotListener((value2, error2) -> {
+                                boolean check = true;
+                                List<DocumentSnapshot> documentChanges = value2.getDocuments();
+                                for (DocumentSnapshot document : documentChanges) {
+                                    if (document.getId().equals(mOrder.getOrderID())) {
+                                        //it exists just got cancelled
+                                        progress_bar.go(0, true);
+                                        Toast.makeText(this, "Your order was cancelled before it was picked up", Toast.LENGTH_LONG).show();
+                                        check = false;
+                                        break;
+                                    }
+                                }
+                                if (check) {
+                                    progress_bar.go(3, true);
+                                }
+                            }), 1000);   //1 second
                 }
             });
         }
