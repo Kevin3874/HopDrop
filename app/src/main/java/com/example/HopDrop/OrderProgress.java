@@ -142,12 +142,6 @@ public class OrderProgress extends AppCompatActivity {
                 if (Objects.equals(mOrder.getState(), 1)) {
                     progress_bar.go(2, true);
                 }
-                if(Objects.equals(mOrder.getState(), 2)) {
-                    Intent intent = new Intent(this, OrderDelivered.class);
-                    intent.putExtra("order", mOrder);
-                    startActivity(intent);
-                    finish();
-                }
 
                 if (!exists) {
                     Handler handler = new Handler();
