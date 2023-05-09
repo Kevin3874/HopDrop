@@ -127,7 +127,8 @@ public class NewOrder extends AppCompatActivity {
                 //imageView.setImageBitmap(bitmap); //This makes the image show on the screen which we don't need
                 handleUpload(bitmap);
                 mediaUploaded = true;
-                qrbtn.setText("QR Code Upload Successful!");
+                Toast.makeText(getApplicationContext(), "QR code uploaded successfully!", Toast.LENGTH_SHORT).show();
+                qrbtn.setText("Re-upload QR Code");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
